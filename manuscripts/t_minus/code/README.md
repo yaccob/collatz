@@ -1,9 +1,9 @@
 # Supporting code for *Obstruction residues for the $3x-1$ map*
 
 This directory contains the verification scripts referenced in the
-appendix of the manuscript `2026-05_t_minus_obstructions.tex`. Each
-script enumerates a finite range of obstruction residues, runs the
-parallel reduction defined in §2 of the paper, and reports the result.
+appendix of the manuscript `obstructions.tex`. Each script enumerates
+a finite range of obstruction residues, runs the parallel reduction
+defined in §2 of the paper, and reports the result.
 
 ## Requirements
 
@@ -44,29 +44,9 @@ laptop:
 - $L = 16$: 30 seconds to a few minutes.
 - $L = 18$: 5–10 minutes for the heavier scripts.
 
-## Provenance
+## Reproducibility
 
-These scripts were developed during the underlying exploration in a
-separate research repository and copied here, in self-contained form, as
-a reproduction package for the manuscript. They depend only on Python
-3.10 or newer (standard library), with no external packages. Upon
-publication of the manuscript, a tagged release of this directory will
-be deposited at a permanent archive (Zenodo or equivalent) and a citation
-DOI added to the appendix.
-
-Four scripts have been renamed in this directory for the publication
-context; their originals in `approaches_2026-05-13T1642/` keep the
-internal names:
-
-| Original | Renamed to |
-|:---|:---|
-| `82_iso_konsistenz_bijection.py` | `iso_synchronisation_verification.py` |
-| `t15_X_general.py` | `x_invariant_bidirectional.py` |
-| `t15_X_non_obstructions.py` | `x_invariant_non_obstructions.py` |
-| `theorem_5_2_verification.py` | `factor_complexity_construction.py` |
-
-The internal labels "T15" and "Theorem 5.2" come from older numbering
-schemes in the project notebooks and do not match the manuscript text;
-the renamed files use names that align with the manuscript's
-definitions and theorem numbers (the constructive form of the factor
-complexity result is Theorem 5.1 in the manuscript, not 5.2).
+This directory is hosted at
+<https://github.com/yaccob/collatz/tree/main/manuscripts/t_minus/code>.
+For stable citation, use that URL together with a specific commit hash
+or release tag.
