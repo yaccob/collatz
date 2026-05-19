@@ -183,6 +183,12 @@ def main():
         print(f"  log p_W(n) ≈ {slope:.4f} * n + {intercept:.4f}")
         print(f"  => p_W(n) ≈ {math.exp(intercept):.3f} * {math.exp(slope):.4f}^n")
         print(f"  Compare:  phi = {phi:.4f}  beta = {beta:.4f}  2 = 2.0000")
+        # Theorem 1.3 / 5.1 predicts p_W(n) = 2^n once L is large enough that the
+        # construction at level 6 + n fits inside the enumeration window.
+        if abs(slope - math.log(2)) < 0.01:
+            print("\n✓ VERIFIED: empirical slope matches log 2 within 0.01 (Theorem 1.3 / 5.1).")
+        else:
+            print(f"\n✗ FAILED: empirical slope {slope:.4f} deviates from log 2 = {math.log(2):.4f}.")
 
 
 if __name__ == "__main__":

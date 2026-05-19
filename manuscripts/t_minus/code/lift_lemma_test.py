@@ -85,7 +85,9 @@ def identify_G_a(c, d, X):
 
 def main():
     L_list = [int(x) for x in (sys.argv[1:] or ["6", "7", "8", "9", "10", "11", "12"])]
-    print(f"Lift-Lemma test for L_0 ∈ {L_list}\n")
+    print(f"Lift theorem test (Theorems 3.1/3.2 of the manuscript), L_0 ∈ {L_list}\n")
+
+    any_failure = [False]
 
     for L0 in L_list:
         obstructions_L0 = []
@@ -134,7 +136,14 @@ def main():
             f"  TOTAL: {total} obstructions, {total_lp + total_lm}/{2 * total} sub-classes lifted "
             f"({100 * (total_lp + total_lm) / (2 * total):.1f}%)"
         )
+        if total_lp + total_lm != 2 * total:
+            any_failure[0] = True
         print()
+
+    if any_failure[0]:
+        print("✗ FAILED: some obstruction did not lift to both r_+ and r_- at level L_0+1.")
+    else:
+        print(f"✓ VERIFIED: every obstruction at every tested L_0 lifts to both r_+ and r_-.")
 
 
 if __name__ == "__main__":

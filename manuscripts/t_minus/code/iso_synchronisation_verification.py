@@ -1,22 +1,16 @@
-"""Step A + B (Doku 81 §5.3): verify Lemma G_0 obstructions correspond bijectively to
-synchronized Stérin-predecessor pairs.
+"""Empirical verification of simultaneous stop and parity (Corollary 2.4 and
+Lemma 2.3 of the manuscript).
 
-Setup:
-- For each Lemma G_0 obstruction r ∈ W_L with cycle C and synchronization step j*:
-    K-trajectory: r, T_-(r), ..., T_-^j*(r) = a_K^(j*) =: a_sync
-    I-trajectory: m=(r-1)/2^v, T_-(m), ..., T_-^j*(m) = a_I^(j*) = a_sync (synchronized)
-  After j*, both run identical to endpoint a_K^(end) = a_I^(end) =: a*.
+For each G_0-obstruction r at level L (i.e. r ∈ Ω_L with shift index a = 0):
+- compute the synchronization step j* at which the K- and I-tracks meet;
+- verify the parity-of-valuations identity V_K - V_I = v at termination
+  (this is the parity lemma applied at the endpoint of the parallel
+  reduction; v = v_2(r-1));
+- verify that the K- and I-tracks satisfy the termination condition at
+  the same index J (simultaneous stop).
 
-- Predecessor characterization:
-    Reverse Stérin chain for K: a_sync ← a_K^(j*-1) ← ... ← a_K^(0) = r  (j* steps, V_K bits)
-    Reverse Stérin chain for I: a_sync ← a_I^(j*-1) ← ... ← a_I^(0) = m  (j* steps, V_I bits)
-  Iso-consistency: V_K - V_I = v.
-
-Verification:
-1. for each Lemma G_0 obstruction at L=12,14,16: extract (cycle C, a_sync, j*, V_K, V_I)
-2. verify V_K - V_I = v (Lemma B.1)
-3. verify m = (r-1)/2^v (Iso definition)
-4. for each tuple: is mapping bijective?
+Output: counts of violations of each property. Zero violations
+constitutes empirical confirmation.
 """
 
 from __future__ import annotations

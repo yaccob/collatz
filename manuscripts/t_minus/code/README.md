@@ -15,7 +15,7 @@ parallel reduction defined in §2 of the paper, and reports the result.
 | Script | Verifies |
 |:---|:---|
 | `atomic_anchor_verification.py` | Lemma 6.1 (atom decomposition): every obstruction has a unique atomic anchor. |
-| `atomic_g0_early_stop_check.py` | Theorem 6.2 (ATOMAR-$G_0$): no atomic shift-zero obstructions at level $\ge 7$. Classifies the lift origin of every $G_0$-obstruction. |
+| `atomic_g0_early_stop_check.py` | Theorem 6.2 (no shift-zero atoms): no atomic shift-zero obstructions at level $\ge 7$. Classifies the lift origin of every $G_0$-obstruction. |
 | `obstr_factor_complexity.py` | Theorem 5.1 (full factor complexity): empirical confirmation $p_W(n) = 2^n$ for $n \le 12$ at $L \le 16$. |
 | `obstr_factor_uniformity.py` | Section 5 auxiliary: pattern-distribution statistics for the quasi-uniformity heuristic. |
 | `factor_complexity_construction.py` | Theorem 5.1 (constructive form): for every $u \in \{0,1\}^n$ and every base anchor $r_0 \in \mathcal{O}_6$, the constructive lift produces a residue in $\mathcal{O}_{6+n}$ whose binary representation contains $u$ as a factor. Checked for $n \le 10$. |
@@ -46,11 +46,13 @@ laptop:
 
 ## Provenance
 
-These scripts are copied verbatim from the project repository
-`github.com/yaccob/_math`, directory `approaches_2026-05-13T1642/`,
-where they were developed during the underlying exploration. The
-copies here are intended as a self-contained reproduction package for
-the manuscript and may diverge from the project repository over time.
+These scripts were developed during the underlying exploration in a
+separate research repository and copied here, in self-contained form, as
+a reproduction package for the manuscript. They depend only on Python
+3.10 or newer (standard library), with no external packages. Upon
+publication of the manuscript, a tagged release of this directory will
+be deposited at a permanent archive (Zenodo or equivalent) and a citation
+DOI added to the appendix.
 
 Four scripts have been renamed in this directory for the publication
 context; their originals in `approaches_2026-05-13T1642/` keep the

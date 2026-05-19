@@ -1,10 +1,13 @@
-"""Generalize T15-X-characterization to all r odd (any v_2(r-1)).
+"""Bidirectional verification of the X-invariant criterion (Definition 2.2 of the manuscript).
 
-For r odd, m = (r-1)/2^v with v = v_2(r-1), the Iso trajectory starts at (m, 2^(L-v)).
-Initial (c, d): a_I = (a_K - 1)/2^v, so c_0 = 1/2^v, d_0 = -1/2^v.
-Initial X_0 = -2/2^v.
+For r odd with v = v_2(r-1) >= 1, the I-track of the parallel reduction
+starts at (m, 2^(L-v)) where m = (r-1)/2^v. Initial coefficients:
+c_0 = 1/2^v, d_0 = -1/2^v, so X_0 = -2/2^v.
 
-Conjecture: r is obstruction ⟺ X_end = 1 at max-uniform-reduction endpoint.
+This script verifies that, across all odd r with v_2(r-1) >= 1 at levels
+L = 6, 7, 8, 9: r is an obstruction (in the rigorously enumerated sense)
+if and only if X_end(r, L) = 1. The check is bidirectional: every
+obstruction has X_end = 1, and no non-obstruction has X_end = 1.
 """
 
 from __future__ import annotations
@@ -29,38 +32,6 @@ def step_T_minus(a, b):
     if v_a >= v_b:
         return None
     return (three_a_minus_1 // (1 << v_a), (3 * b) // (1 << v_a))
-
-
-def trace_X_general(r, L):
-    if r % 2 == 0:
-        return None
-    v = v2(r - 1)
-    if v == 0 or v >= L:
-        return None
-    factor = 1 << v
-    m = (r - 1) // factor
-    a_K, b_K = r, 1 << L
-    a_I, b_I = m, 1 << (L - v)
-    c = Fraction(1, factor)
-    d = Fraction(-1, factor)
-
-    while True:
-        step_K = step_T_minus(a_K, b_K)
-        step_I = step_T_minus(a_I, b_I)
-        if step_K is None or step_I is None:
-            break
-        a_K_new, b_K_new = step_K
-        a_I_new, b_I_new = step_I
-        v_K = v2(3 * a_K - 1)
-        v_I = v2(3 * a_I - 1)
-        c = c * Fraction(1 << v_K, 1 << v_I)
-        d = (3 * d + c * Fraction(1 << v_I, 1 << v_K) - 1) / Fraction(1 << v_I)
-        # Hmm, this update is wrong — need to use OLD c, not new c
-        # Let me redo properly
-        a_K, b_K = a_K_new, b_K_new
-        a_I, b_I = a_I_new, b_I_new
-
-    return {"a_K": a_K, "a_I": a_I, "c": c, "d": d, "X": 3 * d + c}
 
 
 def trace_X_proper(r, L):
@@ -119,8 +90,9 @@ def obstructions_mod(L):
 
 
 def main():
-    print("T15-X-characterization for ALL odd r (any v_2(r-1)):\n")
+    print("Bidirectional X-invariant check (Definition 2.2 of the manuscript):\n")
 
+    any_violation = False
     for L in [6, 7, 8, 9]:
         mod = 1 << L
         obstructions = obstructions_mod(L)
@@ -160,12 +132,19 @@ def main():
         print(f"  obstructions with X=1: {obstr_X1}/{total_obstructions}")
         if obstr_violations:
             print(f"    Violations: {obstr_violations[:5]}")
+            any_violation = True
         print(
             f"  Non-obstructions with X=1: {non_obstruction_X1}/{total_non_obstructions}"
         )
         if non_obstruction_X1_examples:
             print(f"    Examples: {non_obstruction_X1_examples[:5]}")
+            any_violation = True
         print()
+
+    if any_violation:
+        print("✗ FAILED: at least one mismatch between rigorous obstructions and X=1 set.")
+    else:
+        print("✓ VERIFIED: bidirectional X-criterion holds for all tested levels.")
 
 
 if __name__ == "__main__":

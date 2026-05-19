@@ -90,8 +90,12 @@ def classify_obstr_mod64():
 
 
 def main():
-    print("Test: X = 1 at endpoint CHARACTERIZES obstructions?\n")
+    print(
+        "X-invariant characterisation check, restricted to classes with v_2(r-1) = 1\n"
+        "(Definition 2.2 of the manuscript): r is an obstruction iff X_end(r, L) = 1.\n"
+    )
 
+    any_violation = False
     for L in [6, 7, 8, 9]:
         classes, obstructions = classify_obstr_at_level(L)
         print(f"=== Mod 2^{L} = {1<<L} ===")
@@ -130,6 +134,7 @@ def main():
         print(f"  obstructions with X=1: {obstr_X1_count}/{total_obstructions}")
         if obstr_violations:
             print(f"    obstruction violations: {obstr_violations}")
+            any_violation = True
         print(
             f"  Non-obstructions with X=1: {non_obstruction_X1_count}/{total_non_obstructions}"
         )
@@ -137,7 +142,13 @@ def main():
             print(
                 f"    Non-obstruction X=1 examples: {non_obstruction_X1_examples[:5]}"
             )
+            any_violation = True
         print()
+
+    if any_violation:
+        print("✗ FAILED: the X-criterion is not bidirectionally sharp at every tested level.")
+    else:
+        print("✓ VERIFIED: X_end = 1 ⟺ r ∈ Ω_L at every tested level.")
 
 
 if __name__ == "__main__":

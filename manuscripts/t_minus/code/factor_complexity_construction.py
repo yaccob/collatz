@@ -61,8 +61,12 @@ def is_obstr(r, L):
 def main():
     n_max = int(sys.argv[1]) if len(sys.argv) > 1 else 6
     print(
-        "Theorem 5.2 verification: construct r_n per Pattern u, verify r_n ∈ W_{6+n}\n"
+        "Factor complexity constructive form (Theorem 1.3 / 5.1 of the manuscript):\n"
+        "for each pattern u in {0,1}^n, construct r_n via the lift recursion and\n"
+        "verify r_n ∈ W_{6+n}.\n"
     )
+
+    any_fail = False
 
     W6 = [19, 27, 59]
     L0 = 6
@@ -109,6 +113,17 @@ def main():
             print(
                 f"  r0={r0:2d}: {success_per_r0[r0]:>4}/{total} ({100*success_per_r0[r0]/total:.1f}%)"
             )
+        # At least one anchor r0 must reach every pattern (Theorem 1.3 / 5.1).
+        if any_r0_works != total:
+            any_fail = True
+
+    if any_fail:
+        print("\n✗ FAILED: some pattern u is not covered by any anchor r0 ∈ Ω_6.")
+    else:
+        print(
+            f"\n✓ VERIFIED: every pattern u in {{0,1}}^n for n ≤ {n_max} is realised by at "
+            "least one anchor."
+        )
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
-"""Verify Korollar 4.1 (Doku 86 §4.1):
-Every obstruction r ∈ W_L has a unique atomic anchor r_0 ∈ A_{L_0} (L_0 ≤ L)
-and bit-choice u s.t. r = r_0 + Σ u_k · 2^{L_0 + k}.
+"""Empirical verification of the atom decomposition (Lemma 6.1 of the manuscript):
+every obstruction r ∈ Ω_L has a unique atomic anchor r_0 ∈ A_{L_0} (L_0 ≤ L)
+and bit-choice u such that r = r_0 + Σ u_k · 2^{L_0 + k}.
 
-For each r ∈ W_L: find smallest L_0 such that r mod 2^{L_0} ∈ W_{L_0} but
-r mod 2^{L_0 - 1} ∉ W_{L_0 - 1} (= atomic at L_0).
+For each r ∈ Ω_L: find the smallest L_0 such that r mod 2^{L_0} ∈ Ω_{L_0}
+but r mod 2^{L_0 - 1} ∉ Ω_{L_0 - 1} (i.e. atomic at L_0).
 """
 
 from __future__ import annotations
@@ -102,7 +102,7 @@ def main():
         print(f"  {L0:>3} | {actual:>14} | {n_r0:>20} | {predicted:>5} {match}")
     print(f"\nTotal: {expected_sum} (= |W_L| = {len(obstructions)})")
     print(
-        f"Identität |W_L| = Σ |A_{{L_0}}| · 2^{{L-L_0}}: {'VERIFIZIERT' if expected_sum == len(obstructions) else 'FEHLER'}"
+        f"Identity |Ω_L| = Σ |A_{{L_0}}| · 2^{{L-L_0}}: {'✓ VERIFIED' if expected_sum == len(obstructions) else '✗ FAILED'}"
     )
 
 
