@@ -55,7 +55,12 @@
 
 \author{Jakob Stemberger}
 \address{Independent researcher}
+\email{[email]}
 \date{\today}
+
+\subjclass[2020]{11B83, 37P05, 68R15, 11A07}
+
+\keywords{Collatz conjecture, $3x-1$ map, residue dynamics, factor complexity, subshift, parallel reduction}
 
 \begin{document}
 
@@ -143,7 +148,7 @@ structurally richer family than the naive analogies would suggest.
 \subsection{Parallel reductions and the \texorpdfstring{$X$}{X}-invariant}
 
 The construction is built on a simple observation. For an odd integer $r$
-with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$, write $m := (r-1)/2$. We run
+with $v := \vtwo(r-1) \ge 1$, write $m := (r-1)/2^v$. We run
 $\Tminus$ in parallel on $r$ and on $m$ modulo $2^L$ for a fixed level $L$,
 keeping track at each step both of the current values and of their
 \emph{affine relationship}: a pair $(c_j, d_j) \in \Q^2$ such that
@@ -155,11 +160,12 @@ terminal pair $(\cend, \dend)$ and define the scalar invariant
 \Xend(r, L) := 3 \dend(r, L) + \cend(r, L).
 \]
 
-For an odd integer $r$ with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$, we
+For an odd integer $r$ with $\vtwo(r-1) \ge 1$, we
 call $r$ an \emph{obstruction residue at level $L$} when $\Xend(r, L) = 1$,
 and write $\Obs_L \subseteq \{1, \ldots, 2^L\}$ for the set of all such
 residues. The precise definition is given in Section~\ref{sec:setup}
-(Definition~\ref{def:obstruction}).
+(Definition~\ref{def:obstruction}); the typical case is $v = 1$, i.e.\
+$r \equiv 3 \pmod 4$.
 
 The family $(\Obs_L)_{L \ge 6}$ is small at first --- $\Obs_6 = \{19, 27, 59\}$ ---
 but grows rapidly: direct enumeration gives
@@ -187,14 +193,15 @@ the affirmative by the main results.
 
 \begin{theorem}[Constructive lift]
 \label{thm:lift-intro}
-Let $L_0 \ge 2$ and $r_0 \in \Obs_{L_0}$. Then both $r_+ := r_0$ and
+Let $L_0 \ge 6$ and $r_0 \in \Obs_{L_0}$. Then both $r_+ := r_0$ and
 $r_- := r_0 + 2^{L_0}$ are obstruction residues at level $L_0 + 1$.
 \end{theorem}
 
 The proof, given in Section~\ref{sec:lift}, proceeds by case analysis on a
-finite invariant of the parallel reduction. (For $L_0 < 6$, $\Obs_{L_0}$ is
-empty and the theorem is vacuous; the substantive content begins at
-$L_0 = 6$.) The lift is explicit: for each $r_0$, the terminal data of the
+finite invariant of the parallel reduction. (The hypothesis $L_0 \ge 6$ is
+the smallest level for which $\Obs_{L_0}$ is non-empty; for $L_0 < 6$ the
+statement is vacuous, and the proof in Section~\ref{sec:lift} only uses
+$L_0 \ge 2$.) The lift is explicit: for each $r_0$, the terminal data of the
 reduction at $r_+$ or $r_-$ is determined by a closed-form algebraic
 identity.
 
@@ -311,17 +318,18 @@ terminates after finitely many steps.
 
 \subsection{The two-track setup}
 
-Fix $r$ a positive odd integer with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$.
-We postpone the general case $\vtwo(r-1) \ge 2$ to a remark at the end of
-this section. Write $m := (r - 1)/2$; the conditions on $r$ ensure $m$ is
-odd.
+Fix $r$ a positive odd integer, set $v := \vtwo(r-1) \ge 1$, and write
+$m := (r - 1)/2^v$; then $m$ is odd. (We use $v$ as a parameter throughout;
+the special case $v = 1$ — equivalently $r \equiv 3 \pmod 4$ — is the
+typical reader picture and is presented first wherever a concrete
+calculation helps.)
 
-Fix a level $L \ge 2$. We run two $\Tminus$-reductions in parallel:
+Fix a level $L > v$. We run two $\Tminus$-reductions in parallel:
 \begin{itemize}
 \item the \emph{K-track}, starting from $(a_K^{(0)}, b_K^{(0)}) := (r, 2^L)$,
-\item the \emph{I-track}, starting from $(a_I^{(0)}, b_I^{(0)}) := (m, 2^{L-1})$.
+\item the \emph{I-track}, starting from $(a_I^{(0)}, b_I^{(0)}) := (m, 2^{L-v})$.
 \end{itemize}
-The initial relation $m = (r-1)/2$ writes as $a_I^{(0)} = \tfrac{1}{2} a_K^{(0)} - \tfrac{1}{2}$.
+The initial relation $m = (r-1)/2^v$ writes as $a_I^{(0)} = 2^{-v} a_K^{(0)} - 2^{-v}$.
 At each step $j \ge 0$, we update both tracks according to the basic step,
 denoting $\vk^{(j)} := \vtwo(3 a_K^{(j)} - 1)$ and $\vi^{(j)} := \vtwo(3 a_I^{(j)} - 1)$.
 The reduction proceeds as long as both tracks can step; it terminates as
@@ -335,7 +343,7 @@ For each $j$ with $0 \le j \le J$, there exist $c_j, d_j \in \Q$ such that
 \[
 a_I^{(j)} = c_j \, a_K^{(j)} + d_j \qquad \text{in } \Q,
 \]
-with $c_0 = \tfrac{1}{2}$, $d_0 = -\tfrac{1}{2}$, and the update rule
+with $c_0 = 2^{-v}$, $d_0 = -2^{-v}$, and the update rule
 \[
 c_{j+1} = c_j \cdot 2^{\vk^{(j)} - \vi^{(j)}}, \qquad
 d_{j+1} = \frac{3 d_j + c_j - 1}{2^{\vi^{(j)}}}.
@@ -367,11 +375,14 @@ the algebraic certificate of obstruction status (Definition~\ref{def:obstruction
 
 \begin{definition}[Obstruction residue]
 \label{def:obstruction}
-An odd integer $r$ with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$ is an
-\emph{obstruction residue at level $L$} if $\Xend(r, L) = 1$. We write
+An odd integer $r$ with $v := \vtwo(r-1) \ge 1$ is an
+\emph{obstruction residue at level $L > v$} if $\Xend(r, L) = 1$. We write
 \[
 \Obs_L := \{\, r \in \{1, \ldots, 2^L\} : r \text{ is an obstruction residue at level } L \,\}.
 \]
+The typical case is $v = 1$ (equivalently $r \equiv 3 \pmod 4$); larger
+values of $v$ contribute additional residues whose analysis is identical
+with the obvious substitutions.
 \end{definition}
 
 The definition is algorithmic: given $r$ and $L$, one runs the parallel
@@ -395,16 +406,16 @@ The central algebraic fact of this paper is the following.
 Suppose the parallel reduction at $(r, L)$ terminates with $\Xend(r, L) = 1$.
 Then
 \[
-\delta_J := \Vk^{(J)} - \Vi^{(J)} - 1
+\delta_J := \Vk^{(J)} - \Vi^{(J)} - v
 \]
-is an \emph{even} integer (possibly negative), where
+is an \emph{even} integer (possibly negative), where $v := \vtwo(r-1)$,
 $\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and analogously for $\Vi$.
 \end{lemma}
 
 \begin{proof}
-Iterating the update rule from Lemma~\ref{lem:affine} with $c_0 = 1/2$:
+Iterating the update rule from Lemma~\ref{lem:affine} with $c_0 = 2^{-v}$:
 \[
-c_j = \tfrac{1}{2} \cdot \prod_{i < j} 2^{\vk^{(i)} - \vi^{(i)}} = 2^{\Vk^{(j)} - \Vi^{(j)} - 1} = 2^{\delta_j}.
+c_j = 2^{-v} \cdot \prod_{i < j} 2^{\vk^{(i)} - \vi^{(i)}} = 2^{\Vk^{(j)} - \Vi^{(j)} - v} = 2^{\delta_j}.
 \]
 From $X_J = 3 d_J + c_J = 1$, $d_J = (1 - c_J)/3 = (1 - 2^{\delta_J})/3$.
 The affine relation at index $J$ becomes
@@ -445,7 +456,7 @@ of $r$ at level $L$, denoted $a(r, L)$. The obstruction family partitions:
 \Obs_L = \bigsqcup_{a \in \Z} \Obs_L^{G_a}, \qquad \Obs_L^{G_a} := \{\, r \in \Obs_L : a(r, L) = a \,\}.
 \]
 For $a = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
-The shift index is bounded: $|2a + 1| \le \max(\Vk^{(J)}, \Vi^{(J)}) \le L$,
+The shift index is bounded: $|2a + v| \le \max(\Vk^{(J)}, \Vi^{(J)}) \le L$,
 so $|a| \le L/2$.
 
 \subsection{Simultaneous stop and stop types}
@@ -459,11 +470,11 @@ condition $v_a \ge \vtwo(b)$ at the same index $J$.
 \begin{proof}
 From the shift-$a$ normal form, $a_I^{(J)} = 4^a a_K^{(J)} + (1-4^a)/3$, so
 $A_I^{(J)} = 4^a A_K^{(J)}$ and hence $\vi^{(J)} = \vk^{(J)} + 2a$.
-Combining with $\vtwo(b_I^{(J)}) = (L-1) - \Vi^{(J)}$ and
-$\vtwo(b_K^{(J)}) = L - \Vk^{(J)}$, and using $\Vk - \Vi = 2a + 1$:
+Combining with $\vtwo(b_I^{(J)}) = (L-v) - \Vi^{(J)}$ and
+$\vtwo(b_K^{(J)}) = L - \Vk^{(J)}$, and using $\Vk - \Vi = 2a + v$:
 \begin{align*}
 \vi^{(J)} \ge \vtwo(b_I^{(J)})
-  &\iff \vk^{(J)} + 2a \ge L - 1 - \Vi^{(J)} \\
+  &\iff \vk^{(J)} + 2a \ge L - v - \Vi^{(J)} \\
   &\iff \vk^{(J)} \ge L - \Vk^{(J)} \\
   &\iff \vk^{(J)} \ge \vtwo(b_K^{(J)}). \qedhere
 \end{align*}
@@ -473,14 +484,16 @@ The \emph{stop type} at $(r, L)$ is \emph{EE} (equality) if
 $\vk^{(J)} = \vtwo(b_K^{(J)})$ (and hence $\vi^{(J)} = \vtwo(b_I^{(J)})$),
 and \emph{SS} (strict) if both inequalities are strict.
 
-\subsection{Remarks on the general case}
+\subsection{The parameter \texorpdfstring{$v$}{v} and the typical case \texorpdfstring{$v = 1$}{v = 1}}
 
-For $r$ with $v := \vtwo(r-1) \ge 2$, the I-track starts at $(m, 2^{L-v})$
-with $m = (r-1)/2^v$, and the initial coefficients are $c_0 = 2^{-v}$,
-$d_0 = -2^{-v}$. The parity lemma then asserts that $\Vk^{(J)} - \Vi^{(J)} - v$
-is even, and the shift-$a$ normal form is unchanged. The analysis is
-identical with $v$ replacing $1$ throughout. We carry $v = 1$ for concreteness;
-the general statements remain valid with the obvious substitutions.
+The constructions above are stated for general $v := \vtwo(r-1) \ge 1$. The
+typical case is $v = 1$ (equivalently $r \equiv 3 \pmod 4$); for $r \equiv 1
+\pmod 4$ the value of $v$ is $\ge 2$. In every formula above, setting $v = 1$
+recovers the original initial pair $(c_0, d_0) = (\tfrac{1}{2}, -\tfrac{1}{2})$
+and the parity relation $\Vk^{(J)} - \Vi^{(J)} \equiv 1 \pmod 2$. The
+shift-$a$ normal form $(c_J, d_J) = (4^a, (1-4^a)/3)$ is independent of $v$.
+The subsequent sections work with the general case throughout; explicit
+calculations use $v = 1$ wherever this aids the reader.
 
 % =============================================================================
 \section{The Lift Theorem}
@@ -500,8 +513,9 @@ Let $r_0 \in \Obs_{L_0}^{G_a}$. Then $r_+ := r_0 \in \Obs_{L_0+1}$.
 \end{theorem}
 
 \begin{proof}
+Set $v := \vtwo(r_0 - 1) \ge 1$; the typical case is $v = 1$.
 The starting pairs at $(r_+, L_0+1)$ are $(r_0, 2^{L_0+1})$ and
-$(m_0, 2^{L_0})$ where $m_0 = (r_0 - 1)/2$. These differ from the
+$(m_0, 2^{L_0+1-v})$ where $m_0 = (r_0 - 1)/2^v$. These differ from the
 corresponding pairs at $(r_0, L_0)$ only in the modulus, which is doubled.
 Since each basic step depends only on $a_K^{(j)}, a_I^{(j)}$ and not on
 the modulus (as long as the latter does not constrain the step), the
@@ -544,8 +558,10 @@ those at $(r_-, L_0+1)$. The discrepancies
 \[
 \Delta_K^{(j)} := a_{K,-}^{(j)} - a_{K,+}^{(j)}, \qquad \Delta_I^{(j)} := a_{I,-}^{(j)} - a_{I,+}^{(j)}
 \]
-satisfy $\Delta_K^{(0)} = 2^{L_0}$, $\Delta_I^{(0)} = 2^{L_0 - 1}$. We claim
-that as long as $\Vk^{(j)} < L_0$ and $\Vi^{(j)} < L_0 - 1$, the two
+satisfy $\Delta_K^{(0)} = 2^{L_0}$, $\Delta_I^{(0)} = 2^{L_0 - v}$ (the
+I-track shift $\Delta_I^{(0)} = (r_- - 1)/2^v - m_0 = 2^{L_0}/2^v$ uses
+$\vtwo(r_- - 1) = \min(\vtwo(r_0 - 1), L_0) = v$, valid for $L_0 > v$).
+We claim that as long as $\Vk^{(j)} < L_0$ and $\Vi^{(j)} < L_0 - v$, the two
 reductions take identical local steps,
 \begin{equation}\label{eq:lift-minus-vmatch}
 v_2\!\left(3 a_{K,-}^{(j)} - 1\right) = v_2\!\left(3 a_{K,+}^{(j)} - 1\right) = \vk^{(j)}
@@ -553,7 +569,7 @@ v_2\!\left(3 a_{K,-}^{(j)} - 1\right) = v_2\!\left(3 a_{K,+}^{(j)} - 1\right) = 
 (and analogously for the I-track), and the discrepancies have the closed
 form
 \begin{equation}\label{eq:lift-minus-delta}
-\Delta_K^{(j)} = 2^{L_0 - \Vk^{(j)}} \cdot 3^j, \qquad \Delta_I^{(j)} = 2^{L_0 - 1 - \Vi^{(j)}} \cdot 3^j.
+\Delta_K^{(j)} = 2^{L_0 - \Vk^{(j)}} \cdot 3^j, \qquad \Delta_I^{(j)} = 2^{L_0 - v - \Vi^{(j)}} \cdot 3^j.
 \end{equation}
 
 We prove \eqref{eq:lift-minus-vmatch} and \eqref{eq:lift-minus-delta} jointly
@@ -602,13 +618,14 @@ Section~\ref{sec:Ga}:
 \begin{center}
 \begin{tabular}{c|cc}
 \toprule
-Stop type of $r_0$ at $L_0$ & shift index of $r_+$ at $L_0+1$ & shift index of $r_-$ at $L_0+1$ \\
+Stop type of $r_0$ at $L_0$ & shift index of $r_+$ & shift index of $r_-$ \\
 \midrule
 EE & $0$ & $a$ \\
 SS & $a$ & $0$ \\
 \bottomrule
 \end{tabular}
 \end{center}
+(Both lifts are at level $L_0 + 1$.)
 
 So lifting an obstruction with shift index $a \ne 0$ always produces one
 shift-$a$ obstruction and one shift-zero obstruction at the next level;
@@ -704,7 +721,11 @@ Combined with the trivial upper bound, $p_W(n) = 2^n$. \qedhere
 \subsection{Entropy and substitution-shift rigidity}
 
 The \emph{topological entropy} of a language $\mathcal{L} \subseteq \{0,1\}^*$
-is $h(\mathcal{L}) := \limsup_{n \to \infty} (1/n) \log p_{\mathcal{L}}(n)$.
+is $h(\mathcal{L}) := \limsup_{n \to \infty} (1/n) \log p_{\mathcal{L}}(n)$;
+see Lind--Marcus~\cite{LindMarcus1995} for general background on entropy of
+subshifts and subshifts of finite type, and Fogg~\cite{Fogg2002} or
+Allouche--Shallit~\cite{AlloucheShallit2003} for factor complexity of
+substitution and automatic sequences.
 
 \begin{corollary}\label{cor:entropy}
 The topological entropy of $\Fac(\Obs)$ is $\log 2$.
@@ -727,14 +748,14 @@ finite languages over $\{0,1\}$, is
 
 \begin{proof}
 A non-trivial SFT defined by a non-empty finite list of forbidden subwords
-has entropy strictly less than $\log 2$, contradicting
-Corollary~\ref{cor:entropy}. A non-trivial sofic shift is the image of an
+has entropy strictly less than $\log 2$ (Lind--Marcus~\cite{LindMarcus1995}),
+contradicting Corollary~\ref{cor:entropy}. A non-trivial sofic shift is the image of an
 SFT under a one-block factor map and inherits the entropy constraint.
-Primitive substitution shifts have factor complexity in one of the
-polynomial classes
-$\Theta(1), \Theta(n), \Theta(n \log \log n), \Theta(n \log n), \Theta(n^2)$
-(Pansiot~\cite{Pansiot1984}; refined by Devyatov~\cite{Devyatov2015}),
-giving entropy zero --- but our $p_W(n) = 2^n$ has positive entropy. \qedhere
+Primitive substitution shifts have factor complexity in one of the polynomial
+classes $\Theta(1)$, $\Theta(n)$, $\Theta(n \log \log n)$, $\Theta(n \log n)$,
+$\Theta(n^2)$ (Pansiot~\cite{Pansiot1984}; refined by
+Devyatov~\cite{Devyatov2015}), giving entropy zero --- but our
+$p_W(n) = 2^n$ has positive entropy. \qedhere
 \end{proof}
 
 % =============================================================================
@@ -757,11 +778,20 @@ For every $L \ge 6$,
 \end{lemma}
 
 \begin{proof}
-By Theorem~\ref{thm:lift-intro} every $r \in \Obs_L$ has a unique smallest
-$L_0 \ge 6$ with $r \bmod 2^{L_0} \in \Atom_{L_0}$, and $r$ is determined by
-this atomic anchor together with the bits $\{u_{L_0}, \ldots, u_{L-1}\}$
-encoding the lift choices. Each atomic anchor at level $L_0$ generates
-$2^{L - L_0}$ obstructions at level $L$. \qedhere
+We show that every $r \in \Obs_L$ has a unique smallest $L_0 \ge 6$ with
+$r \bmod 2^{L_0} \in \Atom_{L_0}$. \emph{Existence:} starting from $r$ at
+level $L$, consider the descending sequence $r_k := r \bmod 2^{L-k}$ for
+$k = 0, 1, \ldots, L - 6$. By the lift theorem (Theorem~\ref{thm:lift-intro})
+each $r_{k+1} \in \Obs_{L-k-1}$ implies $r_k \in \Obs_{L-k}$, but the converse
+need not hold; let $L_0$ be the smallest level $\ge 6$ for which $r \bmod 2^{L_0} \in \Obs_{L_0}$.
+Then $r \bmod 2^{L_0 - 1} \notin \Obs_{L_0 - 1}$ (either because $L_0 = 6$ and
+$\Obs_5 = \emptyset$, or by minimality), so $r \bmod 2^{L_0} \in \Atom_{L_0}$.
+\emph{Uniqueness:} the level $L_0$ is the smallest such by definition, hence
+unique. Given the atomic anchor $r_0 := r \bmod 2^{L_0}$, the residue $r$ is
+determined by $r_0$ together with the bits $\{u_{L_0}, \ldots, u_{L-1}\}$
+encoding the lift choices (Theorems~\ref{thm:lift-plus},~\ref{thm:lift-minus}).
+Each atomic anchor at level $L_0$ thus generates $2^{L - L_0}$ obstructions
+at level $L$. \qedhere
 \end{proof}
 
 \subsection{No shift-zero atoms}
@@ -777,6 +807,19 @@ The parallel reduction at $(r', L-1)$ uses the same starting values
 $a_K, a_I$ as at $(r, L)$, but with the modulus reduced by one power of two.
 The first $j$ steps of the two reductions coincide as long as the modulus
 does not constrain a step.
+
+Termination of the reduction at $(r, L)$ at index $J$ means at least one
+track satisfies its stop condition there; by Corollary~\ref{cor:sync}, both
+do. Since $a = 0$, the synchronisation $\vi^{(J)} = \vk^{(J)} + 2a = \vk^{(J)}$
+and $\Vk^{(J)} = \Vi^{(J)} + 1$ hold, so the K-track stop condition
+$\vk^{(J)} \ge L - \Vk^{(J)}$ and the I-track stop condition
+$\vi^{(J)} \ge (L-1) - \Vi^{(J)}$ are equivalent: both reduce to
+$\Vk^{(J)} + \vk^{(J)} \ge L$. We split by whether this inequality holds
+at index $J$ or already at index $J - 1$ (i.e.\ $\Vk^{(J-1)} + \vk^{(J-1)} \ge L - 1$,
+which is the corresponding stop condition at level $L - 1$); the two cases
+are exhaustive because if the level-$(L-1)$ stop condition failed at every
+$j \le J - 1$, the reduction at $(r', L-1)$ would not terminate by index $J$,
+contradicting $r' \in \{1, \ldots, 2^{L-1}\}$.
 
 \emph{Case A: $\Vk^{(J)} + \vk^{(J)} \ge L$ and the reduction at
 $(r', L-1)$ also terminates at index $J$.} Then the terminal data
@@ -882,8 +925,8 @@ the same. \qedhere
 Write $\Obs_L^+$ for the $\Tplus$ analogue of $\Obs_L$.
 
 \begin{theorem}\label{thm:transfer}
-The map $r \mapsto \overline{r}$ restricts to a bijection
-$\Obs_L \leftrightarrow \Obs_L^+$. Theorems~\ref{thm:lift-intro},~\ref{thm:density-intro},
+By Lemma~\ref{lem:bijection}, the map $r \mapsto \overline{r}$ restricts to a
+bijection $\Obs_L \leftrightarrow \Obs_L^+$. Theorems~\ref{thm:lift-intro},~\ref{thm:density-intro},
 and~\ref{thm:fc-intro} hold verbatim for $\Obs^+$, with the same density
 constant $c_W$ and factor complexity function $p_W^+(n) = 2^n$.
 \end{theorem}
@@ -942,6 +985,10 @@ A unified treatment --- for instance, expressing $c_W$ in terms of
 Wirsching's invariant density $\varphi$ --- appears not to be in the
 literature.
 
+\subsection*{Acknowledgements}
+
+The author declares no funding or competing interests.
+
 % =============================================================================
 \appendix
 \section{Computational verification}
@@ -959,11 +1006,11 @@ the no-shift-zero-atom theorem (Theorem~\ref{thm:no-G0-atom}), full factor
 complexity, simultaneous stop) together with a
 \texttt{README.md} mapping each script to the result it certifies. For
 each level $L \le L_{\max}$, the relevant script enumerates all odd
-residues $r$ with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$, runs the
-parallel reduction, and records the terminal data. The set $\Obs_L$ is
-read off as the preimage of $\{(c, d) : 3d + c = 1\}$.
+residues $r$ with $\vtwo(r-1) \ge 1$, runs the parallel reduction, and
+records the terminal data. The set $\Obs_L$ is read off as the preimage of
+$\{(c, d) : 3d + c = 1\}$.
 
-We have run this enumeration through $L = 18$, producing the following
+We have run this enumeration through $L = 16$, producing the following
 counts:
 
 \begin{center}
@@ -971,21 +1018,25 @@ counts:
 \toprule
 $L$ & $|\Obs_L|$ & $|\Obs_L^{G_0}|$ & $|\Obs_L^{G_{\ne 0}}|$ & $|\Atom_L^{G_{\ne 0}}|$ \\
 \midrule
-$6$  & $3$    & $3$    & $0$   & $3$  \\
-$7$  & $8$    & $6$    & $2$   & $2$  \\
-$8$  & $19$   & $15$   & $4$   & $3$  \\
-$9$  & $42$   & $36$   & $6$   & $4$  \\
-$10$ & $91$   & $82$   & $9$   & $9$  \\
-$11$ & $194$  & $178$  & $16$  & $12$ \\
-$12$ & $409$  & $380$  & $29$  & $21$  \\
-$14$ & $1776$ & $1648$ & $128$ & $66$  \\
-$16$ & $7556$ & $7068$ & $488$ & $214$ \\
+$6$  & $3$    & $1$    & $2$   & $2$   \\
+$7$  & $8$    & $4$    & $4$   & $2$   \\
+$8$  & $19$   & $12$   & $7$   & $3$   \\
+$9$  & $42$   & $31$   & $11$  & $4$   \\
+$10$ & $91$   & $73$   & $18$  & $7$   \\
+$11$ & $194$  & $164$  & $30$  & $12$  \\
+$12$ & $409$  & $358$  & $51$  & $21$  \\
+$13$ & $855$  & $767$  & $88$  & $37$  \\
+$14$ & $1776$ & $1622$ & $154$ & $66$  \\
+$15$ & $3671$ & $3398$ & $273$ & $119$ \\
+$16$ & $7556$ & $7069$ & $487$ & $214$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The data is consistent with Theorems~\ref{thm:lift-intro},~\ref{thm:no-G0-atom}
-(strict lift balance), and~\ref{thm:series} (series convergence).
+The data satisfies the strict lift balance $|\Obs_L| = 2 |\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$
+of Corollary~\ref{cor:lift-balance} at every level, and is consistent with
+Theorems~\ref{thm:lift-intro},~\ref{thm:no-G0-atom}, and~\ref{thm:series}
+(series convergence).
 
 % =============================================================================
 \bibliographystyle{amsalpha}
