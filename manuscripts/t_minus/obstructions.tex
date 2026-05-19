@@ -54,6 +54,7 @@
   full factor complexity, positive density,\\ and a constructive lift}
 
 \author{Jakob Stemberger}
+\address{Independent researcher}
 \date{\today}
 
 \begin{document}
@@ -154,12 +155,11 @@ terminal pair $(\cend, \dend)$ and define the scalar invariant
 \Xend(r, L) := 3 \dend(r, L) + \cend(r, L).
 \]
 
-\begin{definition}[Obstruction residue]
-\label{def:obstruction-intro}
-An odd integer $r$ with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$ is an
-\emph{obstruction residue at level $L$} if $\Xend(r, L) = 1$. We write
-$\Obs_L \subseteq \{1, \ldots, 2^L\}$ for the set of all such residues.
-\end{definition}
+For an odd integer $r$ with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$, we
+call $r$ an \emph{obstruction residue at level $L$} when $\Xend(r, L) = 1$,
+and write $\Obs_L \subseteq \{1, \ldots, 2^L\}$ for the set of all such
+residues. The precise definition is given in Section~\ref{sec:setup}
+(Definition~\ref{def:obstruction}).
 
 The family $(\Obs_L)_{L \ge 6}$ is small at first --- $\Obs_6 = \{19, 27, 59\}$ ---
 but grows rapidly: direct enumeration gives
@@ -192,9 +192,11 @@ $r_- := r_0 + 2^{L_0}$ are obstruction residues at level $L_0 + 1$.
 \end{theorem}
 
 The proof, given in Section~\ref{sec:lift}, proceeds by case analysis on a
-finite invariant of the parallel reduction. The lift is explicit: for each
-$r_0$, the terminal data of the reduction at $r_+$ or $r_-$ is determined by
-a closed-form algebraic identity.
+finite invariant of the parallel reduction. (For $L_0 < 6$, $\Obs_{L_0}$ is
+empty and the theorem is vacuous; the substantive content begins at
+$L_0 = 6$.) The lift is explicit: for each $r_0$, the terminal data of the
+reduction at $r_+$ or $r_-$ is determined by a closed-form algebraic
+identity.
 
 \begin{theorem}[Positive density]
 \label{thm:density-intro}
@@ -258,7 +260,10 @@ index evolves under lift; Theorem~\ref{thm:fc-intro} is the iterative
 consequence; Theorem~\ref{thm:density-intro} follows by monotonicity
 together with a refined classification by shift index.
 
-The shift-$a$ normal form is, to the best of our knowledge, new. The
+The shift-$a$ normal form is, to the best of our knowledge, new; in
+particular, it differs from the Markov-operator setup of
+Wirsching~\cite{Wirsching1998}, which works with an invariant
+probability-density function rather than a terminal algebraic datum. The
 remaining analysis proceeds by elementary case analysis and combinatorial
 bookkeeping; the arguments do not depend on specialized Collatz machinery
 beyond the Lagarias intertwining.
@@ -456,9 +461,12 @@ From the shift-$a$ normal form, $a_I^{(J)} = 4^a a_K^{(J)} + (1-4^a)/3$, so
 $A_I^{(J)} = 4^a A_K^{(J)}$ and hence $\vi^{(J)} = \vk^{(J)} + 2a$.
 Combining with $\vtwo(b_I^{(J)}) = (L-1) - \Vi^{(J)}$ and
 $\vtwo(b_K^{(J)}) = L - \Vk^{(J)}$, and using $\Vk - \Vi = 2a + 1$:
-\[
-\vi^{(J)} \ge \vtwo(b_I^{(J)}) \iff \vk^{(J)} + 2a \ge L - 1 - \Vi^{(J)} \iff \vk^{(J)} \ge L - \Vk^{(J)} \iff \vk^{(J)} \ge \vtwo(b_K^{(J)}). \qedhere
-\]
+\begin{align*}
+\vi^{(J)} \ge \vtwo(b_I^{(J)})
+  &\iff \vk^{(J)} + 2a \ge L - 1 - \Vi^{(J)} \\
+  &\iff \vk^{(J)} \ge L - \Vk^{(J)} \\
+  &\iff \vk^{(J)} \ge \vtwo(b_K^{(J)}). \qedhere
+\end{align*}
 \end{proof}
 
 The \emph{stop type} at $(r, L)$ is \emph{EE} (equality) if
@@ -536,26 +544,53 @@ those at $(r_-, L_0+1)$. The discrepancies
 \[
 \Delta_K^{(j)} := a_{K,-}^{(j)} - a_{K,+}^{(j)}, \qquad \Delta_I^{(j)} := a_{I,-}^{(j)} - a_{I,+}^{(j)}
 \]
-satisfy $\Delta_K^{(0)} = 2^{L_0}$, $\Delta_I^{(0)} = 2^{L_0 - 1}$. As long
-as the $v$-values coincide between the two reductions (which is the case
-while $\Vk^{(j)} < L_0$ and $\Vi^{(j)} < L_0 - 1$),
-\[
+satisfy $\Delta_K^{(0)} = 2^{L_0}$, $\Delta_I^{(0)} = 2^{L_0 - 1}$. We claim
+that as long as $\Vk^{(j)} < L_0$ and $\Vi^{(j)} < L_0 - 1$, the two
+reductions take identical local steps,
+\begin{equation}\label{eq:lift-minus-vmatch}
+v_2\!\left(3 a_{K,-}^{(j)} - 1\right) = v_2\!\left(3 a_{K,+}^{(j)} - 1\right) = \vk^{(j)}
+\end{equation}
+(and analogously for the I-track), and the discrepancies have the closed
+form
+\begin{equation}\label{eq:lift-minus-delta}
 \Delta_K^{(j)} = 2^{L_0 - \Vk^{(j)}} \cdot 3^j, \qquad \Delta_I^{(j)} = 2^{L_0 - 1 - \Vi^{(j)}} \cdot 3^j.
-\]
+\end{equation}
+
+We prove \eqref{eq:lift-minus-vmatch} and \eqref{eq:lift-minus-delta} jointly
+by induction on $j$ in the range $0 \le j < J$, where $J$ is the termination
+index of the reduction at $(r_0, L_0)$. The base case $j = 0$ is immediate.
+For the inductive step, assume \eqref{eq:lift-minus-delta} at step $j$ and
+$j < J$. Since the K-track at $(r_0, L_0)$ has not yet terminated,
+$\vk^{(j)} < L_0 - \Vk^{(j)} = \vtwo(\Delta_K^{(j)})$. The decomposition
+$3 a_{K,-}^{(j)} - 1 = (3 a_{K,+}^{(j)} - 1) + 3 \Delta_K^{(j)}$ then has its
+two summands at strictly different valuations $\vk^{(j)}$ and
+$L_0 - \Vk^{(j)}$, so by the ultrametric identity
+$\vtwo(x + y) = \min(\vtwo x, \vtwo y)$ when $\vtwo x \ne \vtwo y$, the sum
+has valuation exactly $\vk^{(j)}$. This proves \eqref{eq:lift-minus-vmatch}
+at step $j$. The basic step then yields
+$\Delta_K^{(j+1)} = (3 \Delta_K^{(j)})/2^{\vk^{(j)}} = 2^{L_0 - \Vk^{(j+1)}} \cdot 3^{j+1}$;
+the same calculation on the I-track completes
+\eqref{eq:lift-minus-delta} at step $j+1$.
 
 \emph{Stop type SS at $L_0$.} At index $J$ of $(r_+, L_0+1)$,
 $\vk^{(J)} > L_0 - \Vk^{(J)}$, hence $\vtwo(\Delta_K^{(J)}) = L_0 - \Vk^{(J)} < \vk^{(J)}$.
-By $\vtwo(A + B) = \min(\vtwo A, \vtwo B)$ when $\vtwo A \ne \vtwo B$, the
-K-step at $(r_-, L_0+1)$ at index $J$ produces
-$v_{K,-}^{(J)} = L_0 - \Vk^{(J)} < L_0 + 1 - \Vk^{(J)}$. The step is permitted,
-and one more step follows. The update is precisely the EE-extra-step from
-Theorem~\ref{thm:lift-plus}: $(c_{J+1}, d_{J+1}) = (1, 0)$, so
-$r_- \in \Obs_{L_0+1}^{G_0}$.
+The relation
+$3 a_{K,-}^{(J)} - 1 = (3 a_{K,+}^{(J)} - 1) + 3 \Delta_K^{(J)}$ now has the
+two summands at distinct valuations $\vk^{(J)}$ and $L_0 - \Vk^{(J)}$, so by
+the ultrametric inequality the sum has valuation
+$L_0 - \Vk^{(J)} < L_0 + 1 - \Vk^{(J)}$. The K-step at $(r_-, L_0+1)$ at
+index $J$ is therefore permitted, and one more step follows. The update is
+precisely the EE-extra-step from Theorem~\ref{thm:lift-plus}:
+$(c_{J+1}, d_{J+1}) = (1, 0)$, so $r_- \in \Obs_{L_0+1}^{G_0}$.
 
-\emph{Stop type EE at $L_0$.} Here $\vk^{(J)} = L_0 - \Vk^{(J)} = \vtwo(\Delta_K^{(J)})$,
-so $\vtwo(A_{K,-}^{(J)}) \ge \vk^{(J)} + 1 = L_0 + 1 - \Vk^{(J)}$ by the carry
-identity. Termination occurs at index $J$ with terminal data unchanged, so
-$r_- \in \Obs_{L_0+1}^{G_a}$.\qedhere
+\emph{Stop type EE at $L_0$.} Here
+$\vk^{(J)} = L_0 - \Vk^{(J)} = \vtwo(\Delta_K^{(J)})$, so the two summands
+of $3 a_{K,-}^{(J)} - 1 = (3 a_{K,+}^{(J)} - 1) + 3 \Delta_K^{(J)}$ have
+\emph{equal} valuation $\vk^{(J)}$. The ultrametric inequality then gives
+only $\vtwo(A_{K,-}^{(J)}) \ge \vk^{(J)} + 1$; that is,
+$\vtwo(A_{K,-}^{(J)}) \ge L_0 + 1 - \Vk^{(J)}$, which is the K-track stop
+condition at level $L_0+1$. Termination occurs at index $J$ with terminal
+data unchanged, so $r_- \in \Obs_{L_0+1}^{G_a}$. \qedhere
 \end{proof}
 
 \subsection{The symmetry table}
@@ -592,7 +627,9 @@ $|\Obs_{L_0+1}|/2^{L_0+1} \ge |\Obs_{L_0}|/2^{L_0}$: the density ratio is
 non-decreasing. Since $\Obs_L \subseteq \{1, \ldots, 2^L\}$ the ratio is
 bounded above by $1$. By monotone convergence,
 $c_W := \lim_{L \to \infty} |\Obs_L|/2^L$ exists in $[\rho_{L_0}, 1]$ for any
-$L_0$. \qedhere
+$L_0 \ge 2$. Specialising to $L_0 = 6$ and using the direct enumeration
+$\Obs_6 = \{19, 27, 59\}$ (Section~\ref{sec:setup}; verified computationally
+in Appendix~\ref{sec:appendix}), $c_W \ge 3/64$. \qedhere
 \end{proof}
 
 The conservative bound $\rho_6 = 3/64$ uses only the three explicit
@@ -634,7 +671,7 @@ The \emph{language of obstruction words} at level $L$ is
 $\Fac_L := \{w_r : r \in \Obs_L\}$, and the \emph{factor language} of the
 obstruction family is
 \[
-\Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ appears as a contiguous substring of some } w_r,\; r \in \Obs_L,\; L \ge 1 \,\}.
+\Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ is a factor of } w_r \text{ for some } r \in \Obs_L,\, L \ge 1 \,\}.
 \]
 The \emph{factor complexity function} is
 $p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$. Trivially $p_W(n) \le 2^n$.
@@ -647,7 +684,8 @@ For every $n \ge 1$, $p_W(n) = 2^n$.
 
 \begin{proof}
 Fix $n \ge 1$ and $u = (u_0, u_1, \ldots, u_{n-1}) \in \{0,1\}^n$. Choose
-any anchor $r_0 \in \Obs_6 = \{19, 27, 59\}$. Define inductively
+any anchor $r_0 \in \Obs_6 = \{19, 27, 59\}$ (verified by direct enumeration;
+see Appendix~\ref{sec:appendix}). Define inductively
 \[
 r_k := r_{k-1} + u_{k-1} \cdot 2^{5 + k}, \qquad k = 1, 2, \ldots, n.
 \]
@@ -668,7 +706,7 @@ Combined with the trivial upper bound, $p_W(n) = 2^n$. \qedhere
 The \emph{topological entropy} of a language $\mathcal{L} \subseteq \{0,1\}^*$
 is $h(\mathcal{L}) := \limsup_{n \to \infty} (1/n) \log p_{\mathcal{L}}(n)$.
 
-\begin{corollary}
+\begin{corollary}\label{cor:entropy}
 The topological entropy of $\Fac(\Obs)$ is $\log 2$.
 \end{corollary}
 
@@ -690,12 +728,13 @@ finite languages over $\{0,1\}$, is
 \begin{proof}
 A non-trivial SFT defined by a non-empty finite list of forbidden subwords
 has entropy strictly less than $\log 2$, contradicting
-$h(\Fac(\Obs)) = \log 2$. A non-trivial sofic shift is the image of an SFT
-under a one-block factor map and inherits the entropy constraint. Primitive
-substitution shifts have factor complexity in one of the polynomial classes
+Corollary~\ref{cor:entropy}. A non-trivial sofic shift is the image of an
+SFT under a one-block factor map and inherits the entropy constraint.
+Primitive substitution shifts have factor complexity in one of the
+polynomial classes
 $\Theta(1), \Theta(n), \Theta(n \log \log n), \Theta(n \log n), \Theta(n^2)$
-(Pansiot~\cite{Pansiot1984}; refined by Devyatov~\cite{Devyatov2015}), giving
-entropy zero --- but our $p_W(n) = 2^n$ has positive entropy. \qedhere
+(Pansiot~\cite{Pansiot1984}; refined by Devyatov~\cite{Devyatov2015}),
+giving entropy zero --- but our $p_W(n) = 2^n$ has positive entropy. \qedhere
 \end{proof}
 
 % =============================================================================
@@ -887,7 +926,12 @@ non-existence of additional nontrivial cycles of $\Tminus$ is reflected in
 the structure of $\Obs_L^{G_0}$ for large $L$ --- in particular, whether
 one can extract a Diophantine obstruction from the strict lift balance of
 Corollary~\ref{cor:lift-balance} --- is a natural and apparently unexplored
-question.
+question. Classical lower bounds on the length of nontrivial $\Tplus$-cycles,
+established by Eliahou~\cite{Eliahou1993} using continued-fraction methods
+and extended numerically by Belaga--Mignotte~\cite{BelagaMignotte2006}, give
+one indication of how rigidly the Diophantine geometry constrains cycle
+structure; an analogous bound expressed in terms of $\Obs_L^{G_0}$ would be
+of independent interest.
 
 \subsection{Connection to Wirsching's framework}
 
@@ -909,7 +953,8 @@ implemented in Python in the supporting code that accompanies this paper,
 collected in the directory \texttt{code/}
 alongside the manuscript source. The directory contains the verification
 scripts for each rigorous result (lift theorem, atom decomposition,
-ATOMAR-$G_0$, full factor complexity, simultaneous stop) together with a
+the no-shift-zero-atom theorem (Theorem~\ref{thm:no-G0-atom}), full factor
+complexity, simultaneous stop) together with a
 \texttt{README.md} mapping each script to the result it certifies. For
 each level $L \le L_{\max}$, the relevant script enumerates all odd
 residues $r$ with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$, runs the
@@ -930,9 +975,9 @@ $8$  & $19$   & $15$   & $4$   & $3$  \\
 $9$  & $42$   & $36$   & $6$   & $4$  \\
 $10$ & $91$   & $82$   & $9$   & $9$  \\
 $11$ & $194$  & $178$  & $16$  & $12$ \\
-$12$ & $409$  & $380$  & $29$  & $21$ \\
-$14$ & $1776$ & $1648$ & $128$ & ---  \\
-$16$ & $7556$ & $7068$ & $488$ & ---  \\
+$12$ & $409$  & $380$  & $29$  & $21$  \\
+$14$ & $1776$ & $1648$ & $128$ & $66$  \\
+$16$ & $7556$ & $7068$ & $488$ & $214$ \\
 \bottomrule
 \end{tabular}
 \end{center}
