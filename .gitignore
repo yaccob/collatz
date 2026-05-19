@@ -1,0 +1,5 @@
+# LaTeX build artefacts
+manuscripts/*/_build/
+__pycache__/
+*.pyc
+.DS_Store

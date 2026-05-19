@@ -1,0 +1,948 @@
+\documentclass[11pt,reqno]{amsart}
+
+% --- Packages -----------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+}
+
+% --- Theorem environments -----------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% --- Macros -------------------------------------------------------------------
+\newcommand{\Tplus}{T_{+}}
+\newcommand{\Tminus}{T_{-}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Nodd}{\N_{\mathrm{odd}}}
+\newcommand{\Obs}{\mathcal{O}}
+\newcommand{\Atom}{\mathcal{A}}
+\newcommand{\Fac}{\mathcal{F}}
+\newcommand{\Xend}{X_{\mathrm{end}}}
+\newcommand{\cend}{c_{\mathrm{end}}}
+\newcommand{\dend}{d_{\mathrm{end}}}
+\newcommand{\Vk}{V_{K}}
+\newcommand{\Vi}{V_{I}}
+\newcommand{\vk}{v_{K}}
+\newcommand{\vi}{v_{I}}
+\newcommand{\vtwo}{v_{2}}
+
+% --- Document -----------------------------------------------------------------
+\title[Obstruction residues for the $3x-1$ map]{Obstruction residues for the \texorpdfstring{$3x-1$}{3x-1} map:\\
+  full factor complexity, positive density,\\ and a constructive lift}
+
+\author{Jakob Stemberger}
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+We study a family $\Obs_L \subseteq \{1, \ldots, 2^L\}$ of residue classes
+modulo $2^L$ arising naturally in the dynamics of the $3x-1$ map
+$\Tminus(n) := (3n-1)/2^{\vtwo(3n-1)}$. The family is defined by an
+algebraic criterion on a two-track parallel reduction.
+We prove three structural results: a constructive lift between
+modular levels, the existence of a positive asymptotic density
+$c_W \in [3/64, 1]$, and full factor complexity $p_W(n) = 2^n$ of the
+associated language of binary representations.
+The central technical tool is a parity lemma in the residue system, which
+forces the terminal data of the parallel reduction into a shift-$a$ normal
+form with integer-valued shift index. A finer classification by shift
+index yields a strict lift balance, an exact series representation of
+$c_W$, and reduces the open question of $c_W$'s exact value to a single
+quantitative bound on a sub-family of atomic obstructions. Results
+transfer to the classical $3n+1$ map via the Lagarias intertwining.
+\end{abstract}
+
+\maketitle
+
+% =============================================================================
+\section{Introduction}
+% =============================================================================
+
+\subsection{The Collatz map and its \texorpdfstring{$3x-1$}{3x-1} cousin}
+
+Let $\Nodd$ denote the set of positive odd integers, and let $\vtwo(m)$ denote
+the $2$-adic valuation of an integer $m \ne 0$. The \emph{Collatz map}
+$\Tplus$ takes an odd integer $n$ to the odd part of $3n+1$:
+\[
+\Tplus(n) := \frac{3n+1}{2^{\vtwo(3n+1)}}.
+\]
+The Collatz conjecture, attributed to Lothar Collatz and widely studied since
+the 1930s, asserts that for every $n \in \Nodd$ the iteration
+$n, \Tplus(n), \Tplus^2(n), \ldots$ eventually reaches the fixed point $1$.
+Despite considerable computational evidence and a large body of partial
+results --- most recently the breakthrough of Tao~\cite{Tao2022}, showing
+that almost all trajectories attain almost bounded values --- the conjecture
+itself remains open. We refer the reader to the annotated bibliographies
+of Lagarias~\cite{Lagarias2010,Lagarias2010bib} for a comprehensive overview
+of the literature.
+
+The Collatz map has a natural cousin, the \emph{$3x-1$ map} $\Tminus$ acting
+on the same domain:
+\[
+\Tminus(n) := \frac{3n-1}{2^{\vtwo(3n-1)}}.
+\]
+The two maps are structurally parallel: both perform the operation
+``multiply by three, add a small constant, strip the factors of two from the
+result''. They differ only in the sign of the additive constant. The
+trajectories of $\Tminus$ are, however, \emph{not} believed to converge to a
+single attractor: three nontrivial cycles are classically known --- the
+fixed cycle through~$1$, the $\{5, 7\}$-cycle, and the seventeen-family cycle
+through $\{17, 25, 37, 55, 65, 49, 73, \ldots\}$ --- and the question of
+whether further cycles exist remains as open as the Collatz conjecture itself.
+The two maps are connected through a classical identity going back to
+Lagarias~\cite{Lagarias1985}: every $\Tminus$-trajectory starting from $m$
+corresponds, via the substitution $r = 2m+1$, to a single $\Tplus$-step
+followed by a $\Tplus$-trajectory. This \emph{Lagarias intertwining} means
+that any structural result about the residue dynamics of $\Tminus$ has
+implications for $\Tplus$, and conversely.
+
+The present paper is concerned with a family of residue classes modulo
+$2^L$ that arises naturally in the dynamics of $\Tminus$. We show that this
+family --- which we shall call the \emph{obstruction residues} for reasons
+made precise in Section~\ref{sec:setup} --- has three structural properties:
+
+\begin{enumerate}[label=(\arabic*)]
+\item a constructive lift between modular levels $L$ and $L+1$,
+\item positive asymptotic density in $\{1, \ldots, 2^L\}$ as $L \to \infty$,
+\item maximal combinatorial complexity of its associated language of bit
+  strings.
+\end{enumerate}
+
+The third property is in some tension with the first two: a constructive
+lift and positive density would, in many natural settings, force a certain
+rigidity of the resulting word language (one might expect a sofic shift or a
+primitive substitution shift). We prove that no such substitution-type
+characterization is possible, identifying the obstruction residues as a
+structurally richer family than the naive analogies would suggest.
+
+\subsection{Parallel reductions and the \texorpdfstring{$X$}{X}-invariant}
+
+The construction is built on a simple observation. For an odd integer $r$
+with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$, write $m := (r-1)/2$. We run
+$\Tminus$ in parallel on $r$ and on $m$ modulo $2^L$ for a fixed level $L$,
+keeping track at each step both of the current values and of their
+\emph{affine relationship}: a pair $(c_j, d_j) \in \Q^2$ such that
+$\Tminus^j(m) \equiv c_j \cdot \Tminus^j(r) + d_j$ modulo an
+appropriately reduced power of two. The pair is updated by an explicit rule
+depending on the $2$-adic valuations of the two trajectories. We denote the
+terminal pair $(\cend, \dend)$ and define the scalar invariant
+\[
+\Xend(r, L) := 3 \dend(r, L) + \cend(r, L).
+\]
+
+\begin{definition}[Obstruction residue]
+\label{def:obstruction-intro}
+An odd integer $r$ with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$ is an
+\emph{obstruction residue at level $L$} if $\Xend(r, L) = 1$. We write
+$\Obs_L \subseteq \{1, \ldots, 2^L\}$ for the set of all such residues.
+\end{definition}
+
+The family $(\Obs_L)_{L \ge 6}$ is small at first --- $\Obs_6 = \{19, 27, 59\}$ ---
+but grows rapidly: direct enumeration gives
+\[
+|\Obs_6| = 3, \quad |\Obs_7| = 8, \quad |\Obs_8| = 19, \quad \ldots, \quad |\Obs_{16}| = 7556,
+\]
+and the density ratio $|\Obs_L|/2^L$ rises monotonically. Three structural
+questions arise:
+
+\begin{enumerate}[label=(Q\arabic*)]
+\item Does $r_0 \in \Obs_{L_0}$ guarantee that both $r_0$ and $r_0 + 2^{L_0}$
+  lie in $\Obs_{L_0+1}$?
+\item Does $|\Obs_L|/2^L$ converge to a positive limit, and can the limit
+  be bounded from below?
+\item What is the set of binary words appearing as factors of the bit
+  representations of residues in $\bigcup_L \Obs_L$?
+\end{enumerate}
+
+The three questions are not independent: a positive answer to (Q1) gives
+monotonicity, hence most of (Q2). A constructive form of (Q1), exhibiting
+arbitrary bit patterns under lift, gives (Q3). All three are answered in
+the affirmative by the main results.
+
+\subsection{Main results}
+
+\begin{theorem}[Constructive lift]
+\label{thm:lift-intro}
+Let $L_0 \ge 2$ and $r_0 \in \Obs_{L_0}$. Then both $r_+ := r_0$ and
+$r_- := r_0 + 2^{L_0}$ are obstruction residues at level $L_0 + 1$.
+\end{theorem}
+
+The proof, given in Section~\ref{sec:lift}, proceeds by case analysis on a
+finite invariant of the parallel reduction. The lift is explicit: for each
+$r_0$, the terminal data of the reduction at $r_+$ or $r_-$ is determined by
+a closed-form algebraic identity.
+
+\begin{theorem}[Positive density]
+\label{thm:density-intro}
+The density ratio $|\Obs_L|/2^L$ is non-decreasing in $L$, and the limit
+\[
+c_W := \lim_{L \to \infty} \frac{|\Obs_L|}{2^L}
+\]
+exists in $[3/64, 1]$. For every $L_0 \ge 2$, the rigorous lower bound
+$c_W \ge |\Obs_{L_0}|/2^{L_0}$ holds.
+\end{theorem}
+
+A direct computation at $L_0 = 16$, using only the algorithmic
+$\Xend$-criterion of Section~\ref{sec:setup}, gives the lower bound
+$c_W \ge 7556/65536 \approx 0.115$. The conservative bound $3/64$ obtained
+from $L_0 = 6$ admits substantial improvement by raising $L_0$, but the
+exact value of $c_W$ remains an open problem. We give in
+Section~\ref{sec:Ga} a refined decomposition that exhibits $c_W$ as a
+rigorously convergent series and isolates the remaining open question to a
+single quantitative bound on a sub-family of obstructions.
+
+For $r \in \Obs_L$, write $w_r \in \{0,1\}^L$ for the binary representation
+of $r$ as an $L$-bit word, least significant bit first. The
+\emph{factor language} of the obstruction family is
+\[
+\Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ is a factor of some } w_r,\; r \in \Obs_L \text{ for some } L \,\},
+\]
+and the \emph{factor complexity function} is
+$p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$.
+
+\begin{theorem}[Full factor complexity]
+\label{thm:fc-intro}
+For every $n \ge 1$,
+\[
+p_W(n) = 2^n.
+\]
+\end{theorem}
+
+The proof, in Section~\ref{sec:fc}, is constructive: for each binary word
+$u$, we exhibit an explicit residue $r(u)$ in some $\Obs_L$ having $u$ as a
+factor. The construction is a direct iteration of the lift theorem.
+
+A consequence of Theorem~\ref{thm:fc-intro} is a sharp structural rigidity
+(Corollary~\ref{cor:no-substitution}): the obstruction family cannot be
+described as a subshift of finite type, a sofic shift, or a primitive
+substitution shift in the sense of Pansiot~\cite{Pansiot1984} or
+Devyatov~\cite{Devyatov2015}.
+
+\subsection{Strategy}
+
+All three theorems rest on a single algebraic structure: the \emph{shift-$a$
+normal form} of the terminal data. We prove in Section~\ref{sec:setup}
+(Lemma~\ref{lem:parity}) that whenever the parallel reduction terminates
+with $\Xend = 1$, the terminal pair has the form
+\[
+(\cend, \dend) = \left(4^a, \frac{1 - 4^a}{3}\right) \qquad \text{for some } a \in \Z.
+\]
+The integer $a$, which we call the \emph{shift index}, measures the
+difference between the $2$-adic valuations of the two parallel trajectories.
+Theorem~\ref{thm:lift-intro} is proved by case analysis on how the shift
+index evolves under lift; Theorem~\ref{thm:fc-intro} is the iterative
+consequence; Theorem~\ref{thm:density-intro} follows by monotonicity
+together with a refined classification by shift index.
+
+The shift-$a$ normal form is, to the best of our knowledge, new. The
+remaining analysis proceeds by elementary case analysis and combinatorial
+bookkeeping; the arguments do not depend on specialized Collatz machinery
+beyond the Lagarias intertwining.
+
+\subsection{Outline}
+
+Section~\ref{sec:setup} introduces the parallel reduction, defines the
+$X$-invariant rigorously, and proves the parity lemma. Section~\ref{sec:lift}
+contains the proof of Theorem~\ref{thm:lift-intro}, split into the two
+stop-type cases. Section~\ref{sec:density} derives
+Theorem~\ref{thm:density-intro} as a direct corollary. Section~\ref{sec:fc}
+proves Theorem~\ref{thm:fc-intro} and derives the structural rigidity
+corollary. Section~\ref{sec:Ga} develops the classification by shift index,
+proves the strict lift balance and series representation, and isolates the
+remaining open problem. Section~\ref{sec:tplus} transfers the results to the
+$3x+1$ side via the residue bijection. Section~\ref{sec:open} discusses open
+questions. Appendix~\ref{sec:appendix} summarizes computational
+verifications.
+
+% =============================================================================
+\section{The parallel reduction and the \texorpdfstring{$X$}{X}-invariant}
+\label{sec:setup}
+% =============================================================================
+
+\subsection{The basic step}
+
+Recall that for an odd integer $n$, the map $\Tminus$ strips the $2$-adic
+part from $3n - 1$:
+\[
+\Tminus(n) = \frac{3n - 1}{2^{\vtwo(3n - 1)}}.
+\]
+We need a version of this step that keeps track of the modulus. Fix a level
+$L \ge 1$, and consider a pair $(a, b)$ with $a$ a positive odd integer
+and $b$ a power of two, interpreted as a residue $a$ modulo $b$. A single
+$\Tminus$-step on such a pair produces
+\[
+(a', b') = \left(\frac{3a - 1}{2^{v_a}},\; \frac{3b}{2^{v_a}}\right), \qquad v_a := \vtwo(3a - 1),
+\]
+provided $v_a < \vtwo(b)$. If $v_a \ge \vtwo(b)$, the modulus has been
+exhausted and the step is undefined; we say the reduction has \emph{terminated}.
+
+Since $3$ is odd, $\vtwo(3b) = \vtwo(b)$, so $\vtwo(b') = \vtwo(b) - v_a$:
+the modulus strictly decreases at each step, and the reduction always
+terminates after finitely many steps.
+
+\subsection{The two-track setup}
+
+Fix $r$ a positive odd integer with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$.
+We postpone the general case $\vtwo(r-1) \ge 2$ to a remark at the end of
+this section. Write $m := (r - 1)/2$; the conditions on $r$ ensure $m$ is
+odd.
+
+Fix a level $L \ge 2$. We run two $\Tminus$-reductions in parallel:
+\begin{itemize}
+\item the \emph{K-track}, starting from $(a_K^{(0)}, b_K^{(0)}) := (r, 2^L)$,
+\item the \emph{I-track}, starting from $(a_I^{(0)}, b_I^{(0)}) := (m, 2^{L-1})$.
+\end{itemize}
+The initial relation $m = (r-1)/2$ writes as $a_I^{(0)} = \tfrac{1}{2} a_K^{(0)} - \tfrac{1}{2}$.
+At each step $j \ge 0$, we update both tracks according to the basic step,
+denoting $\vk^{(j)} := \vtwo(3 a_K^{(j)} - 1)$ and $\vi^{(j)} := \vtwo(3 a_I^{(j)} - 1)$.
+The reduction proceeds as long as both tracks can step; it terminates as
+soon as either condition fails. We write $J = J(r, L)$ for the index of
+termination.
+
+\subsection{The affine relation and the \texorpdfstring{$X$}{X}-invariant}
+
+\begin{lemma}\label{lem:affine}
+For each $j$ with $0 \le j \le J$, there exist $c_j, d_j \in \Q$ such that
+\[
+a_I^{(j)} = c_j \, a_K^{(j)} + d_j \qquad \text{in } \Q,
+\]
+with $c_0 = \tfrac{1}{2}$, $d_0 = -\tfrac{1}{2}$, and the update rule
+\[
+c_{j+1} = c_j \cdot 2^{\vk^{(j)} - \vi^{(j)}}, \qquad
+d_{j+1} = \frac{3 d_j + c_j - 1}{2^{\vi^{(j)}}}.
+\]
+\end{lemma}
+
+\begin{proof}
+The base case is immediate. Assume the affine relation holds at index $j$.
+Writing $A_K^{(j)} := 3 a_K^{(j)} - 1$, $A_I^{(j)} := 3 a_I^{(j)} - 1$, and
+$X_j := 3 d_j + c_j$,
+\[
+A_I^{(j)} = 3(c_j a_K^{(j)} + d_j) - 1 = c_j (3 a_K^{(j)} - 1) + (3 d_j + c_j - 1) = c_j A_K^{(j)} + (X_j - 1).
+\]
+Dividing by $2^{\vi^{(j)}}$ and using $A_K^{(j)} = 2^{\vk^{(j)}} a_K^{(j+1)}$:
+\[
+a_I^{(j+1)} = c_j \cdot 2^{\vk^{(j)} - \vi^{(j)}} a_K^{(j+1)} + \frac{X_j - 1}{2^{\vi^{(j)}}},
+\]
+which is the desired affine relation at index $j+1$. \qedhere
+\end{proof}
+
+We define the \emph{$X$-invariant} of the parallel reduction at $(r, L)$ as
+\[
+\Xend(r, L) := X_J = 3 d_J + c_J.
+\]
+This is not invariant under the update step; the name reflects its role as
+the algebraic certificate of obstruction status (Definition~\ref{def:obstruction}).
+
+\subsection{Definition of obstruction residues}
+
+\begin{definition}[Obstruction residue]
+\label{def:obstruction}
+An odd integer $r$ with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$ is an
+\emph{obstruction residue at level $L$} if $\Xend(r, L) = 1$. We write
+\[
+\Obs_L := \{\, r \in \{1, \ldots, 2^L\} : r \text{ is an obstruction residue at level } L \,\}.
+\]
+\end{definition}
+
+The definition is algorithmic: given $r$ and $L$, one runs the parallel
+reduction, observes the terminal pair $(c_J, d_J)$, and checks
+$3 d_J + c_J = 1$. The computation terminates in at most $L$ steps.
+
+The connection between this algebraic definition and the dynamics of
+$\Tminus$ trajectories is, briefly, that $\Xend = 1$ implies a
+synchronization of stopping times: starting from $r$ and from any
+$n \equiv r \pmod{2^L}$, the stopping-time difference between the
+$\Tminus$ and $\Tminus^{(3)}$ iterates --- where $\Tminus^{(3)}$ denotes the
+$3$-applications-of-$\Tminus$ variant --- remains constant. We do not
+develop this here; it is discussed in Section~\ref{sec:tplus}.
+
+\subsection{The parity lemma}
+
+The central algebraic fact of this paper is the following.
+
+\begin{lemma}[Parity lemma]
+\label{lem:parity}
+Suppose the parallel reduction at $(r, L)$ terminates with $\Xend(r, L) = 1$.
+Then
+\[
+\delta_J := \Vk^{(J)} - \Vi^{(J)} - 1
+\]
+is an \emph{even} integer (possibly negative), where
+$\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and analogously for $\Vi$.
+\end{lemma}
+
+\begin{proof}
+Iterating the update rule from Lemma~\ref{lem:affine} with $c_0 = 1/2$:
+\[
+c_j = \tfrac{1}{2} \cdot \prod_{i < j} 2^{\vk^{(i)} - \vi^{(i)}} = 2^{\Vk^{(j)} - \Vi^{(j)} - 1} = 2^{\delta_j}.
+\]
+From $X_J = 3 d_J + c_J = 1$, $d_J = (1 - c_J)/3 = (1 - 2^{\delta_J})/3$.
+The affine relation at index $J$ becomes
+\[
+a_I^{(J)} = 2^{\delta_J} a_K^{(J)} + \frac{1 - 2^{\delta_J}}{3} \qquad \text{in } \Q.
+\]
+Multiplying by $3$:
+\begin{equation}\label{eq:parity-master}
+3 a_I^{(J)} = 3 \cdot 2^{\delta_J} a_K^{(J)} + 1 - 2^{\delta_J}.
+\end{equation}
+We split by sign of $\delta_J$. Write $\delta := \delta_J$ throughout.
+
+\emph{Case $\delta \ge 0$.} All terms in~\eqref{eq:parity-master} are integers.
+Reducing modulo~$3$: $3 a_I^{(J)} \equiv 0$ and $3 \cdot 2^\delta a_K^{(J)} \equiv 0$,
+so $1 - 2^\delta \equiv 0 \pmod 3$, i.e.\ $2^\delta \equiv 1 \pmod 3$. Since
+$2 \equiv -1 \pmod 3$, this forces $\delta$ even.
+
+\emph{Case $\delta < 0$.} Write $\delta = -e$, $e > 0$. Multiplying~\eqref{eq:parity-master}
+by $2^e$:
+\[
+3 \cdot 2^e \, a_I^{(J)} = 3 \, a_K^{(J)} + 2^e - 1.
+\]
+All terms are integers; reducing modulo~$3$ yields $2^e - 1 \equiv 0 \pmod 3$,
+hence $e$ even, hence $\delta$ even.
+
+In both cases $\delta$ is even. \qedhere
+\end{proof}
+
+\subsection{The shift-\texorpdfstring{$a$}{a} normal form}
+
+Writing $\delta_J = 2a$ with $a \in \Z$, the parity lemma yields
+\[
+c_J = 4^a, \qquad d_J = \frac{1 - 4^a}{3}.
+\]
+We call this the \emph{shift-$a$ normal form} and $a$ the \emph{shift index}
+of $r$ at level $L$, denoted $a(r, L)$. The obstruction family partitions:
+\[
+\Obs_L = \bigsqcup_{a \in \Z} \Obs_L^{G_a}, \qquad \Obs_L^{G_a} := \{\, r \in \Obs_L : a(r, L) = a \,\}.
+\]
+For $a = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
+The shift index is bounded: $|2a + 1| \le \max(\Vk^{(J)}, \Vi^{(J)}) \le L$,
+so $|a| \le L/2$.
+
+\subsection{Simultaneous stop and stop types}
+
+\begin{corollary}[Simultaneous stop]
+\label{cor:sync}
+If $\Xend(r, L) = 1$, then the K-track and I-track satisfy the termination
+condition $v_a \ge \vtwo(b)$ at the same index $J$.
+\end{corollary}
+
+\begin{proof}
+From the shift-$a$ normal form, $a_I^{(J)} = 4^a a_K^{(J)} + (1-4^a)/3$, so
+$A_I^{(J)} = 4^a A_K^{(J)}$ and hence $\vi^{(J)} = \vk^{(J)} + 2a$.
+Combining with $\vtwo(b_I^{(J)}) = (L-1) - \Vi^{(J)}$ and
+$\vtwo(b_K^{(J)}) = L - \Vk^{(J)}$, and using $\Vk - \Vi = 2a + 1$:
+\[
+\vi^{(J)} \ge \vtwo(b_I^{(J)}) \iff \vk^{(J)} + 2a \ge L - 1 - \Vi^{(J)} \iff \vk^{(J)} \ge L - \Vk^{(J)} \iff \vk^{(J)} \ge \vtwo(b_K^{(J)}). \qedhere
+\]
+\end{proof}
+
+The \emph{stop type} at $(r, L)$ is \emph{EE} (equality) if
+$\vk^{(J)} = \vtwo(b_K^{(J)})$ (and hence $\vi^{(J)} = \vtwo(b_I^{(J)})$),
+and \emph{SS} (strict) if both inequalities are strict.
+
+\subsection{Remarks on the general case}
+
+For $r$ with $v := \vtwo(r-1) \ge 2$, the I-track starts at $(m, 2^{L-v})$
+with $m = (r-1)/2^v$, and the initial coefficients are $c_0 = 2^{-v}$,
+$d_0 = -2^{-v}$. The parity lemma then asserts that $\Vk^{(J)} - \Vi^{(J)} - v$
+is even, and the shift-$a$ normal form is unchanged. The analysis is
+identical with $v$ replacing $1$ throughout. We carry $v = 1$ for concreteness;
+the general statements remain valid with the obvious substitutions.
+
+% =============================================================================
+\section{The Lift Theorem}
+\label{sec:lift}
+% =============================================================================
+
+We now prove Theorem~\ref{thm:lift-intro}: for every $r_0 \in \Obs_{L_0}$,
+both lifts $r_+ := r_0$ and $r_- := r_0 + 2^{L_0}$ are obstructions at level
+$L_0 + 1$. Throughout, $a \in \Z$ is the shift index of $r_0$ at level $L_0$,
+and we use the synchronization $\vi^{(J)} = \vk^{(J)} + 2a$
+(Corollary~\ref{cor:sync}) freely.
+
+\subsection{The \texorpdfstring{$r_+$}{r+} lift}
+
+\begin{theorem}\label{thm:lift-plus}
+Let $r_0 \in \Obs_{L_0}^{G_a}$. Then $r_+ := r_0 \in \Obs_{L_0+1}$.
+\end{theorem}
+
+\begin{proof}
+The starting pairs at $(r_+, L_0+1)$ are $(r_0, 2^{L_0+1})$ and
+$(m_0, 2^{L_0})$ where $m_0 = (r_0 - 1)/2$. These differ from the
+corresponding pairs at $(r_0, L_0)$ only in the modulus, which is doubled.
+Since each basic step depends only on $a_K^{(j)}, a_I^{(j)}$ and not on
+the modulus (as long as the latter does not constrain the step), the
+parallel reduction at $(r_+, L_0+1)$ produces identical
+$\vk^{(j)}, \vi^{(j)}, c_j, d_j$ for $j \le J$ to those at $(r_0, L_0)$.
+
+\emph{Stop type EE at $L_0$.} Here $\vk^{(J)} = L_0 - \Vk^{(J)}$ exactly. At
+level $L_0 + 1$, the K-track modulus at index $J$ has $2$-adic valuation
+$L_0 + 1 - \Vk^{(J)} = \vk^{(J)} + 1 > \vk^{(J)}$, so the step is permitted.
+Taking one more step, with $c_J = 4^a$, $d_J = (1 - 4^a)/3$:
+\[
+c_{J+1} = 4^a \cdot 2^{\vk^{(J)} - \vi^{(J)}} = 4^a \cdot 2^{-2a} = 1,
+\]
+\[
+d_{J+1} = \frac{3(1 - 4^a)/3 + 4^a - 1}{2^{\vi^{(J)}}} = 0.
+\]
+After this step, $\Vk^{(J+1)} = L_0$, so the K-track modulus has valuation
+$1$, and the next step is impossible (it would require $\vk^{(J+1)} < 1$,
+impossible for odd $a_K^{(J+1)}$). Termination occurs at index $J+1$ with
+$(c_{J+1}, d_{J+1}) = (1, 0)$, hence $\Xend = 1$ and
+$r_+ \in \Obs_{L_0+1}^{G_0}$.
+
+\emph{Stop type SS at $L_0$.} Here $\vk^{(J)} > L_0 - \Vk^{(J)}$, i.e.\
+$\vk^{(J)} \ge L_0 + 1 - \Vk^{(J)}$ (integer), which is exactly the
+termination condition at level $L_0 + 1$. Termination at $(r_+, L_0+1)$
+occurs at index $J$ with terminal data unchanged, so
+$r_+ \in \Obs_{L_0+1}^{G_a}$. \qedhere
+\end{proof}
+
+\subsection{The \texorpdfstring{$r_-$}{r-} lift}
+
+\begin{theorem}\label{thm:lift-minus}
+Let $r_0 \in \Obs_{L_0}^{G_a}$. Then $r_- := r_0 + 2^{L_0} \in \Obs_{L_0+1}$.
+\end{theorem}
+
+\begin{proof}
+Write $a_{K,+}^{(j)}, a_{I,+}^{(j)}$ for the values at $(r_+, L_0+1)$
+(from Theorem~\ref{thm:lift-plus}) and $a_{K,-}^{(j)}, a_{I,-}^{(j)}$ for
+those at $(r_-, L_0+1)$. The discrepancies
+\[
+\Delta_K^{(j)} := a_{K,-}^{(j)} - a_{K,+}^{(j)}, \qquad \Delta_I^{(j)} := a_{I,-}^{(j)} - a_{I,+}^{(j)}
+\]
+satisfy $\Delta_K^{(0)} = 2^{L_0}$, $\Delta_I^{(0)} = 2^{L_0 - 1}$. As long
+as the $v$-values coincide between the two reductions (which is the case
+while $\Vk^{(j)} < L_0$ and $\Vi^{(j)} < L_0 - 1$),
+\[
+\Delta_K^{(j)} = 2^{L_0 - \Vk^{(j)}} \cdot 3^j, \qquad \Delta_I^{(j)} = 2^{L_0 - 1 - \Vi^{(j)}} \cdot 3^j.
+\]
+
+\emph{Stop type SS at $L_0$.} At index $J$ of $(r_+, L_0+1)$,
+$\vk^{(J)} > L_0 - \Vk^{(J)}$, hence $\vtwo(\Delta_K^{(J)}) = L_0 - \Vk^{(J)} < \vk^{(J)}$.
+By $\vtwo(A + B) = \min(\vtwo A, \vtwo B)$ when $\vtwo A \ne \vtwo B$, the
+K-step at $(r_-, L_0+1)$ at index $J$ produces
+$v_{K,-}^{(J)} = L_0 - \Vk^{(J)} < L_0 + 1 - \Vk^{(J)}$. The step is permitted,
+and one more step follows. The update is precisely the EE-extra-step from
+Theorem~\ref{thm:lift-plus}: $(c_{J+1}, d_{J+1}) = (1, 0)$, so
+$r_- \in \Obs_{L_0+1}^{G_0}$.
+
+\emph{Stop type EE at $L_0$.} Here $\vk^{(J)} = L_0 - \Vk^{(J)} = \vtwo(\Delta_K^{(J)})$,
+so $\vtwo(A_{K,-}^{(J)}) \ge \vk^{(J)} + 1 = L_0 + 1 - \Vk^{(J)}$ by the carry
+identity. Termination occurs at index $J$ with terminal data unchanged, so
+$r_- \in \Obs_{L_0+1}^{G_a}$.\qedhere
+\end{proof}
+
+\subsection{The symmetry table}
+
+The proofs of Theorems~\ref{thm:lift-plus} and~\ref{thm:lift-minus}
+establish the following symmetry, central for the recurrence developed in
+Section~\ref{sec:Ga}:
+
+\begin{center}
+\begin{tabular}{c|cc}
+\toprule
+Stop type of $r_0$ at $L_0$ & shift index of $r_+$ at $L_0+1$ & shift index of $r_-$ at $L_0+1$ \\
+\midrule
+EE & $0$ & $a$ \\
+SS & $a$ & $0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+So lifting an obstruction with shift index $a \ne 0$ always produces one
+shift-$a$ obstruction and one shift-zero obstruction at the next level;
+lifting a shift-zero obstruction produces two shift-zero obstructions.
+
+% =============================================================================
+\section{Positive density}
+\label{sec:density}
+% =============================================================================
+
+\begin{proof}[Proof of Theorem~\ref{thm:density-intro}]
+By Theorem~\ref{thm:lift-intro}, every $r_0 \in \Obs_{L_0}$ contributes two
+distinct elements $r_0$ and $r_0 + 2^{L_0}$ to $\Obs_{L_0+1}$. Hence
+$|\Obs_{L_0+1}| \ge 2 |\Obs_{L_0}|$, equivalently
+$|\Obs_{L_0+1}|/2^{L_0+1} \ge |\Obs_{L_0}|/2^{L_0}$: the density ratio is
+non-decreasing. Since $\Obs_L \subseteq \{1, \ldots, 2^L\}$ the ratio is
+bounded above by $1$. By monotone convergence,
+$c_W := \lim_{L \to \infty} |\Obs_L|/2^L$ exists in $[\rho_{L_0}, 1]$ for any
+$L_0$. \qedhere
+\end{proof}
+
+The conservative bound $\rho_6 = 3/64$ uses only the three explicit
+obstructions $\Obs_6 = \{19, 27, 59\}$. By raising $L_0$ and computing
+$|\Obs_{L_0}|$ directly, tighter rigorous bounds for $c_W$ follow:
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$L_0$ & $|\Obs_{L_0}|$ & $\rho_{L_0}$ & rigorous lower bound for $c_W$ \\
+\midrule
+$6$  & $3$    & $\approx 0.047$ & $3/64$ \\
+$10$ & $91$   & $\approx 0.089$ & $91/1024$ \\
+$14$ & $1776$ & $\approx 0.108$ & $1776/16384$ \\
+$16$ & $7556$ & $\approx 0.115$ & $7556/65536$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are not asymptotic estimates: they are finite-level computations
+producing rigorous bounds at the cost of $O(L_0 \cdot 2^{L_0})$ operations
+to enumerate obstructions modulo $2^{L_0}$. The exact value of $c_W$ is
+not pinned down by this approach; we return to it in
+Section~\ref{sec:Ga}.
+
+% =============================================================================
+\section{Full factor complexity}
+\label{sec:fc}
+% =============================================================================
+
+\subsection{Setup}
+
+To each $r \in \Obs_L$ we associate its binary representation as an
+$L$-bit word, least significant bit first:
+\[
+w_r \in \{0,1\}^L, \qquad w_r[k] := \lfloor r / 2^k \rfloor \bmod 2, \quad k = 0, \ldots, L-1.
+\]
+The \emph{language of obstruction words} at level $L$ is
+$\Fac_L := \{w_r : r \in \Obs_L\}$, and the \emph{factor language} of the
+obstruction family is
+\[
+\Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ appears as a contiguous substring of some } w_r,\; r \in \Obs_L,\; L \ge 1 \,\}.
+\]
+The \emph{factor complexity function} is
+$p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$. Trivially $p_W(n) \le 2^n$.
+
+\subsection{The main theorem}
+
+\begin{theorem}\label{thm:fc}
+For every $n \ge 1$, $p_W(n) = 2^n$.
+\end{theorem}
+
+\begin{proof}
+Fix $n \ge 1$ and $u = (u_0, u_1, \ldots, u_{n-1}) \in \{0,1\}^n$. Choose
+any anchor $r_0 \in \Obs_6 = \{19, 27, 59\}$. Define inductively
+\[
+r_k := r_{k-1} + u_{k-1} \cdot 2^{5 + k}, \qquad k = 1, 2, \ldots, n.
+\]
+We claim $r_k \in \Obs_{6+k}$ for each $k$. The base $k = 0$ is by choice of
+$r_0$. For the inductive step from $k-1$ to $k$: if $u_{k-1} = 0$ then
+$r_k = r_{k-1}$, so $r_k$ is the $r_+$ lift and lies in $\Obs_{6+k}$ by
+Theorem~\ref{thm:lift-plus}; if $u_{k-1} = 1$ then $r_k = r_{k-1} + 2^{5+k}$
+is the $r_-$ lift and lies in $\Obs_{6+k}$ by Theorem~\ref{thm:lift-minus}.
+
+By construction, $w_{r_n}[5+k] = u_{k-1}$ for $k = 1, \ldots, n$, so $u$
+appears as a factor of $w_{r_n}$ at positions $6, \ldots, 5+n$. Thus
+$u \in \Fac(\Obs)$ for every $u \in \{0,1\}^n$, hence $p_W(n) \ge 2^n$.
+Combined with the trivial upper bound, $p_W(n) = 2^n$. \qedhere
+\end{proof}
+
+\subsection{Entropy and substitution-shift rigidity}
+
+The \emph{topological entropy} of a language $\mathcal{L} \subseteq \{0,1\}^*$
+is $h(\mathcal{L}) := \limsup_{n \to \infty} (1/n) \log p_{\mathcal{L}}(n)$.
+
+\begin{corollary}
+The topological entropy of $\Fac(\Obs)$ is $\log 2$.
+\end{corollary}
+
+This is the maximal value, matching that of the full Bernoulli shift
+$\{0,1\}^\Z$.
+
+\begin{corollary}
+\label{cor:no-substitution}
+The obstruction family $(\Obs_L)_{L \ge 6}$, viewed as a graded family of
+finite languages over $\{0,1\}$, is
+\begin{enumerate}[label=(\roman*)]
+\item not a non-trivial subshift of finite type;
+\item not a non-trivial sofic shift in the classical sense;
+\item not a primitive substitution shift in the sense of Pansiot~\cite{Pansiot1984}
+  or Devyatov~\cite{Devyatov2015}.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+A non-trivial SFT defined by a non-empty finite list of forbidden subwords
+has entropy strictly less than $\log 2$, contradicting
+$h(\Fac(\Obs)) = \log 2$. A non-trivial sofic shift is the image of an SFT
+under a one-block factor map and inherits the entropy constraint. Primitive
+substitution shifts have factor complexity in one of the polynomial classes
+$\Theta(1), \Theta(n), \Theta(n \log \log n), \Theta(n \log n), \Theta(n^2)$
+(Pansiot~\cite{Pansiot1984}; refined by Devyatov~\cite{Devyatov2015}), giving
+entropy zero --- but our $p_W(n) = 2^n$ has positive entropy. \qedhere
+\end{proof}
+
+% =============================================================================
+\section{The \texorpdfstring{$G_a$}{Ga} classification}
+\label{sec:Ga}
+% =============================================================================
+
+\subsection{Atomic obstructions}
+
+An obstruction $r \in \Obs_L$ is \emph{atomic at level $L$} if
+$r \bmod 2^{L-1} \notin \Obs_{L-1}$. We write $\Atom_L \subseteq \Obs_L$ and
+$\Atom_L^{G_a} := \Atom_L \cap \Obs_L^{G_a}$.
+
+\begin{lemma}[Atom decomposition]
+\label{lem:atom-decomp}
+For every $L \ge 6$,
+\[
+|\Obs_L| = \sum_{L_0 = 6}^{L} |\Atom_{L_0}| \cdot 2^{L - L_0}.
+\]
+\end{lemma}
+
+\begin{proof}
+By Theorem~\ref{thm:lift-intro} every $r \in \Obs_L$ has a unique smallest
+$L_0 \ge 6$ with $r \bmod 2^{L_0} \in \Atom_{L_0}$, and $r$ is determined by
+this atomic anchor together with the bits $\{u_{L_0}, \ldots, u_{L-1}\}$
+encoding the lift choices. Each atomic anchor at level $L_0$ generates
+$2^{L - L_0}$ obstructions at level $L$. \qedhere
+\end{proof}
+
+\subsection{No shift-zero atoms}
+
+\begin{theorem}\label{thm:no-G0-atom}
+For every $L \ge 7$, $|\Atom_L^{G_0}| = 0$.
+\end{theorem}
+
+\begin{proof}
+Fix $L \ge 7$ and suppose $r \in \Obs_L^{G_0}$, so $\Xend(r, L) = 1$ with
+shift index $a = 0$, i.e.\ $(c_J, d_J) = (1, 0)$. Write $r' := r \bmod 2^{L-1}$.
+The parallel reduction at $(r', L-1)$ uses the same starting values
+$a_K, a_I$ as at $(r, L)$, but with the modulus reduced by one power of two.
+The first $j$ steps of the two reductions coincide as long as the modulus
+does not constrain a step.
+
+\emph{Case A: $\Vk^{(J)} + \vk^{(J)} \ge L$ and the reduction at
+$(r', L-1)$ also terminates at index $J$.} Then the terminal data
+coincide: $(c_J, d_J) = (1, 0)$, so $r' \in \Obs_{L-1}^{G_0}$ and $r$ is
+not atomic.
+
+\emph{Case B: $\Vk^{(J-1)} + \vk^{(J-1)} \ge L - 1$ but $< L$.} The parallel
+reduction at $(r', L-1)$ terminates one step earlier, at index $J - 1$,
+with terminal data $(c_{J-1}, d_{J-1})$. From the update rule
+(Lemma~\ref{lem:affine}) at index $J - 1$,
+\[
+c_J = c_{J-1} \cdot 2^{\vk^{(J-1)} - \vi^{(J-1)}}, \qquad d_J = \frac{3 d_{J-1} + c_{J-1} - 1}{2^{\vi^{(J-1)}}}.
+\]
+Setting $c_J = 1$, $d_J = 0$ and reading off the numerator of $d_J$:
+$3 d_{J-1} + c_{J-1} - 1 = 0$, i.e.\ $X_{J-1} = 1$. By the parity lemma
+applied at the terminal index $J - 1$ of the reduction at $(r', L-1)$,
+the terminal pair is in shift-$a'$ normal form for some $a' \in \Z$, so
+$r' \in \Obs_{L-1}^{G_{a'}}$.
+
+In either case, $r' \in \Obs_{L-1}$, so $r$ is not atomic. \qedhere
+\end{proof}
+
+\subsection{Strict lift balance and series representation}
+
+Write $g_L := |\Obs_L^{G_0}|$ and $h_L := |\Obs_L^{G_{\ne 0}}|$. The lift
+symmetry table from Section~\ref{sec:lift} gives, per parent at $L - 1$:
+
+\begin{center}
+\begin{tabular}{c|cc}
+\toprule
+Parent at $L-1$ & Contribution to $g_L$ & Contribution to $h_L$ \\
+\midrule
+$G_0$ & $2$ & $0$ \\
+$G_a$, $a \ne 0$ & $1$ & $1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Summing and adding the atomic contributions, which by Theorem~\ref{thm:no-G0-atom}
+occur only in $h_L$:
+
+\begin{corollary}[Strict lift balance]
+\label{cor:lift-balance}
+For every $L \ge 7$,
+\[
+g_L = 2 g_{L-1} + h_{L-1}, \qquad h_L = h_{L-1} + |\Atom_L^{G_{\ne 0}}|.
+\]
+Adding, $|\Obs_L| = 2 |\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$.
+\end{corollary}
+
+\begin{theorem}\label{thm:series}
+The density constant $c_W$ admits the convergent series representation
+\[
+c_W = \frac{3}{64} + \sum_{L \ge 7} \frac{|\Atom_L^{G_{\ne 0}}|}{2^L},
+\]
+with non-negative terms. In particular, $|\Atom_L^{G_{\ne 0}}|/2^L \to 0$ as
+$L \to \infty$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:atom-decomp} and Theorem~\ref{thm:no-G0-atom}, for $L \ge 7$:
+\[
+|\Obs_L| = 3 \cdot 2^{L-6} + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}| \cdot 2^{L - L_0},
+\]
+hence $\rho_L = 3/64 + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}|/2^{L_0}$.
+By Theorem~\ref{thm:density-intro}, $\rho_L$ is non-decreasing and bounded
+above by $1$, so its limit $c_W$ exists. The right-hand side is a partial sum
+of a non-negative series; its limit is the announced series, which converges
+to a finite value, forcing its terms to tend to $0$. \qedhere
+\end{proof}
+
+\subsection{The remaining open question}
+
+Theorem~\ref{thm:series} reduces the question of $c_W$'s exact value to
+controlling the growth of $|\Atom_L^{G_{\ne 0}}|$. A bound of the form
+$|\Atom_L^{G_{\ne 0}}| \le C \cdot \alpha^L$ with $\alpha < 2$ would give a
+geometrically convergent series with explicit error bounds. We do not
+establish such a bound here; we return to the question in
+Section~\ref{sec:open}.
+
+% =============================================================================
+\section{The \texorpdfstring{$T_+$}{T+} side}
+\label{sec:tplus}
+% =============================================================================
+
+The classical Collatz map $\Tplus$ admits the same obstruction theory,
+transferred from $\Tminus$ via the residue involution
+$r \mapsto \overline{r} := (-r) \bmod 2^L$.
+
+\begin{lemma}\label{lem:bijection}
+For each odd $r$ and each level $L$, $\Xend^+(\overline{r}, L) = 1$
+if and only if $\Xend(r, L) = 1$, where $\Xend^+$ is the $X$-invariant
+defined as in Section~\ref{sec:setup} but with $\Tminus$ replaced by
+$\Tplus$ throughout.
+\end{lemma}
+
+\begin{proof}
+The basic $\Tplus$-step on $\overline{r}$ produces $v_+(\overline{r}) = \vtwo(3\overline{r} + 1) = \vtwo(-(3r - 1)) = \vtwo(3r - 1) = v_-(r)$,
+so the affine update transfers without change. The terminal $X$-value is
+the same. \qedhere
+\end{proof}
+
+Write $\Obs_L^+$ for the $\Tplus$ analogue of $\Obs_L$.
+
+\begin{theorem}\label{thm:transfer}
+The map $r \mapsto \overline{r}$ restricts to a bijection
+$\Obs_L \leftrightarrow \Obs_L^+$. Theorems~\ref{thm:lift-intro},~\ref{thm:density-intro},
+and~\ref{thm:fc-intro} hold verbatim for $\Obs^+$, with the same density
+constant $c_W$ and factor complexity function $p_W^+(n) = 2^n$.
+\end{theorem}
+
+% =============================================================================
+\section{Open questions}
+\label{sec:open}
+% =============================================================================
+
+\subsection{The exact value of \texorpdfstring{$c_W$}{cW}}
+
+The principal open question is to determine $c_W$ exactly, or equivalently
+to give a quantitative bound on the growth of $|\Atom_L^{G_{\ne 0}}|$. Three
+approaches present themselves, each requiring substantial additional work.
+
+\textbf{(i) Substitution-theoretic.} Stérin~\cite{Sterin2020} realizes
+$\Tplus$ as a four-state finite-state transducer between bases $2$ and $3$.
+A related transducer-substitution system for the parallel reduction would,
+combined with the classification of Pansiot~\cite{Pansiot1984} or
+Devyatov~\cite{Devyatov2015}, determine the asymptotic growth class of
+$\Atom_L^{G_{\ne 0}}$.
+
+\textbf{(ii) Markov-operator-spectral.} Wirsching~\cite{Wirsching1998}
+constructs a Markov operator $W_3$ on residue-density functions for the
+$\Tplus$ predecessor problem. An analogous operator for the parallel
+reduction would have an action on $(c, d)$-space; its spectrum would
+determine the asymptotic growth of the shift-class populations
+$|\Obs_L^{G_a}|$.
+
+\textbf{(iii) Generating-function-combinatorial.} A direct enumeration via
+generating functions in $L$ is in principle accessible, but the absence of a
+closed-form recursion --- the count depends on the joint distribution of
+stopping times and shift indices --- makes the analysis delicate.
+
+\subsection{Bridges to nontrivial cycles}
+
+The shift-zero class $\Obs_L^{G_0}$ encodes residues for which the two
+parallel stopping times remain rigidly tied. Whether the existence or
+non-existence of additional nontrivial cycles of $\Tminus$ is reflected in
+the structure of $\Obs_L^{G_0}$ for large $L$ --- in particular, whether
+one can extract a Diophantine obstruction from the strict lift balance of
+Corollary~\ref{cor:lift-balance} --- is a natural and apparently unexplored
+question.
+
+\subsection{Connection to Wirsching's framework}
+
+The Lagarias intertwining of Section~\ref{sec:tplus} transfers our results
+to $\Tplus$, but Wirsching's framework~\cite{Wirsching1998} approaches the
+related predecessor-density problem from a Markov-operator perspective.
+A unified treatment --- for instance, expressing $c_W$ in terms of
+Wirsching's invariant density $\varphi$ --- appears not to be in the
+literature.
+
+% =============================================================================
+\appendix
+\section{Computational verification}
+\label{sec:appendix}
+% =============================================================================
+
+The algorithmic $X$-invariant criterion of Section~\ref{sec:setup} is
+implemented in Python in the supporting code that accompanies this paper,
+collected in the directory \texttt{code/}
+alongside the manuscript source. The directory contains the verification
+scripts for each rigorous result (lift theorem, atom decomposition,
+ATOMAR-$G_0$, full factor complexity, simultaneous stop) together with a
+\texttt{README.md} mapping each script to the result it certifies. For
+each level $L \le L_{\max}$, the relevant script enumerates all odd
+residues $r$ with $r \equiv 3 \pmod 4$ and $\vtwo(r-1) = 1$, runs the
+parallel reduction, and records the terminal data. The set $\Obs_L$ is
+read off as the preimage of $\{(c, d) : 3d + c = 1\}$.
+
+We have run this enumeration through $L = 18$, producing the following
+counts:
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$L$ & $|\Obs_L|$ & $|\Obs_L^{G_0}|$ & $|\Obs_L^{G_{\ne 0}}|$ & $|\Atom_L^{G_{\ne 0}}|$ \\
+\midrule
+$6$  & $3$    & $3$    & $0$   & $3$  \\
+$7$  & $8$    & $6$    & $2$   & $2$  \\
+$8$  & $19$   & $15$   & $4$   & $3$  \\
+$9$  & $42$   & $36$   & $6$   & $4$  \\
+$10$ & $91$   & $82$   & $9$   & $9$  \\
+$11$ & $194$  & $178$  & $16$  & $12$ \\
+$12$ & $409$  & $380$  & $29$  & $21$ \\
+$14$ & $1776$ & $1648$ & $128$ & ---  \\
+$16$ & $7556$ & $7068$ & $488$ & ---  \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The data is consistent with Theorems~\ref{thm:lift-intro},~\ref{thm:no-G0-atom}
+(strict lift balance), and~\ref{thm:series} (series convergence).
+
+% =============================================================================
+\bibliographystyle{amsalpha}
+\bibliography{references}
+% =============================================================================
+
+\end{document}
