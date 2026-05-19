@@ -3,3 +3,6 @@ manuscripts/*/_build/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Claude Code per-machine state
+.claude/settings.local.json
