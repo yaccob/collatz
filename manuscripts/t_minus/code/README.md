@@ -15,7 +15,9 @@ defined in §2 of the paper, and reports the result.
 ### Rigorous verification
 
 Each script below produces a hard pass/fail for the named theorem and exits
-non-zero on violation. Defaults are tuned for ~1-second smoke runs.
+non-zero on violation. Defaults are tuned for sub-second to few-second smoke
+runs on a modern laptop; raising the level argument to $L = 16$ takes
+30 seconds to a few minutes.
 
 | Script | Verifies |
 |:---|:---|

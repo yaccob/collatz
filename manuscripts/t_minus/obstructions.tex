@@ -174,12 +174,12 @@ terminal pair $(\cend, \dend)$ and define the scalar invariant
 \Xend(r, L) := 3 \dend(r, L) + \cend(r, L).
 \]
 
-For an odd integer $r$ with $\vtwo(r-1) \ge 1$, we
-call $r$ an \emph{obstruction residue at level $L$} when $\Xend(r, L) = 1$,
-and write $\Obs_L \subseteq \{1, \ldots, 2^L\}$ for the set of all such
-residues. The precise definition is given in Section~\ref{sec:setup}
-(Definition~\ref{def:obstruction}); the typical case is $v = 1$, i.e.\
-$r \equiv 3 \pmod 4$.
+For an odd integer $r$ with $\vtwo(r-1) \ge 1$ and a level $L > \vtwo(r-1)$,
+we call $r$ an \emph{obstruction residue at level $L$} when
+$\Xend(r, L) = 1$, and write $\Obs_L \subseteq \{1, \ldots, 2^L\}$ for
+the set of all such residues. Definition~\ref{def:obstruction} in
+Section~\ref{sec:setup} restates this with the parallel reduction made
+explicit; the typical case is $v = 1$, i.e.\ $r \equiv 3 \pmod 4$.
 
 The family $(\Obs_L)_{L \ge 6}$ is small at first --- $\Obs_6 = \{19, 27, 59\}$ ---
 but grows rapidly: direct enumeration gives
@@ -340,11 +340,12 @@ each step, and the reduction always terminates after finitely many steps.
 
 \subsection{The two-track setup}
 
-Fix $r$ a positive odd integer, set $v := \vtwo(r-1) \ge 1$, and write
-$m := (r - 1)/2^v$; then $m$ is odd. (We use $v$ as a parameter throughout;
-the special case $v = 1$ — equivalently $r \equiv 3 \pmod 4$ — is the
-typical reader picture and is presented first wherever a concrete
-calculation helps.)
+Fix $r$ a positive odd integer with $r \ne 1$, set $v := \vtwo(r-1)$,
+and write $m := (r - 1)/2^v$; then $m$ is odd. The inequality $v \ge 1$
+is automatic for odd $r > 1$ since $r - 1$ is then even. (We use $v$ as
+a parameter throughout; the special case $v = 1$ — equivalently
+$r \equiv 3 \pmod 4$ — is the typical reader picture and is presented
+first wherever a concrete calculation helps.)
 
 Fix a level $L > v$. We run two $\Tminus$-reductions in parallel:
 \begin{itemize}
@@ -683,7 +684,8 @@ terminal data unchanged, so $r_- \in \Obs_{L_0+1}^{G_a}$. \qedhere
 \begin{proposition}[Lift symmetry]\label{prop:lift-symmetry}
 Let $r_0 \in \Obs_{L_0}^{G_a}$. The shift indices of the two level-$(L_0+1)$
 lifts $r_+ := r_0$ and $r_- := r_0 + 2^{L_0}$ depend only on the stop type
-of $r_0$ at $L_0$ as follows (both lifts at level $L_0+1$):
+of $r_0$ at $L_0$ (Definition~\ref{def:stop-type}) as follows (both lifts
+at level $L_0+1$):
 
 \begin{center}
 \begin{tabular}{c|cc}
@@ -779,7 +781,6 @@ $p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$. Trivially $p_W(n) \le 2^n$.
 \subsection{The main theorem}
 
 \begin{theorem}[restating Theorem~\ref{thm:fc-intro}]
-\label{thm:fc-main}
 For every $n \ge 1$, $p_W(n) = 2^n$.
 \end{theorem}
 
@@ -806,12 +807,17 @@ Combined with the trivial upper bound, $p_W(n) = 2^n$. \qedhere
 
 The \emph{topological entropy} of a language $\mathcal{L} \subseteq \{0,1\}^*$
 is $h(\mathcal{L}) := \limsup_{n \to \infty} (1/n) \log p_{\mathcal{L}}(n)$;
-see Lind--Marcus~\cite{LindMarcus1995} for general background on entropy of
+the factor-complexity function $p_{\mathcal{L}}$ itself goes back to the
+foundational symbolic-dynamics papers of
+Morse--Hedlund~\cite{MorseHedlund1938,MorseHedlund1940}. See
+Lind--Marcus~\cite{LindMarcus1995} for general background on entropy of
 subshifts and subshifts of finite type, Fogg~\cite{Fogg2002} or
 Allouche--Shallit~\cite{AlloucheShallit2003} for factor complexity of
-substitution and automatic sequences, and
+substitution and automatic sequences,
 Cassaigne~\cite{Cassaigne1997} for the general theory of subword
-complexity in terms of special factors.
+complexity in terms of special factors, and
+Berth\'e--Rigo~\cite{BertheRigo2010} for a modern collected reference on
+combinatorics on words, automata and number theory.
 
 \begin{corollary}\label{cor:entropy}
 The topological entropy of $\Fac(\Obs)$ is $\log 2$.
@@ -908,36 +914,50 @@ does not constrain a step.
 
 Termination of the reduction at $(r, L)$ at index $J$ means at least one
 track satisfies its stop condition there; by Corollary~\ref{cor:sync}, both
-do. Since $a = 0$, the synchronisation $\vi^{(J)} = \vk^{(J)} + 2a = \vk^{(J)}$
-and $\Vk^{(J)} - \Vi^{(J)} = v$ hold (Lemma~\ref{lem:parity}), so the
+do. Since $a = 0$, at the terminal index $J$ the synchronisation
+$\vi^{(J)} = \vk^{(J)} + 2a = \vk^{(J)}$ and
+$\Vk^{(J)} - \Vi^{(J)} = v$ holds (Lemma~\ref{lem:parity}), so the
 K-track stop condition $\vk^{(J)} \ge L - \Vk^{(J)}$ and the I-track stop
-condition $\vi^{(J)} \ge (L - v) - \Vi^{(J)}$ are equivalent: substituting
-$\Vi^{(J)} = \Vk^{(J)} - v$ and $\vi^{(J)} = \vk^{(J)}$ into the I-track
-condition reduces it to $\vk^{(J)} \ge L - \Vk^{(J)}$, so both stop
-conditions read $\Vk^{(J)} + \vk^{(J)} \ge L$. We split by whether the
-level-$(L-1)$ stop condition $\Vk^{(j)} + \vk^{(j)} \ge L - 1$ (equivalent
-to $\Vi^{(j)} + \vi^{(j)} \ge L - 1 - v$ by the same substitution) first
-fires at index $J$ or already at index $J - 1$. These are the only possibilities: if it fired at
-some $J' \le J - 2$, then $\Vk^{(J')} + \vk^{(J')} \ge L - 1$; the
-$(r, L)$ reduction takes its $J'$-th step (the level-$L$ stop has not yet
-fired since $J' < J$), giving $\Vk^{(J'+1)} \ge L - 1$, so the K-track
-modulus at level $L$ has valuation $L - \Vk^{(J'+1)} \le 1$. Since
-$a_K^{(J'+1)}$ is odd, $\vk^{(J'+1)} \ge 1$, so the next step is
-impossible: the $(r, L)$ reduction would stop at $J' + 1 \le J - 1$,
-contradicting the definition of $J$. The symmetric argument on the
-I-track --- using that $a_I^{(J'+1)}$ is odd, hence
-$\vi^{(J'+1)} \ge 1$ --- rules out an early I-track stop at level $L-1$
-in the same way.
+condition $\vi^{(J)} \ge (L - v) - \Vi^{(J)}$ at $j = J$ are equivalent:
+substituting $\Vi^{(J)} = \Vk^{(J)} - v$ and $\vi^{(J)} = \vk^{(J)}$ into
+the I-track condition reduces it to $\vk^{(J)} \ge L - \Vk^{(J)}$, so both
+stop conditions at $j = J$ read $\Vk^{(J)} + \vk^{(J)} \ge L$.
+(At intermediate indices $j < J$ the synchronisation does not hold in
+general, so the K- and I-track conditions are not in general equivalent
+there; the case analysis below is stated in K-track terms only and does
+not rely on equivalence at $j < J$.)
+We split by the K-track value $\Vk^{(J)}$ (equivalently
+$\Vk^{(J-1)} + \vk^{(J-1)}$): either $\Vk^{(J)} < L - 1$ (Case~A) or
+$\Vk^{(J)} \ge L - 1$ (Case~B); these exhaust the integer possibilities.
+We first rule out the K-track stop at level~$L-1$ firing at any earlier
+index $J' \le J - 2$: in that case $\Vk^{(J')} + \vk^{(J')} \ge L - 1$,
+the $(r, L)$ reduction takes its $J'$-th step (the level-$L$ stop has not
+yet fired since $J' < J$), giving $\Vk^{(J'+1)} \ge L - 1$, so the
+K-track modulus at level $L$ at index $J'+1$ has valuation
+$L - \Vk^{(J'+1)} \le 1$. Since $a_K^{(J'+1)}$ is odd, $\vk^{(J'+1)} \ge 1$,
+so the next step is impossible: the $(r, L)$ reduction would stop at
+$J' + 1 \le J - 1$, contradicting the definition of $J$.
 
-\emph{Case A: $\Vk^{(J)} + \vk^{(J)} \ge L$ and the reduction at
-$(r', L-1)$ also terminates at index $J$.} Then the terminal data
-coincide: $(c_J, d_J) = (1, 0)$, so $r' \in \Obs_{L-1}^{G_0}$ and $r$ is
-not atomic.
+\emph{Case A: $\Vk^{(J)} < L - 1$.} The K-track stop at level $L - 1$
+does not fire at any index $\le J - 1$, so the $(r', L-1)$ reduction
+runs at least as far as index $J$; at $j = J$ we have
+$\Vk^{(J)} + \vk^{(J)} \ge L > L - 1$, hence the K-track stop at level
+$L - 1$ fires at $J$ and the reduction terminates there. (The I-track
+stop at level $L - 1$ also fires at $J$ by the same chain — at $j = J$
+the synchronisation $\vi^{(J)} = \vk^{(J)}$, $\Vk^{(J)} - \Vi^{(J)} = v$
+holds — but only the first track to stop matters for termination.) The
+terminal data of the two reductions coincide: $(c_J, d_J) = (1, 0)$, so
+$r' \in \Obs_{L-1}^{G_0}$ and $r$ is not atomic.
 
-\emph{Case B: $\Vk^{(J-1)} + \vk^{(J-1)} \ge L - 1$ but $< L$.} The parallel
-reduction at $(r', L-1)$ terminates one step earlier, at index $J - 1$,
-with terminal data $(c_{J-1}, d_{J-1})$. From the update rule
-(Lemma~\ref{lem:affine}) at index $J - 1$,
+\emph{Case B: $\Vk^{(J)} \ge L - 1$, equivalently
+$\Vk^{(J-1)} + \vk^{(J-1)} \ge L - 1$.} Combined with the standing
+$\Vk^{(J-1)} + \vk^{(J-1)} < L$ (since the level-$L$ stop does not fire
+at $J - 1$), the only integer value is $\Vk^{(J)} = L - 1$, so the
+K-track stop at level $L - 1$ fires at $J - 1$ and the $(r', L-1)$
+reduction terminates one step earlier, at index $J - 1$, with terminal
+data $(c_{J-1}, d_{J-1})$ (whether the I-track stop at level $L - 1$
+also fires at $J - 1$ is immaterial for termination). From the update
+rule (Lemma~\ref{lem:affine}) at index $J - 1$,
 \[
 c_J = c_{J-1} \cdot 2^{\vk^{(J-1)} - \vi^{(J-1)}}, \qquad d_J = \frac{3 d_{J-1} + c_{J-1} - 1}{2^{\vi^{(J-1)}}}.
 \]
@@ -992,15 +1012,26 @@ $L \to \infty$.
 \end{theorem}
 
 \begin{proof}
-By Lemma~\ref{lem:atom-decomp} and Theorem~\ref{thm:no-G0-atom}, for $L \ge 7$:
+By Lemma~\ref{lem:atom-decomp} every $r \in \Obs_L$ has a unique atomic
+anchor at some level $L_0 \in \{6, 7, \ldots, L\}$, and at the base
+level $|\Atom_6| = |\Obs_6| = 3$ (the level-$6$ obstructions
+$\{19, 27, 59\}$ are atomic by Remark~\ref{rem:empty-below-six}). For
+$L \ge 7$, Theorem~\ref{thm:no-G0-atom} kills all $G_0$-atoms above the
+base level, so
 \[
-|\Obs_L| = 3 \cdot 2^{L-6} + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}| \cdot 2^{L - L_0},
+|\Obs_L| = |\Atom_6| \cdot 2^{L-6} + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}| \cdot 2^{L - L_0}
+        = 3 \cdot 2^{L-6} + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}| \cdot 2^{L - L_0}.
 \]
-hence $\rho_L = 3/64 + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}|/2^{L_0}$.
-By Theorem~\ref{thm:density-intro}, $\rho_L$ is non-decreasing and bounded
-above by $1$, so its limit $c_W$ exists. The right-hand side is a partial sum
-of a non-negative series; its limit is the announced series, which converges
-to a finite value, forcing its terms to tend to $0$. \qedhere
+Dividing both sides by $2^L$,
+\[
+\rho_L = \frac{|\Obs_L|}{2^L} = \frac{3}{64} + \sum_{L_0 = 7}^{L} \frac{|\Atom_{L_0}^{G_{\ne 0}}|}{2^{L_0}}.
+\]
+By Theorem~\ref{thm:density-intro}, $\rho_L$ is non-decreasing in $L$ and
+bounded above by $1$, so its limit $c_W$ exists in $(0, 1]$. The
+right-hand side is the $L$-th partial sum of a non-negative series with
+fixed first term $3/64$; since the partial sums converge to $c_W$, the
+series converges, with sum $c_W$ and tail $|\Atom_L^{G_{\ne 0}}|/2^L \to 0$
+as $L \to \infty$. \qedhere
 \end{proof}
 
 \subsection{The remaining open question}
@@ -1173,8 +1204,10 @@ factor complexity function $p_W^{+}(n) = 2^n$.
 \end{theorem}
 
 \begin{proof}
-For $r$ odd with $\vtwo(r-1) \ge 1$ and $L > \vtwo(r-1)$,
-Lemma~\ref{lem:involution-step}(iv) at the terminal index $J$ gives
+For $r$ odd with $\vtwo(r-1) \ge 1$ and $L > \vtwo(r-1)$, equation
+\eqref{eq:invol-affine} of Lemma~\ref{lem:involution-step}(iv) at the
+terminal index $J$ together with the sign convention
+$\Xend^{+} := c - 3d$ of Remark~\ref{rem:Xplus-sign} gives
 \[
 \Xend^{+}(\overline{r}, L) = c_J^{+} - 3 d_J^{+}
   = c_J^{-} - 3 \cdot (-d_J^{-})
@@ -1316,6 +1349,14 @@ The data satisfies the strict lift balance $|\Obs_L| = 2 |\Obs_{L-1}| + |\Atom_L
 of Corollary~\ref{cor:lift-balance} at every level, and is consistent with
 Theorems~\ref{thm:lift-intro},~\ref{thm:no-G0-atom}, and~\ref{thm:series}
 (series convergence).
+
+The rigorous bound $c_W \ge 7556/65536 \approx 0.115$ of
+Theorem~\ref{thm:density-intro} is conditional on the correctness of this
+enumeration. The check is self-validating in a useful sense: the
+strict lift balance of Corollary~\ref{cor:lift-balance} is asserted
+row-by-row by the script \texttt{count\_obstructions.py} against the
+previous-level count, so any drift in the enumeration would manifest as
+an immediate hard failure rather than silently shifting the bound.
 
 % =============================================================================
 \bibliographystyle{amsalpha}
