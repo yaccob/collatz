@@ -11,6 +11,7 @@ obstruction has X_end = 1, and no non-obstruction has X_end = 1.
 """
 
 from __future__ import annotations
+import sys
 from fractions import Fraction
 
 

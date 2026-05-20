@@ -62,7 +62,7 @@
 \email{collatz@yaccob.net}
 \date{\today}
 
-\subjclass[2020]{11B83, 37P05, 37B10, 37A99, 68R15, 11A07}
+\subjclass[2020]{11B83, 37P05, 37B10, 37B40, 37A99, 68R15, 11A07}
 
 \keywords{Collatz conjecture, $3x-1$ map, residue dynamics, factor complexity, subshift, parallel reduction}
 
@@ -1228,7 +1228,10 @@ $\Xend^{+} := c - 3d$ of Remark~\ref{rem:Xplus-sign} gives
 Hence $r \in \Obs_L$ iff $\overline{r} \in \Obs_L^{+}$. Since
 $r \mapsto \overline{r}$ is an involution on the odd residues in
 $\{1, \ldots, 2^L - 1\}$, it restricts to a bijection
-$\Obs_L \leftrightarrow \Obs_L^{+}$.
+$\Obs_L \leftrightarrow \Obs_L^{+}$. At the base level $L = 6$ this
+identifies $\Obs_6^{+} = \{2^6 - r : r \in \Obs_6\} = \{5, 37, 45\}$,
+the explicit anchor set used in the $\Tplus$ analogue of the
+factor-complexity construction below.
 
 For the remaining claims, observe that
 Lemma~\ref{lem:involution-step} conjugates each $\Tminus$ basic step

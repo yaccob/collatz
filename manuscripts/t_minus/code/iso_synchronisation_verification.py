@@ -96,7 +96,8 @@ def trace_with_sync(r, L):
 def main():
     L = int(sys.argv[1]) if len(sys.argv) > 1 else 12
     print(f"Step A + B verification at L = {L}\n")
-    print("Lemma B.1: V_K^(j*) - V_I^(j*) = v at synchronization step j*")
+    print("Lemma 2.4 (parity lemma) at the synchronization step j*:")
+    print("  V_K^(j*) - V_I^(j*) = v")
     print("Synchronisation check: V_K - V_I = v at j* (parity lemma at sync index)\n")
 
     g0_obstructions = []
@@ -107,7 +108,7 @@ def main():
             continue
         if res["X"] != 1 or res["c"] != 1 or res["d"] != 0:
             continue
-        # Lemma G_0 obstruction
+        # G_0 (shift-zero) obstruction
         if res["sync_step"] is None:
             violations.append((r, "no sync"))
             continue
