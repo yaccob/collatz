@@ -17,6 +17,10 @@
   urlcolor=blue!50!black,
 }
 
+% Allow short final pages: avoids the cosmetic "Underfull \vbox" warning
+% from amsart's default \flushbottom on the section-boundary page.
+\raggedbottom
+
 % --- Theorem environments -----------------------------------------------------
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -58,7 +62,7 @@
 \email{[email]}
 \date{\today}
 
-\subjclass[2020]{11B83, 37P05, 37B10, 68R15, 11A07}
+\subjclass[2020]{11B83, 37P05, 37B10, 37A99, 68R15, 11A07}
 
 \keywords{Collatz conjecture, $3x-1$ map, residue dynamics, factor complexity, subshift, parallel reduction}
 
@@ -80,7 +84,9 @@ form with integer-valued shift index. A finer classification by shift
 index yields a strict lift balance, an exact series representation of
 $c_W$, and reduces the open question of $c_W$'s exact value to a single
 quantitative bound on a sub-family of atomic obstructions. Results
-transfer to the classical $3n+1$ map via the Lagarias intertwining.
+transfer to the classical $3n+1$ map via a residue-level involution
+$r \mapsto 2^L - r$ that maps the $\Tminus$ parallel reduction to its
+$\Tplus$ analogue step-by-step.
 \end{abstract}
 
 \maketitle
@@ -101,11 +107,12 @@ The Collatz conjecture, attributed to Lothar Collatz and widely studied since
 the 1930s, asserts that for every $n \in \Nodd$ the iteration
 $n, \Tplus(n), \Tplus^2(n), \ldots$ eventually reaches the fixed point $1$.
 Despite considerable computational evidence and a large body of partial
-results --- most recently the breakthrough of Tao~\cite{Tao2022}, showing
-that almost all trajectories attain almost bounded values --- the conjecture
-itself remains open. We refer the reader to the annotated bibliographies
-of Lagarias~\cite{Lagarias2010,Lagarias2010bib} for a comprehensive overview
-of the literature.
+results --- early density estimates by Crandall~\cite{Crandall1978} and
+Korec~\cite{Korec1994}, and most recently the breakthrough of
+Tao~\cite{Tao2022}, showing that almost all trajectories attain almost
+bounded values --- the conjecture itself remains open. We refer the reader
+to the annotated bibliographies of Lagarias~\cite{Lagarias2010,Lagarias2010bib}
+for a comprehensive overview of the literature.
 
 The Collatz map has a natural cousin, the \emph{$3x-1$ map} $\Tminus$ acting
 on the same domain:
@@ -123,9 +130,13 @@ whether further cycles exist remains as open as the Collatz conjecture itself.
 The two maps are connected through a classical identity going back to
 Lagarias~\cite{Lagarias1985}: every $\Tminus$-trajectory starting from $m$
 corresponds, via the substitution $r = 2m+1$, to a single $\Tplus$-step
-followed by a $\Tplus$-trajectory. This \emph{Lagarias intertwining} means
-that any structural result about the residue dynamics of $\Tminus$ has
-implications for $\Tplus$, and conversely.
+followed by a $\Tplus$-trajectory. This \emph{Lagarias intertwining}
+illustrates that any structural feature of $\Tminus$ has a $\Tplus$
+counterpart; the explicit transfer we use in
+Section~\ref{sec:tplus}, however, is different — a residue-level
+involution $r \mapsto 2^L - r$ that conjugates the $\Tminus$ parallel
+reduction into the $\Tplus$ parallel reduction step-by-step
+(Lemma~\ref{lem:involution-step}).
 
 The present paper is concerned with a family of residue classes modulo
 $2^L$ that arises naturally in the dynamics of $\Tminus$. We show that this
@@ -189,7 +200,7 @@ The three questions are not independent: a positive answer to (Q1) gives
 monotonicity, hence most of (Q2). A constructive form of (Q1), exhibiting
 arbitrary bit patterns under lift, gives (Q3). All three are answered in
 the affirmative by the main results; in particular the factor language
-of $\bigcup_L \Obs_L$ turns out to be all of $\{0,1\}^*$.
+$\Fac(\Obs)$ defined below turns out to be all of $\{0,1\}^*$.
 
 \subsection{Main results}
 
@@ -374,8 +385,8 @@ We define the \emph{$X$-invariant} of the parallel reduction at $(r, L)$ as
 \[
 \Xend(r, L) := X_J = 3 d_J + c_J.
 \]
-This is not invariant under the update step; the name reflects its role as
-the algebraic certificate of obstruction status (Definition~\ref{def:obstruction}).
+This is not invariant under the update step; the name reflects its role
+as the obstruction certificate (Definition~\ref{def:obstruction}).
 
 \subsection{Definition of obstruction residues}
 
@@ -399,13 +410,20 @@ The definition is algorithmic: given $r$ and $L$, one runs the parallel
 reduction, observes the terminal pair $(c_J, d_J)$, and checks
 $3 d_J + c_J = 1$. The computation terminates in at most $L$ steps.
 
+\begin{remark}\label{rem:empty-below-six}
+A direct enumeration confirms $\Obs_L = \emptyset$ for $1 \le L \le 5$;
+the smallest level at which an obstruction residue exists is $L = 6$,
+with $\Obs_6 = \{19, 27, 59\}$.
+\end{remark}
+
 The connection between this algebraic definition and the dynamics of
 $\Tminus$ trajectories is, briefly, that $\Xend = 1$ implies a
 synchronization of stopping times: starting from $r$ and from any
 $n \equiv r \pmod{2^L}$, the stopping-time difference between the
 $\Tminus$ and $\Tminus^{(3)}$ iterates --- where $\Tminus^{(3)}$ denotes the
-$3$-applications-of-$\Tminus$ variant --- remains constant. We do not
-develop this here; it is discussed in Section~\ref{sec:tplus}.
+$3$-applications-of-$\Tminus$ variant --- remains constant. The present
+paper develops only the algebraic side; the dynamical interpretation is
+not used in any proof below.
 
 \subsection{The parity lemma}
 
@@ -469,10 +487,12 @@ of $r$ at level $L$, denoted $a(r, L)$. The obstruction family partitions:
 \Obs_L = \bigsqcup_{a \in \Z} \Obs_L^{G_a}, \qquad \Obs_L^{G_a} := \{\, r \in \Obs_L : a(r, L) = a \,\}.
 \]
 For $a = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
-The shift index is bounded: since $\delta_J = \Vk^{(J)} - \Vi^{(J)} - v$ with
-$0 \le \Vk^{(J)} \le L$ and $0 \le \Vi^{(J)} \le L - v$, we have
-$|2a + v| = |\delta_J + v| = |\Vk^{(J)} - \Vi^{(J)}| \le \max(\Vk^{(J)}, \Vi^{(J)}) \le L$,
-hence $|a| \le L/2$.
+The shift index is bounded: from $0 \le \Vk^{(J)} \le L$ and
+$0 \le \Vi^{(J)} \le L - v$ we have
+$\Vk^{(J)} - \Vi^{(J)} \in [v - L,\, L]$, so
+$2a + v = \Vk^{(J)} - \Vi^{(J)}$ gives $2a \in [-L,\, L - v]$ and hence
+$a \in [-L/2,\, (L - v)/2] \subseteq [-L/2,\, L/2]$. In particular
+$|a| \le L/2$.
 
 \subsection{Simultaneous stop and stop types}
 
@@ -514,12 +534,6 @@ The $v \ge 2$ residues contribute a small but non-negligible share of
 $\Obs_L$: direct enumeration gives, for $L = 16$, $|\Obs_L| = 7556$ in
 total, of which $6130$ have $v = 1$ and the remaining $1426$ (roughly
 $19\%$) have $v \ge 2$. The numbers in the appendix table count all $v$.
-
-\begin{remark}\label{rem:empty-below-six}
-A direct enumeration confirms $\Obs_L = \emptyset$ for $1 \le L \le 5$;
-the smallest level at which an obstruction residue exists is $L = 6$,
-with $\Obs_6 = \{19, 27, 59\}$.
-\end{remark}
 
 % =============================================================================
 \section{The Lift Theorem}
@@ -655,11 +669,12 @@ condition at level $L_0+1$. Termination therefore occurs at index $J$ with
 terminal data unchanged, so $r_- \in \Obs_{L_0+1}^{G_a}$. \qedhere
 \end{proof}
 
-\subsection{The symmetry table}
+\subsection{The lift symmetry}
 
-The proofs of Theorems~\ref{thm:lift-plus} and~\ref{thm:lift-minus}
-establish the following symmetry, central for the recurrence developed in
-Section~\ref{sec:Ga}:
+\begin{proposition}[Lift symmetry]\label{prop:lift-symmetry}
+Let $r_0 \in \Obs_{L_0}^{G_a}$. The shift indices of the two level-$(L_0+1)$
+lifts $r_+ := r_0$ and $r_- := r_0 + 2^{L_0}$ depend only on the stop type
+of $r_0$ at $L_0$ as follows (both lifts at level $L_0+1$):
 
 \begin{center}
 \begin{tabular}{c|cc}
@@ -671,11 +686,20 @@ SS & $a$ & $0$ \\
 \bottomrule
 \end{tabular}
 \end{center}
-(Both lifts are at level $L_0 + 1$.)
+\end{proposition}
+
+\begin{proof}
+The four entries are read off directly from the case-analysis proofs of
+Theorems~\ref{thm:lift-plus} and~\ref{thm:lift-minus}: each case
+computes the terminal data of the lift and identifies the resulting
+shift index. \qedhere
+\end{proof}
 
 So lifting an obstruction with shift index $a \ne 0$ always produces one
 shift-$a$ obstruction and one shift-zero obstruction at the next level;
 lifting a shift-zero obstruction produces two shift-zero obstructions.
+This is the symmetry that drives the recurrence developed in
+Section~\ref{sec:Ga}.
 
 % =============================================================================
 \section{Positive density}
@@ -690,7 +714,7 @@ $|\Obs_{L_0+1}|/2^{L_0+1} \ge |\Obs_{L_0}|/2^{L_0}$: the density ratio is
 non-decreasing. Since $\Obs_L \subseteq \{1, \ldots, 2^L\}$ the ratio is
 bounded above by $1$. By monotone convergence,
 $c_W := \lim_{L \to \infty} |\Obs_L|/2^L$ exists in $[\rho_{L_0}, 1]$ for any
-$L_0 \ge 2$. Specialising to $L_0 = 6$ and using the direct enumeration
+$L_0 \ge 6$. Specialising to $L_0 = 6$ and using the direct enumeration
 $\Obs_6 = \{19, 27, 59\}$ (Section~\ref{sec:setup}; verified computationally
 in Appendix~\ref{sec:appendix}), $c_W \ge 3/64$. \qedhere
 \end{proof}
@@ -741,7 +765,7 @@ $p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$. Trivially $p_W(n) \le 2^n$.
 
 \subsection{The main theorem}
 
-\begin{theorem}
+\begin{theorem}[restating Theorem~\ref{thm:fc-intro}]
 For every $n \ge 1$, $p_W(n) = 2^n$.
 \end{theorem}
 
@@ -831,11 +855,15 @@ For every $L \ge 6$,
 We show that every $r \in \Obs_L$ has a unique smallest $L_0 \ge 6$ with
 $r \bmod 2^{L_0} \in \Atom_{L_0}$. \emph{Existence:} starting from $r$ at
 level $L$, consider the descending sequence $r_k := r \bmod 2^{L-k}$ for
-$k = 0, 1, \ldots, L - 6$. By the lift theorem (Theorem~\ref{thm:lift-intro})
-each $r_{k+1} \in \Obs_{L-k-1}$ implies $r_k \in \Obs_{L-k}$, but the converse
-need not hold; let $L_0$ be the smallest level $\ge 6$ for which $r \bmod 2^{L_0} \in \Obs_{L_0}$.
-Then $r \bmod 2^{L_0 - 1} \notin \Obs_{L_0 - 1}$ (either because $L_0 = 6$ and
-$\Obs_5 = \emptyset$, or by minimality), so $r \bmod 2^{L_0} \in \Atom_{L_0}$.
+$k = 0, 1, \ldots, L - 6$. By the lift theorem (Theorem~\ref{thm:lift-intro}),
+whenever $r_{k+1} \in \Obs_{L-k-1}$, the level-$(L-k)$ residue
+$r_k = r \bmod 2^{L-k}$ — being one of the two lifts of $r_{k+1}$ at
+level $L - k$ — lies in $\Obs_{L-k}$; the converse need not hold. Let
+$L_0$ be the smallest level $\ge 6$ for which
+$r \bmod 2^{L_0} \in \Obs_{L_0}$. Then
+$r \bmod 2^{L_0 - 1} \notin \Obs_{L_0 - 1}$ (either because $L_0 = 6$
+and $\Obs_5 = \emptyset$ by Remark~\ref{rem:empty-below-six}, or by
+minimality), so $r \bmod 2^{L_0} \in \Atom_{L_0}$.
 \emph{Uniqueness:} the level $L_0$ is the smallest such by definition, hence
 unique. Given the atomic anchor $r_0 := r \bmod 2^{L_0}$, the residue $r$ is
 determined by $r_0$ together with the bits $\{u_{L_0}, \ldots, u_{L-1}\}$
@@ -907,7 +935,7 @@ In either case, $r' \in \Obs_{L-1}$, so $r$ is not atomic. \qedhere
 \subsection{Strict lift balance and series representation}
 
 Write $g_L := |\Obs_L^{G_0}|$ and $h_L := |\Obs_L^{G_{\ne 0}}|$. The lift
-symmetry table from Section~\ref{sec:lift} gives, per parent at $L - 1$:
+symmetry of Proposition~\ref{prop:lift-symmetry} gives, per parent at $L - 1$:
 
 \begin{center}
 \begin{tabular}{c|cc}
@@ -1018,7 +1046,13 @@ of Theorem~\ref{thm:tplus-bijection} below is exact.
 
 \begin{lemma}[Residue-level involution]\label{lem:involution-step}
 Let $r$ be odd with $v := \vtwo(r-1) \ge 1$ and $L > v$, and set
-$\overline{r} := 2^L - r$. Then:
+$\overline{r} := 2^L - r$. By part~(i) below, the $\Tplus$ reduction
+at $\overline{r}$ in the sense of Section~\ref{sec:tplus} uses parameter
+$\vtwo(\overline{r}+1) = v$, so the two reductions share a single $v$.
+In~(iii)–(iv), $\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and
+$\Vi^{(j)} := \sum_{i < j} \vi^{(i)}$ denote the common cumulative
+valuations of the two reductions, equal across $\Tplus/\Tminus$ by the
+valuation equalities established in the proof. Then:
 \begin{enumerate}[label=(\roman*)]
 \item $\overline{r}$ is odd with $\vtwo(\overline{r} + 1) = v < L$;
 \item the $\Tminus$ parallel reduction at $(r, L)$ and the $\Tplus$
@@ -1128,12 +1162,24 @@ Lemma~\ref{lem:involution-step}(iv) at the terminal index $J$ gives
 Hence $r \in \Obs_L$ iff $\overline{r} \in \Obs_L^{+}$. Since
 $r \mapsto \overline{r}$ is an involution on the odd residues in
 $\{1, \ldots, 2^L - 1\}$, it restricts to a bijection
-$\Obs_L \leftrightarrow \Obs_L^{+}$. The remaining claims --- lift,
-positive density, full factor complexity --- transfer mechanically: by
-Lemma~\ref{lem:involution-step} the involution conjugates each
-$\Tminus$ basic step into the corresponding $\Tplus$ basic step, so the
-case analyses of Sections~\ref{sec:lift}, \ref{sec:density},
-and~\ref{sec:fc} apply verbatim. \qedhere
+$\Obs_L \leftrightarrow \Obs_L^{+}$.
+
+For the remaining claims, observe that
+Lemma~\ref{lem:involution-step} conjugates each $\Tminus$ basic step
+into the corresponding $\Tplus$ basic step. The $\Tplus$ lift theorem
+(the analogue of Theorem~\ref{thm:lift-intro}) follows by composing the
+involution with the $\Tminus$ lift: given
+$\overline{r_0} \in \Obs_{L_0}^{+}$, set $r_0 := 2^{L_0} - \overline{r_0} \in \Obs_{L_0}$;
+by Theorem~\ref{thm:lift-intro}, both $r_0$ and $r_0 + 2^{L_0}$ lie in
+$\Obs_{L_0+1}$, and their level-$(L_0+1)$ involution images
+$2^{L_0+1} - r_0 = \overline{r_0} + 2^{L_0}$ and
+$2^{L_0+1} - (r_0 + 2^{L_0}) = \overline{r_0}$ lie in $\Obs_{L_0+1}^{+}$
+by the level-$(L_0+1)$ version of the bijection. Hence both
+$\Tplus$-lifts of $\overline{r_0}$ are again $\Tplus$-obstructions.
+Positive density and full factor complexity for $\Obs^{+}$ then
+propagate exactly as in Sections~\ref{sec:density}
+and~\ref{sec:fc}, with $\Obs^{+}$ in place of $\Obs$ throughout the
+argument. \qedhere
 \end{proof}
 
 % =============================================================================
