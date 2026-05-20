@@ -97,7 +97,7 @@ def main():
     L = int(sys.argv[1]) if len(sys.argv) > 1 else 12
     print(f"Step A + B verification at L = {L}\n")
     print("Lemma B.1: V_K^(j*) - V_I^(j*) = v at synchronization step j*")
-    print("Lemma A.2: Iso m = (r-1)/2^v matches (V_K - V_I)/2 + position constraints\n")
+    print("Synchronisation check: V_K - V_I = v at j* (parity lemma at sync index)\n")
 
     g0_obstructions = []
     violations = []
@@ -136,28 +136,24 @@ def main():
             }
         )
 
-    print(f"Total Lemma G_0 obstructions: {len(g0_obstructions)}")
-    print(f"Lemma B.1 violations (V_K-V_I != v at j*): {len(violations)}")
+    print(f"Total G_0 obstructions: {len(g0_obstructions)}")
+    print(f"Parity-at-sync violations (V_K - V_I != v at j*): {len(violations)}")
     if violations:
         print(f"  First 5: {violations[:5]}")
     else:
         print(
-            f"  → Lemma B.1 holds for ALL {len(g0_obstructions)} Lemma G_0 obstructions. ✓"
+            f"  → Parity-at-sync holds for ALL {len(g0_obstructions)} G_0 obstructions. ✓"
         )
 
-    # Verify Lemma A.2: predecessor chain from r to a_sync has V_K bits
-    # K chain: r, T_-(r), ..., T_-^{j*}(r) = a_sync. Bit budget: V_K_sync.
-    # I chain: m, T_-(m), ..., T_-^{j*}(m) = a_sync. Bit budget: V_I_sync.
-    # Bits consumed by (r, b_K) reduction in j* steps: V_K_sync (out of L total).
-    # Bits consumed by (m, b_I) reduction: V_I_sync (out of L-v total).
-    # Iso check: V_K_total - V_I_total = v.
-    print("\nLemma A.2: V_K_total - V_I_total = v (synchronous endpoint).")
+    # Endpoint check (Corollary 2.4 + Lemma 2.3 at termination):
+    # V_K^(J) - V_I^(J) = v (parity lemma applied at termination index).
+    print("\nEndpoint parity: V_K^(J) - V_I^(J) = v (Lemma 2.3 / Corollary 2.4).")
     iso_violations = sum(
         1 for w in g0_obstructions if w["V_K_total"] - w["V_I_total"] != w["v"]
     )
-    print(f"  Iso violations: {iso_violations}/{len(g0_obstructions)}")
+    print(f"  Endpoint violations: {iso_violations}/{len(g0_obstructions)}")
     if iso_violations == 0:
-        print("  → Lemma A.2 holds for ALL Lemma G_0 obstructions. ✓")
+        print("  → Endpoint parity holds for ALL G_0 obstructions. ✓")
 
     # Histogram (j*, V_K_sync) — interesting structural insight
     print("\nDistribution of (j*, V_K_sync) pairs:")
@@ -167,6 +163,17 @@ def main():
     print("  j* | V_K_sync | count")
     for j, V in sorted(pairs):
         print(f"  {j:>2} | {V:>8} | {pairs[(j, V)]:>5}")
+
+    if not violations and iso_violations == 0:
+        print(
+            f"\n✓ VERIFIED: simultaneous stop and parity lemma at termination "
+            f"hold for all G_0 obstructions at L={L}."
+        )
+    else:
+        print(
+            f"\n✗ FAILED: {len(violations)} parity-at-sync and "
+            f"{iso_violations} endpoint-parity violations at L={L}."
+        )
 
 
 if __name__ == "__main__":

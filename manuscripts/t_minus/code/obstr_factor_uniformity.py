@@ -160,6 +160,13 @@ def main():
             flush=True,
         )
 
+    print(
+        "\n  Note: auxiliary pattern-distribution statistics; "
+        "no rigorous claim attached. Quasi-uniformity (sd/E → 0 as L grows) "
+        "is a heuristic, not a theorem in the manuscript.",
+        flush=True,
+    )
+
 
 if __name__ == "__main__":
     main()

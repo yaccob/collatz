@@ -145,6 +145,11 @@ def main():
         ex = detailed[key][:3]
         print(f"  {a:>3} | {trigger:>7} | {stop_type:>9} | {cnt:>5} | {ex}")
 
+    print(
+        "\n  Note: auxiliary case-distribution; no rigorous claim attached. "
+        "Cross-references the EE/SS classification in §3 of the manuscript."
+    )
+
 
 if __name__ == "__main__":
     main()

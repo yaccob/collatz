@@ -175,15 +175,19 @@ def main():
 
     if classification.get("NOT_obstr_at_L-1", 0) > 0:
         print(
-            "\n*** ATOMAR-G_0 VIOLATED: there exist G_0-obstructions r at L "
-            "whose mod-2^{L-1} reduction is NOT an obstruction at L-1!"
+            "\n*** Theorem 6.2 (no shift-zero atoms) VIOLATED: there exist "
+            "G_0-obstructions r at L whose mod-2^{L-1} reduction is NOT an "
+            "obstruction at L-1!"
         )
         print("Examples (r, rp, J0, Jp, stop_type, stop_type_p, c_p, d_p):")
         for d in details[:5]:
             if d[-1] == "NOT_obstr":
                 print(f"  {d}")
     else:
-        print("\n*** ATOMAR-G_0 holds empirically at L = {} ***".format(L))
+        print(
+            "\n*** Theorem 6.2 (no shift-zero atoms) holds empirically "
+            "at L = {} ***".format(L)
+        )
 
     if any("early_stop" in k for k in classification):
         print("\nNote: some G_0-obstructions have *early stop* at level L-1.")

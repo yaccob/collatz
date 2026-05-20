@@ -106,6 +106,7 @@ def main():
 
     # Print observation table
     print("Observed lift behavior (a₀, stop_type, who, b_observed) → count:")
+    mismatches = 0
     for key in sorted(
         table.keys(), key=lambda k: (k[0] is None, k[0], k[1], k[2], str(k[3]))
     ):
@@ -124,6 +125,13 @@ def main():
                 predicted = 0  # r_- → G_0
         match = "✓" if b == predicted else "✗ predicted G_" + str(predicted)
         print(f"  G_{a0} {stop_type} {who}: → G_{b}  (count={cnt:>4})  {match}")
+        if b != predicted:
+            mismatches += 1
+
+    if mismatches == 0:
+        print("\n✓ VERIFIED: §3.3 symmetry table holds at every (a, stop_type, lift) row.")
+    else:
+        print(f"\n✗ FAILED: {mismatches} rows deviate from the predicted §3.3 symmetry.")
 
 
 if __name__ == "__main__":
