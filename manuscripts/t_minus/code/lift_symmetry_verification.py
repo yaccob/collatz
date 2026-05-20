@@ -1,4 +1,4 @@
-"""Verify prediction from Theorem 3.1 + 4.1 case analysis:
+"""Verify prediction from Theorems 3.1 + 3.2 / Proposition 3.3 case analysis:
 
   Stop type at r_+, L_0  |  r_+, L_0+1 endpoint  |  r_-, L_0+1 endpoint
   ----------------------|----------------------|----------------------

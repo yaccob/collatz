@@ -1,6 +1,6 @@
-"""Computational verification of Theorem 5.2 (F1 construction).
+"""Computational verification of Theorem 5.1 (constructive form, restating Theorem 1.3).
 
-Theorem 5.2: For each u ∈ {0,1}^n, the obstruction r_n = r_0 + sum_k u_k * 2^{6+k}
+Theorem 5.1: For each u ∈ {0,1}^n, the obstruction r_n = r_0 + sum_k u_k * 2^{6+k}
 (with r_0 ∈ W_6 = {19, 27, 59}) is a obstruction in W_{6+n} with u as factor at position 6.
 
 Verify computationally for all u ∈ {0,1}^n with n = 4, 6, 8.

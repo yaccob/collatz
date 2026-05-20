@@ -1,5 +1,5 @@
-"""Empirical verification of simultaneous stop and parity (Corollary 2.4 and
-Lemma 2.3 of the manuscript).
+"""Empirical verification of simultaneous stop and parity (Corollary 2.5 and
+Lemma 2.4 of the manuscript).
 
 For each G_0-obstruction r at level L (i.e. r ∈ Ω_L with shift index a = 0):
 - compute the synchronization step j* at which the K- and I-tracks meet;
@@ -145,9 +145,9 @@ def main():
             f"  → Parity-at-sync holds for ALL {len(g0_obstructions)} G_0 obstructions. ✓"
         )
 
-    # Endpoint check (Corollary 2.4 + Lemma 2.3 at termination):
+    # Endpoint check (Corollary 2.5 + Lemma 2.4 at termination):
     # V_K^(J) - V_I^(J) = v (parity lemma applied at termination index).
-    print("\nEndpoint parity: V_K^(J) - V_I^(J) = v (Lemma 2.3 / Corollary 2.4).")
+    print("\nEndpoint parity: V_K^(J) - V_I^(J) = v (Lemma 2.4 / Corollary 2.5).")
     iso_violations = sum(
         1 for w in g0_obstructions if w["V_K_total"] - w["V_I_total"] != w["v"]
     )
