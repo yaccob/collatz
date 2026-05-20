@@ -127,7 +127,8 @@ result''. They differ only in the sign of the additive constant. The
 trajectories of $\Tminus$ are, however, \emph{not} believed to converge to a
 single attractor: three nontrivial cycles are classically known --- the
 fixed cycle through~$1$, the $\{5, 7\}$-cycle, and the seventeen-family cycle
-through $\{17, 25, 37, 55, 65, 49, 73, \ldots\}$ --- and the question of
+through $\{17, 25, 37, 55, 65, 49, 73, \ldots\}$; see
+Lagarias~\cite{Lagarias2010bib} for historical attribution. The question of
 whether further cycles exist remains as open as the Collatz conjecture itself.
 The two maps are connected through a classical identity going back to
 Lagarias~\cite{Lagarias1985}: every $\Tminus$-trajectory starting from $m$
@@ -256,7 +257,7 @@ $p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$.
 
 \begin{theorem}[Full factor complexity]
 \label{thm:fc-intro}
-For every $n \ge 1$,
+For every $n \ge 0$,
 \[
 p_W(n) = 2^n.
 \]
@@ -442,8 +443,8 @@ Then
 \[
 \delta_J := \Vk^{(J)} - \Vi^{(J)} - v
 \]
-is an \emph{even} integer (possibly negative), where $v := \vtwo(r-1)$,
-and for any index $j$ we write
+is an \emph{even} integer (possibly negative) with $|\delta_J| \le L$,
+where $v := \vtwo(r-1)$, and for any index $j$ we write
 $\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and
 $\Vi^{(j)} := \sum_{i < j} \vi^{(i)}$ for the cumulative valuations
 along the K- and I-tracks.
@@ -781,11 +782,13 @@ $p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$. Trivially $p_W(n) \le 2^n$.
 \subsection{The main theorem}
 
 \begin{theorem}[restating Theorem~\ref{thm:fc-intro}]
-For every $n \ge 1$, $p_W(n) = 2^n$.
+For every $n \ge 0$, $p_W(n) = 2^n$.
 \end{theorem}
 
 \begin{proof}
-Fix $n \ge 1$ and $u = (u_0, u_1, \ldots, u_{n-1}) \in \{0,1\}^n$. Choose
+The case $n = 0$ is the empty word, which is trivially a factor of every
+$w_r$, so $p_W(0) = 1 = 2^0$. Fix $n \ge 1$ and
+$u = (u_0, u_1, \ldots, u_{n-1}) \in \{0,1\}^n$. Choose
 any anchor $r_0 \in \Obs_6 = \{19, 27, 59\}$ (verified by direct enumeration;
 see Appendix~\ref{sec:appendix}). Define inductively
 \[
@@ -915,10 +918,17 @@ $d_J = 0$; at $J = 1$ the update rule gives
 $d_1 = (3 \cdot (-2^{-v}) + 2^{-v} - 1)/2^{\vi^{(0)}} = -(1 + 2^{1-v})/2^{\vi^{(0)}} \ne 0$
 for $v \ge 1$, again contradicting $d_J = 0$. Hence $J \ge 2$, so the case
 distinction below over the indices $J - 1$ and $J$ is well-defined.
-The parallel reduction at $(r', L-1)$ uses the same starting values
-$a_K, a_I$ as at $(r, L)$, but with the modulus reduced by one power of two.
-The first $j$ steps of the two reductions coincide as long as the modulus
-does not constrain a step.
+The parallel reduction at $(r', L-1)$ starts from the same residue class
+$a_K \bmod 2^{L-1}, a_I \bmod 2^{L-1-v}$ as at $(r, L)$, with the modulus
+reduced by one power of two; the two K-tracks (resp.\ I-tracks) differ as
+integers by $\Delta_K^{(j)} = 2^{L-1-\Vk^{(j)}} \cdot 3^j$ (resp.\
+$\Delta_I^{(j)} = 2^{L-1-v-\Vi^{(j)}} \cdot 3^j$), in direct analogy with
+the lift-minus calculation of Theorem~\ref{thm:lift-minus}. Whenever
+$\vk^{(j)} < L - 1 - \Vk^{(j)}$, the ultrametric identity forces
+$v_2(3 a_K^{(j)} - 1)$ to agree at $(r, L)$ and $(r', L-1)$, so the
+per-step valuations $\vk^{(j)}, \vi^{(j)}$ and hence the affine data
+$(c_j, d_j)$ coincide between the two reductions until the level-$(L-1)$
+stop fires.
 
 Termination of the reduction at $(r, L)$ at index $J$ means at least one
 track satisfies its stop condition there; by Corollary~\ref{cor:sync}, both
@@ -1262,10 +1272,8 @@ The principal open question is to determine $c_W$ exactly, or equivalently
 to give a quantitative bound on the growth of $|\Atom_L^{G_{\ne 0}}|$. Three
 approaches present themselves, each requiring substantial additional work.
 
-% \sloppypar restores tolerant line breaking: without it this paragraph
-% overflows the column by ~4.5pt due to the long compound terms
-% "Substitution-theoretic", "transducer-substitution", "Stérin"; see
-% .reviews note n-01 (2026-05-20).
+% \sloppypar restores tolerant line breaking; this paragraph overflows
+% the column by ~4.5pt without it due to long compound terms.
 \begin{sloppypar}
 \textbf{(i) Substitution-theoretic.} Stérin~\cite{Sterin2020} realizes
 $\Tplus$ as a four-state finite-state transducer between bases $2$ and $3$.
@@ -1291,8 +1299,8 @@ stopping times and shift indices --- makes the analysis delicate.
 
 \subsection{Bridges to nontrivial cycles}
 
-% \sloppypar restores tolerant line breaking: this paragraph overflows by
-% ~1.8pt without it (long hyphenated terms + author names); see n-01.
+% \sloppypar restores tolerant line breaking; this paragraph overflows
+% the column by ~1.8pt without it (long hyphenated terms and author names).
 \begin{sloppypar}
 The shift-zero class $\Obs_L^{G_0}$ encodes residues for which the two
 parallel stopping times remain rigidly tied. Whether the existence or
