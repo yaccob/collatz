@@ -143,6 +143,7 @@ def main():
 
     if any_violation:
         print("✗ FAILED: at least one mismatch between rigorous obstructions and X=1 set.")
+        sys.exit(1)
     else:
         print("✓ VERIFIED: bidirectional X-criterion holds for all tested levels.")
 

@@ -132,6 +132,7 @@ def main():
         print("\n✓ VERIFIED: §3.3 symmetry table holds at every (a, stop_type, lift) row.")
     else:
         print(f"\n✗ FAILED: {mismatches} rows deviate from the predicted §3.3 symmetry.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

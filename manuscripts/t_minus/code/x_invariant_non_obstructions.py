@@ -147,6 +147,7 @@ def main():
 
     if any_violation:
         print("✗ FAILED: the X-criterion is not bidirectionally sharp at every tested level.")
+        sys.exit(1)
     else:
         print("✓ VERIFIED: X_end = 1 ⟺ r ∈ Ω_L at every tested level.")
 

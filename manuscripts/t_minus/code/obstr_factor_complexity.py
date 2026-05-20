@@ -17,7 +17,7 @@ Discriminates:
 
 Caveat: this is an *enumeration* at a fixed finite level L. For n close to or
 exceeding L, the displayed p_W(n) is strictly smaller than the asymptotic 2^n
-- not a refutation of Theorem 5.1, just a finite-L artefact. The constructive
+- not a refutation of Theorem 1.3, just a finite-L artefact. The constructive
 script factor_complexity_construction.py exhibits an explicit residue
 realising every u in {0,1}^n at level L = 6 + n, confirming p_W(n) = 2^n for
 arbitrary n.
@@ -190,13 +190,13 @@ def main():
         print(f"  log p_W(n) ≈ {slope:.4f} * n + {intercept:.4f}")
         print(f"  => p_W(n) ≈ {math.exp(intercept):.3f} * {math.exp(slope):.4f}^n")
         print(f"  Compare:  phi = {phi:.4f}  beta = {beta:.4f}  2 = 2.0000")
-        # Theorem 1.3 / 5.1 predicts p_W(n) = 2^n once L is large enough that the
+        # Theorem 1.3 predicts p_W(n) = 2^n once L is large enough that the
         # construction at level 6 + n fits inside the enumeration window.
         # For small L the language is truncated and the empirical slope at finite
         # L underestimates log 2; rigorous verification comes from the constructive
         # proof in factor_complexity_construction.py.
         if abs(slope - math.log(2)) < 0.01:
-            print("\n✓ VERIFIED: empirical slope matches log 2 within 0.01 (Theorem 1.3 / 5.1).")
+            print("\n✓ VERIFIED: empirical slope matches log 2 within 0.01 (Theorem 1.3).")
         else:
             print(
                 f"\n  Note: empirical slope {slope:.4f} at L={L_use} is below log 2 = {math.log(2):.4f};"

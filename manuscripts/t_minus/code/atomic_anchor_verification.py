@@ -101,9 +101,12 @@ def main():
         match = "✓" if actual == predicted else "✗"
         print(f"  {L0:>3} | {actual:>14} | {n_r0:>20} | {predicted:>5} {match}")
     print(f"\nTotal: {expected_sum} (= |W_L| = {len(obstructions)})")
+    ok = expected_sum == len(obstructions)
     print(
-        f"Identity |Ω_L| = Σ |A_{{L_0}}| · 2^{{L-L_0}}: {'✓ VERIFIED' if expected_sum == len(obstructions) else '✗ FAILED'}"
+        f"Identity |Ω_L| = Σ |A_{{L_0}}| · 2^{{L-L_0}}: {'✓ VERIFIED' if ok else '✗ FAILED'}"
     )
+    if not ok:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

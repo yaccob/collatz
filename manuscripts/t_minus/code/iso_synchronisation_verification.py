@@ -174,6 +174,7 @@ def main():
             f"\n✗ FAILED: {len(violations)} parity-at-sync and "
             f"{iso_violations} endpoint-parity violations at L={L}."
         )
+        sys.exit(1)
 
 
 if __name__ == "__main__":
