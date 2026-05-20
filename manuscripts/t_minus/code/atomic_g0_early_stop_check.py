@@ -181,6 +181,7 @@ def main():
         for d in details[:5]:
             if d[-1] == "NOT_obstr":
                 print(f"  {d}")
+        sys.exit(1)
     else:
         print(
             "\n*** Theorem 6.2 (no shift-zero atoms) holds empirically "

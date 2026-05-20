@@ -142,6 +142,7 @@ def main():
 
     if any_failure[0]:
         print("✗ FAILED: some obstruction did not lift to both r_+ and r_- at level L_0+1.")
+        sys.exit(1)
     else:
         print(f"✓ VERIFIED: every obstruction at every tested L_0 lifts to both r_+ and r_-.")
 

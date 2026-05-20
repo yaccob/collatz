@@ -74,8 +74,8 @@ modulo $2^L$ arising naturally in the dynamics of the $3x-1$ map
 $\Tminus(n) := (3n-1)/2^{\vtwo(3n-1)}$. The family is defined by an
 algebraic criterion on a two-track parallel reduction.
 We prove three structural results: a constructive lift between
-modular levels, the existence of a positive asymptotic density
-$c_W \in [7556/65536, 1]$ (with $7556/65536 \approx 0.115$), and full
+modular levels, the existence of a positive asymptotic density $c_W$
+with rigorous lower bound $c_W \ge 7556/65536 \approx 0.115$, and full
 factor complexity $p_W(n) = 2^n$ of the associated language of binary
 representations.
 The central technical tool is a parity lemma in the residue system, which
@@ -107,10 +107,12 @@ The Collatz conjecture, attributed to Lothar Collatz and widely studied since
 the 1930s, asserts that for every $n \in \Nodd$ the iteration
 $n, \Tplus(n), \Tplus^2(n), \ldots$ eventually reaches the fixed point $1$.
 Despite considerable computational evidence and a large body of partial
-results --- early density estimates by Crandall~\cite{Crandall1978} and
-Korec~\cite{Korec1994}, and most recently the breakthrough of
-Tao~\cite{Tao2022}, showing that almost all trajectories attain almost
-bounded values --- the conjecture itself remains open. We refer the reader
+results --- early density-side analyses by Terras~\cite{Terras1976} and
+Everett~\cite{Everett1977}, refined density estimates by
+Crandall~\cite{Crandall1978} and Korec~\cite{Korec1994}, and most recently
+the breakthrough of Tao~\cite{Tao2022}, showing that almost all
+trajectories attain almost bounded values --- the conjecture itself
+remains open. We refer the reader
 to the annotated bibliographies of Lagarias~\cite{Lagarias2010,Lagarias2010bib}
 for a comprehensive overview of the literature.
 
@@ -184,7 +186,10 @@ but grows rapidly: direct enumeration gives
 \[
 |\Obs_6| = 3, \quad |\Obs_7| = 8, \quad |\Obs_8| = 19, \quad \ldots, \quad |\Obs_{16}| = 7556,
 \]
-and the density ratio $|\Obs_L|/2^L$ rises monotonically. Three structural
+and the density ratio $|\Obs_L|/2^L$ rises monotonically. Full counts at
+all levels $L = 6, \ldots, 16$ together with the shift-zero / shift-nonzero
+and atomic-shift-nonzero decompositions are collected in
+Table~\ref{tab:appendix-counts} (Appendix~\ref{sec:appendix}). Three structural
 questions arise:
 
 \begin{enumerate}[label=(Q\arabic*)]
@@ -515,9 +520,11 @@ $\vtwo(b_K^{(J)}) = L - \Vk^{(J)}$, and using $\Vk - \Vi = 2a + v$:
 \end{align*}
 \end{proof}
 
+\begin{definition}[Stop type]\label{def:stop-type}
 The \emph{stop type} at $(r, L)$ is \emph{EE} (equality) if
 $\vk^{(J)} = \vtwo(b_K^{(J)})$ (and hence $\vi^{(J)} = \vtwo(b_I^{(J)})$),
 and \emph{SS} (strict) if both inequalities are strict.
+\end{definition}
 
 \subsection{The parameter \texorpdfstring{$v$}{v} and the typical case \texorpdfstring{$v = 1$}{v = 1}}
 
@@ -536,15 +543,17 @@ total, of which $6130$ have $v = 1$ and the remaining $1426$ (roughly
 $19\%$) have $v \ge 2$. The numbers in the appendix table count all $v$.
 
 % =============================================================================
-\section{The Lift Theorem}
+\section{The lift theorem}
 \label{sec:lift}
 % =============================================================================
 
 We now prove Theorem~\ref{thm:lift-intro}: for every $r_0 \in \Obs_{L_0}$,
 both lifts $r_+ := r_0$ and $r_- := r_0 + 2^{L_0}$ are obstructions at level
-$L_0 + 1$. Throughout, $a \in \Z$ is the shift index of $r_0$ at level $L_0$,
-and we use the synchronization $\vi^{(J)} = \vk^{(J)} + 2a$
-(Corollary~\ref{cor:sync}) freely.
+$L_0 + 1$. The two halves are stated and proved separately as
+Theorems~\ref{thm:lift-plus} and~\ref{thm:lift-minus}; together they
+constitute Theorem~\ref{thm:lift-intro}. Throughout, $a \in \Z$ is the
+shift index of $r_0$ at level $L_0$, and we use the synchronization
+$\vi^{(J)} = \vk^{(J)} + 2a$ (Corollary~\ref{cor:sync}) freely.
 
 \subsection{The \texorpdfstring{$r_+$}{r+} lift}
 
@@ -721,9 +730,11 @@ in Appendix~\ref{sec:appendix}), $c_W \ge 3/64$. \qedhere
 
 The conservative bound $\rho_6 = 3/64$ uses only the three explicit
 obstructions $\Obs_6 = \{19, 27, 59\}$. By raising $L_0$ and computing
-$|\Obs_{L_0}|$ directly, tighter rigorous bounds for $c_W$ follow:
+$|\Obs_{L_0}|$ directly, tighter rigorous bounds for $c_W$ follow
+(Table~\ref{tab:density-bounds}):
 
-\begin{center}
+\begin{table}[h]
+\centering
 \begin{tabular}{rrrr}
 \toprule
 $L_0$ & $|\Obs_{L_0}|$ & $\rho_{L_0}$ & rigorous lower bound for $c_W$ \\
@@ -734,7 +745,9 @@ $14$ & $1776$ & $\approx 0.108$ & $1776/16384$ \\
 $16$ & $7556$ & $\approx 0.115$ & $7556/65536$ \\
 \bottomrule
 \end{tabular}
-\end{center}
+\caption{Rigorous lower bounds for $c_W$ obtained from finite-level enumeration of $\Obs_{L_0}$. The ratio $\rho_{L_0} := |\Obs_{L_0}|/2^{L_0}$ is non-decreasing in $L_0$ (Theorem~\ref{thm:density-intro}).}
+\label{tab:density-bounds}
+\end{table}
 
 These are not asymptotic estimates: they are finite-level computations
 producing rigorous bounds at the cost of $O(L_0 \cdot 2^{L_0})$ operations
@@ -896,12 +909,15 @@ does not constrain a step.
 Termination of the reduction at $(r, L)$ at index $J$ means at least one
 track satisfies its stop condition there; by Corollary~\ref{cor:sync}, both
 do. Since $a = 0$, the synchronisation $\vi^{(J)} = \vk^{(J)} + 2a = \vk^{(J)}$
-and $\Vk^{(J)} = \Vi^{(J)} + 1$ hold, so the K-track stop condition
-$\vk^{(J)} \ge L - \Vk^{(J)}$ and the I-track stop condition
-$\vi^{(J)} \ge (L-1) - \Vi^{(J)}$ are equivalent: both reduce to
-$\Vk^{(J)} + \vk^{(J)} \ge L$. We split by whether the level-$(L-1)$ stop
-condition $\Vk^{(j)} + \vk^{(j)} \ge L - 1$ first fires at index $J$ or
-already at index $J - 1$. These are the only possibilities: if it fired at
+and $\Vk^{(J)} - \Vi^{(J)} = v$ hold (Lemma~\ref{lem:parity}), so the
+K-track stop condition $\vk^{(J)} \ge L - \Vk^{(J)}$ and the I-track stop
+condition $\vi^{(J)} \ge (L - v) - \Vi^{(J)}$ are equivalent: substituting
+$\Vi^{(J)} = \Vk^{(J)} - v$ and $\vi^{(J)} = \vk^{(J)}$ into the I-track
+condition reduces it to $\vk^{(J)} \ge L - \Vk^{(J)}$, so both stop
+conditions read $\Vk^{(J)} + \vk^{(J)} \ge L$. We split by whether the
+level-$(L-1)$ stop condition $\Vk^{(j)} + \vk^{(j)} \ge L - 1$ (equivalent
+to $\Vi^{(j)} + \vi^{(j)} \ge L - 1 - v$ by the same substitution) first
+fires at index $J$ or already at index $J - 1$. These are the only possibilities: if it fired at
 some $J' \le J - 2$, then $\Vk^{(J')} + \vk^{(J')} \ge L - 1$; the
 $(r, L)$ reduction takes its $J'$-th step (the level-$L$ stop has not yet
 fired since $J' < J$), giving $\Vk^{(J'+1)} \ge L - 1$, so the K-track
@@ -937,9 +953,11 @@ In either case, $r' \in \Obs_{L-1}$, so $r$ is not atomic. \qedhere
 \subsection{Strict lift balance and series representation}
 
 Write $g_L := |\Obs_L^{G_0}|$ and $h_L := |\Obs_L^{G_{\ne 0}}|$. The lift
-symmetry of Proposition~\ref{prop:lift-symmetry} gives, per parent at $L - 1$:
+symmetry of Proposition~\ref{prop:lift-symmetry} gives, per parent at
+$L - 1$ (Table~\ref{tab:lift-balance}):
 
-\begin{center}
+\begin{table}[h]
+\centering
 \begin{tabular}{c|cc}
 \toprule
 Parent at $L-1$ & Contribution to $g_L$ & Contribution to $h_L$ \\
@@ -948,7 +966,9 @@ $G_0$ & $2$ & $0$ \\
 $G_a$, $a \ne 0$ & $1$ & $1$ \\
 \bottomrule
 \end{tabular}
-\end{center}
+\caption{Per-parent contribution of a level-$(L-1)$ obstruction to the level-$L$ shift-zero and shift-nonzero populations under the two lifts $r_\pm$.}
+\label{tab:lift-balance}
+\end{table}
 
 Summing and adding the atomic contributions, which by Theorem~\ref{thm:no-G0-atom}
 occur only in $h_L$:
@@ -1195,6 +1215,10 @@ The principal open question is to determine $c_W$ exactly, or equivalently
 to give a quantitative bound on the growth of $|\Atom_L^{G_{\ne 0}}|$. Three
 approaches present themselves, each requiring substantial additional work.
 
+% \sloppypar restores tolerant line breaking: without it this paragraph
+% overflows the column by ~4.5pt due to the long compound terms
+% "Substitution-theoretic", "transducer-substitution", "Stérin"; see
+% .reviews note n-01 (2026-05-20).
 \begin{sloppypar}
 \textbf{(i) Substitution-theoretic.} Stérin~\cite{Sterin2020} realizes
 $\Tplus$ as a four-state finite-state transducer between bases $2$ and $3$.
@@ -1220,6 +1244,8 @@ stopping times and shift indices --- makes the analysis delicate.
 
 \subsection{Bridges to nontrivial cycles}
 
+% \sloppypar restores tolerant line breaking: this paragraph overflows by
+% ~1.8pt without it (long hyphenated terms + author names); see n-01.
 \begin{sloppypar}
 The shift-zero class $\Obs_L^{G_0}$ encodes residues for which the two
 parallel stopping times remain rigidly tied. Whether the existence or
@@ -1260,10 +1286,11 @@ residues $r$ with $\vtwo(r-1) \ge 1$, runs the parallel reduction, and
 records the terminal data. The set $\Obs_L$ is read off as the preimage of
 $\{(c, d) : 3d + c = 1\}$.
 
-We have run this enumeration through $L = 16$, producing the following
-counts:
+We have run this enumeration through $L = 16$, producing the counts of
+Table~\ref{tab:appendix-counts}.
 
-\begin{center}
+\begin{table}[h]
+\centering
 \begin{tabular}{rrrrr}
 \toprule
 $L$ & $|\Obs_L|$ & $|\Obs_L^{G_0}|$ & $|\Obs_L^{G_{\ne 0}}|$ & $|\Atom_L^{G_{\ne 0}}|$ \\
@@ -1281,7 +1308,9 @@ $15$ & $3671$ & $3398$ & $273$ & $119$ \\
 $16$ & $7556$ & $7069$ & $487$ & $214$ \\
 \bottomrule
 \end{tabular}
-\end{center}
+\caption{Direct enumeration counts at levels $L=6,\dots,16$: total obstructions, shift-zero and shift-nonzero subclasses, and atomic shift-nonzero obstructions. The strict lift balance $|\Obs_L| = 2|\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$ (Corollary~\ref{cor:lift-balance}) holds row-by-row.}
+\label{tab:appendix-counts}
+\end{table}
 
 The data satisfies the strict lift balance $|\Obs_L| = 2 |\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$
 of Corollary~\ref{cor:lift-balance} at every level, and is consistent with

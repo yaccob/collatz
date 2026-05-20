@@ -14,6 +14,13 @@ Discriminates:
             => candidate for beta-shift / sofic shift class
   - p_W(n) = 2^n - o(2^n): no sub-exponential structure
   - p_W(n) polynomial: very restricted (Sturmian-like, but already falsified)
+
+Caveat: this is an *enumeration* at a fixed finite level L. For n close to or
+exceeding L, the displayed p_W(n) is strictly smaller than the asymptotic 2^n
+- not a refutation of Theorem 5.1, just a finite-L artefact. The constructive
+script factor_complexity_construction.py exhibits an explicit residue
+realising every u in {0,1}^n at level L = 6 + n, confirming p_W(n) = 2^n for
+arbitrary n.
 """
 
 from __future__ import annotations

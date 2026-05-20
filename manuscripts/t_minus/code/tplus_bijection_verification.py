@@ -1,4 +1,4 @@
-"""Empirical verification of Lemma 7.1 (T- / T+ bijection).
+"""Empirical verification of Lemma 7.2 / Theorem 7.3 (T- / T+ bijection).
 
 The manuscript claims that the involution r -> bar{r} := (-r) mod 2^L maps the
 T_-(n) = (3n-1)/2^{v_2(3n-1)} parallel reduction at (r, L) to the
@@ -116,7 +116,7 @@ def reduce_T_plus(rbar, L):
 
 def main():
     L = int(sys.argv[1]) if len(sys.argv) > 1 else 12
-    print(f"Lemma 7.1 (T- / T+ bijection) verification at L = {L}\n")
+    print(f"Lemma 7.2 / Theorem 7.3 (T- / T+ bijection) verification at L = {L}\n")
 
     minus_count = 0
     plus_count = 0
