@@ -26,7 +26,7 @@ defined in §2 of the paper, and reports the result.
 | `iso_synchronisation_verification.py` | Corollary 2.4 (simultaneous stop): K- and I-track terminate at the same index. Verified for all $G_0$-obstructions at $L \le 16$. |
 | `x_invariant_bidirectional.py` | Definition 2.2 and Section 2.4 connection: bidirectional consistency of the algebraic $X$-criterion with the dynamical stopping-time criterion across all odd residues $r$ with $v_2(r-1) \ge 1$, $L \le 12$. |
 | `x_invariant_non_obstructions.py` | Same as above, restricted to the non-obstruction complement. |
-| `tplus_bijection_verification.py` | Lemma 7.1 (T_-/T_+ bijection): the involution $r \mapsto (-r) \bmod 2^L$ maps the T_- parallel reduction to the T_+ parallel reduction step-by-step, with terminal data related by $(c^+_J, d^+_J) = (c^-_J, -d^-_J)$; hence the X-criteria coincide and $\mathcal{O}_L \leftrightarrow \mathcal{O}_L^+$. |
+| `tplus_bijection_verification.py` | Lemma 7.2 / Theorem 7.3 (T_-/T_+ bijection): the involution $r \mapsto (-r) \bmod 2^L$ maps the T_- parallel reduction to the T_+ parallel reduction step-by-step, with terminal data related by $(c^+_J, d^+_J) = (c^-_J, -d^-_J)$; with the sign convention $X^+ := c - 3d$ (Remark 7.1) the X-criteria coincide and $\mathcal{O}_L \leftrightarrow \mathcal{O}_L^+$. |
 
 ## Usage
 

@@ -58,7 +58,7 @@
 \email{[email]}
 \date{\today}
 
-\subjclass[2020]{11B83, 37P05, 68R15, 11A07}
+\subjclass[2020]{11B83, 37P05, 37B10, 68R15, 11A07}
 
 \keywords{Collatz conjecture, $3x-1$ map, residue dynamics, factor complexity, subshift, parallel reduction}
 
@@ -71,8 +71,9 @@ $\Tminus(n) := (3n-1)/2^{\vtwo(3n-1)}$. The family is defined by an
 algebraic criterion on a two-track parallel reduction.
 We prove three structural results: a constructive lift between
 modular levels, the existence of a positive asymptotic density
-$c_W \in [3/64, 1]$, and full factor complexity $p_W(n) = 2^n$ of the
-associated language of binary representations.
+$c_W \in [7556/65536, 1]$ (with $7556/65536 \approx 0.115$), and full
+factor complexity $p_W(n) = 2^n$ of the associated language of binary
+representations.
 The central technical tool is a parity lemma in the residue system, which
 forces the terminal data of the parallel reduction into a shift-$a$ normal
 form with integer-valued shift index. A finer classification by shift
@@ -187,7 +188,8 @@ questions arise:
 The three questions are not independent: a positive answer to (Q1) gives
 monotonicity, hence most of (Q2). A constructive form of (Q1), exhibiting
 arbitrary bit patterns under lift, gives (Q3). All three are answered in
-the affirmative by the main results.
+the affirmative by the main results; in particular the factor language
+of $\bigcup_L \Obs_L$ turns out to be all of $\{0,1\}^*$.
 
 \subsection{Main results}
 
@@ -212,15 +214,17 @@ The density ratio $|\Obs_L|/2^L$ is non-decreasing in $L$, and the limit
 \[
 c_W := \lim_{L \to \infty} \frac{|\Obs_L|}{2^L}
 \]
-exists in $[3/64, 1]$. For every $L_0 \ge 2$, the rigorous lower bound
-$c_W \ge |\Obs_{L_0}|/2^{L_0}$ holds.
+exists in $(0, 1]$. For every $L_0 \ge 6$, the rigorous lower bound
+$c_W \ge |\Obs_{L_0}|/2^{L_0}$ holds; at $L_0 = 16$ this gives
+$c_W \ge 7556/65536 \approx 0.115$, sharpening the conservative
+bound $c_W \ge 3/64 \approx 0.047$ obtained from $L_0 = 6$.
 \end{theorem}
 
-A direct computation at $L_0 = 16$, using only the algorithmic
-$\Xend$-criterion of Section~\ref{sec:setup}, gives the lower bound
-$c_W \ge 7556/65536 \approx 0.115$. The conservative bound $3/64$ obtained
-from $L_0 = 6$ admits substantial improvement by raising $L_0$, but the
-exact value of $c_W$ remains an open problem. We give in
+The bound at $L_0 = 16$, using only the algorithmic
+$\Xend$-criterion of Section~\ref{sec:setup}, gives the explicit value
+$7556/65536 \approx 0.115$ stated above. Raising $L_0$ further admits
+substantial additional improvement, but the exact value of $c_W$ remains
+an open problem. We give in
 Section~\ref{sec:Ga} a refined decomposition that exhibits $c_W$ as a
 rigorously convergent series and isolates the remaining open question to a
 single quantitative bound on a sub-family of obstructions.
@@ -381,7 +385,13 @@ Let $r$ be a positive odd integer and write $v := \vtwo(r-1) \ge 1$. We
 call $r$ an \emph{obstruction residue at level $L > v$} if $\Xend(r, L) = 1$.
 We write
 \[
-\Obs_L := \{\, r \in \{1, \ldots, 2^L\} : r \text{ odd, and an obstruction residue at level } L \,\}.
+\Obs_L := \left\{\, r \in \{1, \ldots, 2^L\}
+  \;\middle|\;
+  \begin{array}{l}
+  r \text{ odd},\; \vtwo(r-1) \ge 1, \\
+  L > \vtwo(r-1),\; \Xend(r, L) = 1
+  \end{array}
+\,\right\}.
 \]
 \end{definition}
 
@@ -409,7 +419,10 @@ Then
 \delta_J := \Vk^{(J)} - \Vi^{(J)} - v
 \]
 is an \emph{even} integer (possibly negative), where $v := \vtwo(r-1)$,
-$\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and analogously for $\Vi$.
+and for any index $j$ we write
+$\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and
+$\Vi^{(j)} := \sum_{i < j} \vi^{(i)}$ for the cumulative valuations
+along the K- and I-tracks.
 \end{lemma}
 
 \begin{proof}
@@ -502,6 +515,12 @@ $\Obs_L$: direct enumeration gives, for $L = 16$, $|\Obs_L| = 7556$ in
 total, of which $6130$ have $v = 1$ and the remaining $1426$ (roughly
 $19\%$) have $v \ge 2$. The numbers in the appendix table count all $v$.
 
+\begin{remark}\label{rem:empty-below-six}
+A direct enumeration confirms $\Obs_L = \emptyset$ for $1 \le L \le 5$;
+the smallest level at which an obstruction residue exists is $L = 6$,
+with $\Obs_6 = \{19, 27, 59\}$.
+\end{remark}
+
 % =============================================================================
 \section{The Lift Theorem}
 \label{sec:lift}
@@ -539,9 +558,11 @@ c_{J+1} = 4^a \cdot 2^{\vk^{(J)} - \vi^{(J)}} = 4^a \cdot 2^{-2a} = 1,
 \[
 d_{J+1} = \frac{3(1 - 4^a)/3 + 4^a - 1}{2^{\vi^{(J)}}} = 0.
 \]
-After this step, $\Vk^{(J+1)} = L_0$, so the K-track modulus has valuation
-$1$, and the next step is impossible (it would require $\vk^{(J+1)} < 1$,
-impossible for odd $a_K^{(J+1)}$). Termination occurs at index $J+1$ with
+After this step, $\Vk^{(J+1)} = L_0$, so the K-track modulus has
+valuation $1$, and the next step would require $\vk^{(J+1)} < 1$. Since
+$a_K^{(J+1)}$ is odd, $3 a_K^{(J+1)} - 1$ is even, hence
+$\vk^{(J+1)} \ge 1$ — so the next step is impossible. Termination
+occurs at index $J+1$ with
 $(c_{J+1}, d_{J+1}) = (1, 0)$, hence $\Xend = 1$ and
 $r_+ \in \Obs_{L_0+1}^{G_0}$.
 
@@ -602,12 +623,15 @@ $3 a_{K,-}^{(J)} - 1 = (3 a_{K,+}^{(J)} - 1) + 3 \Delta_K^{(J)}$ now has the
 two summands at distinct valuations $\vk^{(J)}$ and $L_0 - \Vk^{(J)}$, so by
 the ultrametric inequality the sum has valuation
 $\vk^{(J),-} := L_0 - \Vk^{(J)} < L_0 + 1 - \Vk^{(J)}$. The K-step at
-$(r_-, L_0+1)$ at index $J$ is therefore permitted. The same calculation
-on the I-track --- using $\vtwo(\Delta_I^{(J)}) = L_0 - v - \Vi^{(J)} < \vi^{(J)}$,
-which holds by SS on the I-track via the synchronisation
-$\vi^{(J)} = \vk^{(J)} + 2a$ of Corollary~\ref{cor:sync} --- yields
+$(r_-, L_0+1)$ at index $J$ is therefore permitted. The same calculation on the I-track yields
 $\vi^{(J),-} := L_0 - v - \Vi^{(J)}$, also permitted, and one more step
-follows. Using $\Vk - \Vi = 2a + v$, the new exponent in the update rule
+follows. The required strict inequality
+$\vtwo(\Delta_I^{(J)}) = L_0 - v - \Vi^{(J)} < \vi^{(J)}$ is the
+I-track version of SS: by the synchronisation
+$\vi^{(J)} = \vk^{(J)} + 2a$ of Corollary~\ref{cor:sync} together with
+$\Vk^{(J)} - \Vi^{(J)} = 2a + v$, the K-track strict inequality
+$\vk^{(J)} > L_0 - \Vk^{(J)}$ is equivalent to
+$\vi^{(J)} > L_0 - v - \Vi^{(J)}$. Using $\Vk - \Vi = 2a + v$, the new exponent in the update rule
 is $\vk^{(J),-} - \vi^{(J),-} = -2a$, so
 \[
 c_{J+1} = c_J \cdot 2^{-2a} = 4^a \cdot 4^{-a} = 1,
@@ -745,9 +769,11 @@ Combined with the trivial upper bound, $p_W(n) = 2^n$. \qedhere
 The \emph{topological entropy} of a language $\mathcal{L} \subseteq \{0,1\}^*$
 is $h(\mathcal{L}) := \limsup_{n \to \infty} (1/n) \log p_{\mathcal{L}}(n)$;
 see Lind--Marcus~\cite{LindMarcus1995} for general background on entropy of
-subshifts and subshifts of finite type, and Fogg~\cite{Fogg2002} or
+subshifts and subshifts of finite type, Fogg~\cite{Fogg2002} or
 Allouche--Shallit~\cite{AlloucheShallit2003} for factor complexity of
-substitution and automatic sequences.
+substitution and automatic sequences, and
+Cassaigne~\cite{Cassaigne1997} for the general theory of subword
+complexity in terms of special factors.
 
 \begin{corollary}\label{cor:entropy}
 The topological entropy of $\Fac(\Obs)$ is $\log 2$.
@@ -761,10 +787,12 @@ $\{0,1\}^\Z$.
 The obstruction family $(\Obs_L)_{L \ge 6}$, viewed as a graded family of
 finite languages over $\{0,1\}$, is
 \begin{enumerate}[label=(\roman*)]
-\item not a non-trivial subshift of finite type;
-\item not a non-trivial sofic shift in the classical sense;
-\item not a primitive substitution shift in the sense of Pansiot~\cite{Pansiot1984}
-  or Devyatov~\cite{Devyatov2015}.
+\item not the language of a proper subshift of finite type, that is, one
+  defined by a non-empty list of forbidden factors;
+\item not the language of a proper sofic shift in the classical sense
+  (image of a proper SFT under a one-block factor map);
+\item not the factor language of a primitive substitution shift in the
+  sense of Pansiot~\cite{Pansiot1984} or Devyatov~\cite{Devyatov2015}.
 \end{enumerate}
 \end{corollary}
 
@@ -846,10 +874,14 @@ condition $\Vk^{(j)} + \vk^{(j)} \ge L - 1$ first fires at index $J$ or
 already at index $J - 1$. These are the only possibilities: if it fired at
 some $J' \le J - 2$, then $\Vk^{(J')} + \vk^{(J')} \ge L - 1$; the
 $(r, L)$ reduction takes its $J'$-th step (the level-$L$ stop has not yet
-fired since $J' < J$), giving $\Vk^{(J'+1)} = L - 1$, so the next K-step
-requires only $\vk^{(J'+1)} \ge 1$, which is automatic for odd
-$a_K^{(J'+1)}$. Hence the $(r, L)$ reduction stops at $J' + 1 \le J - 1$,
-contradicting the definition of $J$.
+fired since $J' < J$), giving $\Vk^{(J'+1)} \ge L - 1$, so the K-track
+modulus at level $L$ has valuation $L - \Vk^{(J'+1)} \le 1$. Since
+$a_K^{(J'+1)}$ is odd, $\vk^{(J'+1)} \ge 1$, so the next step is
+impossible: the $(r, L)$ reduction would stop at $J' + 1 \le J - 1$,
+contradicting the definition of $J$. The symmetric argument on the
+I-track --- using that $a_I^{(J'+1)}$ is odd, hence
+$\vi^{(J'+1)} \ge 1$ --- rules out an early I-track stop at level $L-1$
+in the same way.
 
 \emph{Case A: $\Vk^{(J)} + \vk^{(J)} \ge L$ and the reduction at
 $(r', L-1)$ also terminates at index $J$.} Then the terminal data
@@ -935,36 +967,174 @@ Section~\ref{sec:open}.
 \label{sec:tplus}
 % =============================================================================
 
-The classical Collatz map $\Tplus$ admits the same obstruction theory,
-transferred from $\Tminus$ via the residue involution
-$r \mapsto \overline{r} := (-r) \bmod 2^L$.
+The classical Collatz map $\Tplus$ admits the same obstruction theory.
+We transfer the framework of Section~\ref{sec:setup} to $\Tplus$ and
+show that the residue involution $r \mapsto \overline{r} := 2^L - r$
+realises an explicit bijection between the two obstruction families,
+step-by-step at the level of the parallel reduction.
 
-\begin{lemma}\label{lem:bijection}
-For each odd $r$ and each level $L$, $\Xend^+(\overline{r}, L) = 1$
-if and only if $\Xend(r, L) = 1$, where $\Xend^+$ is the $X$-invariant
-defined as in Section~\ref{sec:setup} but with $\Tminus$ replaced by
-$\Tplus$ throughout.
+\subsection{The \texorpdfstring{$\Tplus$}{T+} parallel reduction}
+
+Fix a positive odd integer $r$ with $\vtwo(r+1) \ge 1$, and write
+$v := \vtwo(r+1)$ and $m := (r+1)/2^v$; then $m$ is odd. For a level
+$L > v$, run the parallel reduction with $\Tplus$:
+\begin{itemize}
+\item the \emph{K-track}, starting from $(a_K^{(0)}, b_K^{(0)}) := (r, 2^L)$
+  with basic step $a_K' = (3 a_K + 1)/2^{\vk}$,
+  $\vk := \vtwo(3 a_K + 1)$;
+\item the \emph{I-track}, starting from
+  $(a_I^{(0)}, b_I^{(0)}) := (m, 2^{L - v})$ with the analogous basic step.
+\end{itemize}
+The initial relation $m = (r+1)/2^v$ writes as
+$a_I^{(0)} = 2^{-v} a_K^{(0)} + 2^{-v}$, so the affine relation
+$a_I^{(j)} = c_j a_K^{(j)} + d_j$ holds at index~$0$ with
+$c_0 = 2^{-v}$, $d_0 = +2^{-v}$. The derivation of
+Lemma~\ref{lem:affine}, applied with $\Tplus$ in place of $\Tminus$ and
+using $3 a_I + 1 = c_j (3 a_K + 1) + (3 d_j - c_j + 1)$, yields the
+update rule
+\[
+c_{j+1} = c_j \cdot 2^{\vk^{(j)} - \vi^{(j)}}, \qquad
+d_{j+1} = \frac{3 d_j - c_j + 1}{2^{\vi^{(j)}}}.
+\]
+(The numerator changes sign relative to the $\Tminus$ rule.) We define
+the $\Tplus$-analogue of the $X$-invariant by
+\[
+\Xend^{+}(r, L) := c_J - 3 d_J,
+\]
+where $J$ is the termination index. An odd $r$ with $\vtwo(r+1) \ge 1$
+and $L > \vtwo(r+1)$ is a \emph{$\Tplus$-obstruction residue at level $L$}
+if $\Xend^{+}(r, L) = 1$; we write $\Obs_L^{+} \subseteq \{1, \ldots, 2^L\}$
+for the set of such residues.
+
+\begin{remark}\label{rem:Xplus-sign}
+The sign convention $\Xend^{+} := c - 3d$ (rather than $3d + c$) is the
+one forced by the affine algebra: with this combination the analogue of
+the parity lemma (Lemma~\ref{lem:parity}) yields the shift-$a$ normal
+form $(c_J, d_J) = (4^a, (4^a - 1)/3)$, and the residue-level bijection
+of Theorem~\ref{thm:tplus-bijection} below is exact.
+\end{remark}
+
+\subsection{The residue involution}
+
+\begin{lemma}[Residue-level involution]\label{lem:involution-step}
+Let $r$ be odd with $v := \vtwo(r-1) \ge 1$ and $L > v$, and set
+$\overline{r} := 2^L - r$. Then:
+\begin{enumerate}[label=(\roman*)]
+\item $\overline{r}$ is odd with $\vtwo(\overline{r} + 1) = v < L$;
+\item the $\Tminus$ parallel reduction at $(r, L)$ and the $\Tplus$
+  parallel reduction at $(\overline{r}, L)$, both with parameter $v$,
+  terminate at the same index $J$;
+\item for every $0 \le j \le J$,
+\begin{equation}\label{eq:invol-residue}
+a_K^{+,(j)} \equiv -\, a_K^{-,(j)} \pmod{2^{L - \Vk^{(j)}}},
+\quad
+a_I^{+,(j)} \equiv -\, a_I^{-,(j)} \pmod{2^{L - v - \Vi^{(j)}}},
+\end{equation}
+and $\vk^{+,(j)} = \vk^{-,(j)}$, $\vi^{+,(j)} = \vi^{-,(j)}$
+whenever $j < J$;
+\item the affine data satisfy
+\begin{equation}\label{eq:invol-affine}
+(c_j^{+}, d_j^{+}) = (c_j^{-},\; -\, d_j^{-}) \qquad (0 \le j \le J).
+\end{equation}
+\end{enumerate}
 \end{lemma}
 
 \begin{proof}
-The basic $\Tplus$-step on $\overline{r}$ produces
-$3\overline{r} + 1 = 3 \cdot 2^L - (3r - 1)$ in $\Z$.
-The two summands have $2$-adic valuations $L$ and $\vtwo(3r - 1)$;
-during the reduction the modulus has not yet been exhausted, so
-$\vtwo(3r - 1) < L$ and the ultrametric identity yields
-$v_+(\overline{r}) = \vtwo(3\overline{r} + 1) = \vtwo(3r - 1) = v_-(r)$.
-The affine update therefore transfers without change, and the terminal
-$X$-value is the same. \qedhere
+(i): $\overline{r} + 1 = 2^L - (r - 1)$ has, by the ultrametric identity
+with $\vtwo(r-1) = v < L$, $2$-adic valuation exactly $v$. Oddness of
+$\overline{r}$ is immediate.
+
+(iii) and (ii) jointly: we prove the residue congruences
+in~\eqref{eq:invol-residue} for $j = 0, 1, \ldots$ by induction, and
+deduce simultaneous termination and the valuation equalities along the
+way.
+
+\emph{Base case ($j = 0$).} K-track:
+$a_K^{+,(0)} = \overline{r} = 2^L - r = -a_K^{-,(0)} + 2^L$.
+I-track: $a_I^{-,(0)} = (r-1)/2^v$ and
+$a_I^{+,(0)} = (\overline{r}+1)/2^v = (2^L - (r-1))/2^v = 2^{L-v} - a_I^{-,(0)}$.
+Both congruences in~\eqref{eq:invol-residue} hold at $j = 0$. For the
+valuation equality at $j = 0$, suppose the $\Tminus$ reduction is still
+running, i.e.\ $\vk^{-,(0)} < L$. Then
+$3 \overline{r} + 1 = 3 \cdot 2^L - (3 r - 1)$ has summands of
+valuations $L$ and $\vk^{-,(0)}$ respectively, with $\vk^{-,(0)} < L$;
+the ultrametric identity gives $\vk^{+,(0)} = \vk^{-,(0)}$. The
+analogous calculation on the I-track gives $\vi^{+,(0)} = \vi^{-,(0)}$.
+
+\emph{Inductive step.} Assume~\eqref{eq:invol-residue} at index $j$ and
+that both reductions have not yet terminated at index $j$
+(so $\vk^{(j)} < L - \Vk^{(j)}$ and $\vi^{(j)} < L - v - \Vi^{(j)}$,
+with valuations equal across $+/-$ by the inductive valuation
+equalities). For the K-track,
+\[
+3 a_K^{+,(j)} + 1 \equiv 3 (-a_K^{-,(j)}) + 1 = -(3 a_K^{-,(j)} - 1)
+\pmod{2^{L - \Vk^{(j)}}}.
+\]
+The right-hand side has valuation $\vk^{(j)} < L - \Vk^{(j)}$, so the
+left-hand side has the same valuation $\vk^{+,(j)} = \vk^{(j)}$, and
+dividing through by $2^{\vk^{(j)}}$ gives
+\[
+a_K^{+,(j+1)} = \frac{3 a_K^{+,(j)} + 1}{2^{\vk^{(j)}}}
+\equiv -\, \frac{3 a_K^{-,(j)} - 1}{2^{\vk^{(j)}}}
+= -\, a_K^{-,(j+1)}
+\pmod{2^{L - \Vk^{(j+1)}}}.
+\]
+The same calculation on the I-track gives the analogous congruence and
+$\vi^{+,(j)} = \vi^{(j)}$.
+
+\emph{Simultaneous termination.} The termination condition of the
+$(\overline{r}, L)$ reduction at index $j$ is
+$\vk^{+,(j)} \ge L - \Vk^{(j)}$ or $\vi^{+,(j)} \ge L - v - \Vi^{(j)}$.
+By the induction, while both reductions are still running, the
+valuations and cumulative valuations match across $+/-$; so the
+termination condition fires at the same index $J$ in both reductions.
+The residue congruence~\eqref{eq:invol-residue} at $j = J$ follows by
+applying the inductive step one final time (which is valid because the
+inductive hypothesis at $j = J - 1$ only requires the reductions to be
+running there, not at $J$).
+
+(iv): At $j = 0$, $c_0^{+} = 2^{-v} = c_0^{-}$ and
+$d_0^{+} = +2^{-v} = -\, d_0^{-}$. Inductively, given
+$(c_j^{+}, d_j^{+}) = (c_j^{-}, -d_j^{-})$ and the valuation equalities
+$\vk^{+,(j)} = \vk^{-,(j)}$, $\vi^{+,(j)} = \vi^{-,(j)}$,
+\begin{align*}
+c_{j+1}^{+} &= c_j^{+} \cdot 2^{\vk^{(j)} - \vi^{(j)}} = c_{j+1}^{-}, \\
+d_{j+1}^{+} &= \frac{3 d_j^{+} - c_j^{+} + 1}{2^{\vi^{(j)}}}
+  = -\,\frac{3 d_j^{-} + c_j^{-} - 1}{2^{\vi^{(j)}}}
+  = -\, d_{j+1}^{-}. \qedhere
+\end{align*}
 \end{proof}
 
-Write $\Obs_L^+$ for the $\Tplus$ analogue of $\Obs_L$.
+\subsection{The bijection theorem}
 
-\begin{theorem}
-By Lemma~\ref{lem:bijection}, the map $r \mapsto \overline{r}$ restricts to a
-bijection $\Obs_L \leftrightarrow \Obs_L^+$. Theorems~\ref{thm:lift-intro},~\ref{thm:density-intro},
-and~\ref{thm:fc-intro} hold verbatim for $\Obs^+$, with the same density
-constant $c_W$ and factor complexity function $p_W^+(n) = 2^n$.
+\begin{theorem}\label{thm:tplus-bijection}
+For every level $L$, the involution $r \mapsto \overline{r} := 2^L - r$
+restricts to a bijection $\Obs_L \leftrightarrow \Obs_L^{+}$.
+Consequently $|\Obs_L^{+}| = |\Obs_L|$, and
+Theorems~\ref{thm:lift-intro}, \ref{thm:density-intro}, and~\ref{thm:fc-intro}
+hold verbatim for $\Obs^{+}$, with the same density constant $c_W$ and
+factor complexity function $p_W^{+}(n) = 2^n$.
 \end{theorem}
+
+\begin{proof}
+For $r$ odd with $\vtwo(r-1) \ge 1$ and $L > \vtwo(r-1)$,
+Lemma~\ref{lem:involution-step}(iv) at the terminal index $J$ gives
+\[
+\Xend^{+}(\overline{r}, L) = c_J^{+} - 3 d_J^{+}
+  = c_J^{-} - 3 \cdot (-d_J^{-})
+  = c_J^{-} + 3 d_J^{-}
+  = \Xend(r, L).
+\]
+Hence $r \in \Obs_L$ iff $\overline{r} \in \Obs_L^{+}$. Since
+$r \mapsto \overline{r}$ is an involution on the odd residues in
+$\{1, \ldots, 2^L - 1\}$, it restricts to a bijection
+$\Obs_L \leftrightarrow \Obs_L^{+}$. The remaining claims --- lift,
+positive density, full factor complexity --- transfer mechanically: by
+Lemma~\ref{lem:involution-step} the involution conjugates each
+$\Tminus$ basic step into the corresponding $\Tplus$ basic step, so the
+case analyses of Sections~\ref{sec:lift}, \ref{sec:density},
+and~\ref{sec:fc} apply verbatim. \qedhere
+\end{proof}
 
 % =============================================================================
 \section{Open questions}
