@@ -456,8 +456,10 @@ of $r$ at level $L$, denoted $a(r, L)$. The obstruction family partitions:
 \Obs_L = \bigsqcup_{a \in \Z} \Obs_L^{G_a}, \qquad \Obs_L^{G_a} := \{\, r \in \Obs_L : a(r, L) = a \,\}.
 \]
 For $a = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
-The shift index is bounded: $|2a + v| \le \max(\Vk^{(J)}, \Vi^{(J)}) \le L$,
-so $|a| \le L/2$.
+The shift index is bounded: since $\delta_J = \Vk^{(J)} - \Vi^{(J)} - v$ with
+$0 \le \Vk^{(J)} \le L$ and $0 \le \Vi^{(J)} \le L - v$, we have
+$|2a + v| = |\delta_J + v| = |\Vk^{(J)} - \Vi^{(J)}| \le \max(\Vk^{(J)}, \Vi^{(J)}) \le L$,
+hence $|a| \le L/2$.
 
 \subsection{Simultaneous stop and stop types}
 
@@ -715,7 +717,7 @@ $p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$. Trivially $p_W(n) \le 2^n$.
 
 \subsection{The main theorem}
 
-\begin{theorem}\label{thm:fc}
+\begin{theorem}
 For every $n \ge 1$, $p_W(n) = 2^n$.
 \end{theorem}
 
@@ -823,6 +825,11 @@ For every $L \ge 7$, $|\Atom_L^{G_0}| = 0$.
 \begin{proof}
 Fix $L \ge 7$ and suppose $r \in \Obs_L^{G_0}$, so $\Xend(r, L) = 1$ with
 shift index $a = 0$, i.e.\ $(c_J, d_J) = (1, 0)$. Write $r' := r \bmod 2^{L-1}$.
+We first note $J \ge 2$: at $J = 0$ the terminal pair is $(2^{-v}, -2^{-v})$,
+which equals $(1, 0)$ only for $v = 0$, contradicting $v \ge 1$; at $J = 1$ the
+update rule gives $d_1 = (3 \cdot (-2^{-v}) + 2^{-v} - 1)/2^{\vi^{(0)}} = -(1 + 2^{1-v})/2^{\vi^{(0)}} \ne 0$
+for $v \ge 1$, contradicting $d_J = 0$. Hence $J \ge 2$, so the case
+distinction below over the indices $J - 1$ and $J$ is well-defined.
 The parallel reduction at $(r', L-1)$ uses the same starting values
 $a_K, a_I$ as at $(r, L)$, but with the modulus reduced by one power of two.
 The first $j$ steps of the two reductions coincide as long as the modulus
@@ -952,7 +959,7 @@ $X$-value is the same. \qedhere
 
 Write $\Obs_L^+$ for the $\Tplus$ analogue of $\Obs_L$.
 
-\begin{theorem}\label{thm:transfer}
+\begin{theorem}
 By Lemma~\ref{lem:bijection}, the map $r \mapsto \overline{r}$ restricts to a
 bijection $\Obs_L \leftrightarrow \Obs_L^+$. Theorems~\ref{thm:lift-intro},~\ref{thm:density-intro},
 and~\ref{thm:fc-intro} hold verbatim for $\Obs^+$, with the same density

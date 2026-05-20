@@ -14,6 +14,7 @@ defined in §2 of the paper, and reports the result.
 
 | Script | Verifies |
 |:---|:---|
+| `count_obstructions.py` | Appendix table (counts $\|\mathcal{O}_L\|$, $\|\mathcal{O}_L^{G_0}\|$, $\|\mathcal{O}_L^{G_{\ne 0}}\|$, $\|\mathcal{A}_L^{G_{\ne 0}}\|$) and the strict lift balance $\|\mathcal{O}_L\| = 2\|\mathcal{O}_{L-1}\| + \|\mathcal{A}_L^{G_{\ne 0}}\|$ (Corollary 6.3). |
 | `atomic_anchor_verification.py` | Lemma 6.1 (atom decomposition): every obstruction has a unique atomic anchor. |
 | `atomic_g0_early_stop_check.py` | Theorem 6.2 (no shift-zero atoms): no atomic shift-zero obstructions at level $\ge 7$. Classifies the lift origin of every $G_0$-obstruction. |
 | `obstr_factor_complexity.py` | Theorem 5.1 (full factor complexity): empirical confirmation $p_W(n) = 2^n$ for $n \le 12$ at $L \le 16$. |
@@ -25,6 +26,7 @@ defined in §2 of the paper, and reports the result.
 | `iso_synchronisation_verification.py` | Corollary 2.4 (simultaneous stop): K- and I-track terminate at the same index. Verified for all $G_0$-obstructions at $L \le 16$. |
 | `x_invariant_bidirectional.py` | Definition 2.2 and Section 2.4 connection: bidirectional consistency of the algebraic $X$-criterion with the dynamical stopping-time criterion across all odd residues $r$ with $v_2(r-1) \ge 1$, $L \le 12$. |
 | `x_invariant_non_obstructions.py` | Same as above, restricted to the non-obstruction complement. |
+| `tplus_bijection_verification.py` | Lemma 7.1 (T_-/T_+ bijection): the involution $r \mapsto (-r) \bmod 2^L$ maps the T_- parallel reduction to the T_+ parallel reduction step-by-step, with terminal data related by $(c^+_J, d^+_J) = (c^-_J, -d^-_J)$; hence the X-criteria coincide and $\mathcal{O}_L \leftrightarrow \mathcal{O}_L^+$. |
 
 ## Usage
 
