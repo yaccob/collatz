@@ -200,10 +200,11 @@ $r_- := r_0 + 2^{L_0}$ are obstruction residues at level $L_0 + 1$.
 The proof, given in Section~\ref{sec:lift}, proceeds by case analysis on a
 finite invariant of the parallel reduction. (The hypothesis $L_0 \ge 6$ is
 the smallest level for which $\Obs_{L_0}$ is non-empty; for $L_0 < 6$ the
-statement is vacuous, and the proof in Section~\ref{sec:lift} only uses
-$L_0 \ge 2$.) The lift is explicit: for each $r_0$, the terminal data of the
-reduction at $r_+$ or $r_-$ is determined by a closed-form algebraic
-identity.
+statement is vacuous. The proof in Section~\ref{sec:lift} only uses
+$L_0 > v$, which is automatic from $r_0 \in \Obs_{L_0}$ by
+Definition~\ref{def:obstruction}.) The lift is explicit: for each $r_0$,
+the terminal data of the reduction at $r_+$ or $r_-$ is determined by a
+closed-form algebraic identity.
 
 \begin{theorem}[Positive density]
 \label{thm:density-intro}
@@ -303,18 +304,19 @@ part from $3n - 1$:
 \Tminus(n) = \frac{3n - 1}{2^{\vtwo(3n - 1)}}.
 \]
 We need a version of this step that keeps track of the modulus. Fix a level
-$L \ge 1$, and consider a pair $(a, b)$ with $a$ a positive odd integer
-and $b$ a power of two, interpreted as a residue $a$ modulo $b$. A single
-$\Tminus$-step on such a pair produces
+$L \ge 1$, and consider a pair $(\alpha, \beta)$ with $\alpha$ a positive odd
+integer and $\beta$ a power of two, interpreted as a residue $\alpha$ modulo
+$\beta$. A single $\Tminus$-step on such a pair produces
 \[
-(a', b') = \left(\frac{3a - 1}{2^{v_a}},\; \frac{3b}{2^{v_a}}\right), \qquad v_a := \vtwo(3a - 1),
+(\alpha', \beta') = \left(\frac{3\alpha - 1}{2^{v_\alpha}},\; \frac{3\beta}{2^{v_\alpha}}\right), \qquad v_\alpha := \vtwo(3\alpha - 1),
 \]
-provided $v_a < \vtwo(b)$. If $v_a \ge \vtwo(b)$, the modulus has been
-exhausted and the step is undefined; we say the reduction has \emph{terminated}.
+provided $v_\alpha < \vtwo(\beta)$. If $v_\alpha \ge \vtwo(\beta)$, the
+modulus has been exhausted and the step is undefined; we say the reduction
+has \emph{terminated}.
 
-Since $3$ is odd, $\vtwo(3b) = \vtwo(b)$, so $\vtwo(b') = \vtwo(b) - v_a$:
-the modulus strictly decreases at each step, and the reduction always
-terminates after finitely many steps.
+Since $3$ is odd, $\vtwo(3\beta) = \vtwo(\beta)$, so
+$\vtwo(\beta') = \vtwo(\beta) - v_\alpha$: the modulus strictly decreases at
+each step, and the reduction always terminates after finitely many steps.
 
 \subsection{The two-track setup}
 
@@ -375,14 +377,12 @@ the algebraic certificate of obstruction status (Definition~\ref{def:obstruction
 
 \begin{definition}[Obstruction residue]
 \label{def:obstruction}
-An odd integer $r$ with $v := \vtwo(r-1) \ge 1$ is an
-\emph{obstruction residue at level $L > v$} if $\Xend(r, L) = 1$. We write
+Let $r$ be a positive odd integer and write $v := \vtwo(r-1) \ge 1$. We
+call $r$ an \emph{obstruction residue at level $L > v$} if $\Xend(r, L) = 1$.
+We write
 \[
-\Obs_L := \{\, r \in \{1, \ldots, 2^L\} : r \text{ is an obstruction residue at level } L \,\}.
+\Obs_L := \{\, r \in \{1, \ldots, 2^L\} : r \text{ odd, and an obstruction residue at level } L \,\}.
 \]
-The typical case is $v = 1$ (equivalently $r \equiv 3 \pmod 4$); larger
-values of $v$ contribute additional residues whose analysis is identical
-with the obvious substitutions.
 \end{definition}
 
 The definition is algorithmic: given $r$ and $L$, one runs the parallel
@@ -464,7 +464,7 @@ so $|a| \le L/2$.
 \begin{corollary}[Simultaneous stop]
 \label{cor:sync}
 If $\Xend(r, L) = 1$, then the K-track and I-track satisfy the termination
-condition $v_a \ge \vtwo(b)$ at the same index $J$.
+condition $v_\alpha \ge \vtwo(\beta)$ at the same index $J$.
 \end{corollary}
 
 \begin{proof}
@@ -495,6 +495,11 @@ shift-$a$ normal form $(c_J, d_J) = (4^a, (1-4^a)/3)$ is independent of $v$.
 The subsequent sections work with the general case throughout; explicit
 calculations use $v = 1$ wherever this aids the reader.
 
+The $v \ge 2$ residues contribute a small but non-negligible share of
+$\Obs_L$: direct enumeration gives, for $L = 16$, $|\Obs_L| = 7556$ in
+total, of which $6130$ have $v = 1$ and the remaining $1426$ (roughly
+$19\%$) have $v \ge 2$. The numbers in the appendix table count all $v$.
+
 % =============================================================================
 \section{The Lift Theorem}
 \label{sec:lift}
@@ -513,7 +518,7 @@ Let $r_0 \in \Obs_{L_0}^{G_a}$. Then $r_+ := r_0 \in \Obs_{L_0+1}$.
 \end{theorem}
 
 \begin{proof}
-Set $v := \vtwo(r_0 - 1) \ge 1$; the typical case is $v = 1$.
+Set $v := \vtwo(r_0 - 1) \ge 1$.
 The starting pairs at $(r_+, L_0+1)$ are $(r_0, 2^{L_0+1})$ and
 $(m_0, 2^{L_0+1-v})$ where $m_0 = (r_0 - 1)/2^v$. These differ from the
 corresponding pairs at $(r_0, L_0)$ only in the modulus, which is doubled.
@@ -594,9 +599,22 @@ The relation
 $3 a_{K,-}^{(J)} - 1 = (3 a_{K,+}^{(J)} - 1) + 3 \Delta_K^{(J)}$ now has the
 two summands at distinct valuations $\vk^{(J)}$ and $L_0 - \Vk^{(J)}$, so by
 the ultrametric inequality the sum has valuation
-$L_0 - \Vk^{(J)} < L_0 + 1 - \Vk^{(J)}$. The K-step at $(r_-, L_0+1)$ at
-index $J$ is therefore permitted, and one more step follows. The update is
-precisely the EE-extra-step from Theorem~\ref{thm:lift-plus}:
+$\vk^{(J),-} := L_0 - \Vk^{(J)} < L_0 + 1 - \Vk^{(J)}$. The K-step at
+$(r_-, L_0+1)$ at index $J$ is therefore permitted. The same calculation
+on the I-track --- using $\vtwo(\Delta_I^{(J)}) = L_0 - v - \Vi^{(J)} < \vi^{(J)}$,
+which holds by SS on the I-track via the synchronisation
+$\vi^{(J)} = \vk^{(J)} + 2a$ of Corollary~\ref{cor:sync} --- yields
+$\vi^{(J),-} := L_0 - v - \Vi^{(J)}$, also permitted, and one more step
+follows. Using $\Vk - \Vi = 2a + v$, the new exponent in the update rule
+is $\vk^{(J),-} - \vi^{(J),-} = -2a$, so
+\[
+c_{J+1} = c_J \cdot 2^{-2a} = 4^a \cdot 4^{-a} = 1,
+\qquad
+d_{J+1} = \frac{3 \cdot (1 - 4^a)/3 + 4^a - 1}{2^{\vi^{(J),-}}} = 0.
+\]
+After this step $\Vk^{(J+1)} = L_0$ and $\Vi^{(J+1)} = L_0 - v$, so both
+moduli have valuation $1$ and the next step on either track is impossible
+for odd $a_K, a_I$. Termination occurs at index $J + 1$ with
 $(c_{J+1}, d_{J+1}) = (1, 0)$, so $r_- \in \Obs_{L_0+1}^{G_0}$.
 
 \emph{Stop type EE at $L_0$.} Here
@@ -605,8 +623,10 @@ of $3 a_{K,-}^{(J)} - 1 = (3 a_{K,+}^{(J)} - 1) + 3 \Delta_K^{(J)}$ have
 \emph{equal} valuation $\vk^{(J)}$. The ultrametric inequality then gives
 only $\vtwo(A_{K,-}^{(J)}) \ge \vk^{(J)} + 1$; that is,
 $\vtwo(A_{K,-}^{(J)}) \ge L_0 + 1 - \Vk^{(J)}$, which is the K-track stop
-condition at level $L_0+1$. Termination occurs at index $J$ with terminal
-data unchanged, so $r_- \in \Obs_{L_0+1}^{G_a}$. \qedhere
+condition at level $L_0+1$. The same argument on the I-track gives
+$\vtwo(A_{I,-}^{(J)}) \ge L_0 + 1 - v - \Vi^{(J)}$, the I-track stop
+condition at level $L_0+1$. Termination therefore occurs at index $J$ with
+terminal data unchanged, so $r_- \in \Obs_{L_0+1}^{G_a}$. \qedhere
 \end{proof}
 
 \subsection{The symmetry table}
@@ -814,12 +834,15 @@ do. Since $a = 0$, the synchronisation $\vi^{(J)} = \vk^{(J)} + 2a = \vk^{(J)}$
 and $\Vk^{(J)} = \Vi^{(J)} + 1$ hold, so the K-track stop condition
 $\vk^{(J)} \ge L - \Vk^{(J)}$ and the I-track stop condition
 $\vi^{(J)} \ge (L-1) - \Vi^{(J)}$ are equivalent: both reduce to
-$\Vk^{(J)} + \vk^{(J)} \ge L$. We split by whether this inequality holds
-at index $J$ or already at index $J - 1$ (i.e.\ $\Vk^{(J-1)} + \vk^{(J-1)} \ge L - 1$,
-which is the corresponding stop condition at level $L - 1$); the two cases
-are exhaustive because if the level-$(L-1)$ stop condition failed at every
-$j \le J - 1$, the reduction at $(r', L-1)$ would not terminate by index $J$,
-contradicting $r' \in \{1, \ldots, 2^{L-1}\}$.
+$\Vk^{(J)} + \vk^{(J)} \ge L$. We split by whether the level-$(L-1)$ stop
+condition $\Vk^{(j)} + \vk^{(j)} \ge L - 1$ first fires at index $J$ or
+already at index $J - 1$. These are the only possibilities: if it fired at
+some $J' \le J - 2$, then $\Vk^{(J')} + \vk^{(J')} \ge L - 1$; the
+$(r, L)$ reduction takes its $J'$-th step (the level-$L$ stop has not yet
+fired since $J' < J$), giving $\Vk^{(J'+1)} = L - 1$, so the next K-step
+requires only $\vk^{(J'+1)} \ge 1$, which is automatic for odd
+$a_K^{(J'+1)}$. Hence the $(r, L)$ reduction stops at $J' + 1 \le J - 1$,
+contradicting the definition of $J$.
 
 \emph{Case A: $\Vk^{(J)} + \vk^{(J)} \ge L$ and the reduction at
 $(r', L-1)$ also terminates at index $J$.} Then the terminal data
@@ -917,9 +940,14 @@ $\Tplus$ throughout.
 \end{lemma}
 
 \begin{proof}
-The basic $\Tplus$-step on $\overline{r}$ produces $v_+(\overline{r}) = \vtwo(3\overline{r} + 1) = \vtwo(-(3r - 1)) = \vtwo(3r - 1) = v_-(r)$,
-so the affine update transfers without change. The terminal $X$-value is
-the same. \qedhere
+The basic $\Tplus$-step on $\overline{r}$ produces
+$3\overline{r} + 1 = 3 \cdot 2^L - (3r - 1)$ in $\Z$.
+The two summands have $2$-adic valuations $L$ and $\vtwo(3r - 1)$;
+during the reduction the modulus has not yet been exhausted, so
+$\vtwo(3r - 1) < L$ and the ultrametric identity yields
+$v_+(\overline{r}) = \vtwo(3\overline{r} + 1) = \vtwo(3r - 1) = v_-(r)$.
+The affine update therefore transfers without change, and the terminal
+$X$-value is the same. \qedhere
 \end{proof}
 
 Write $\Obs_L^+$ for the $\Tplus$ analogue of $\Obs_L$.
@@ -942,19 +970,23 @@ The principal open question is to determine $c_W$ exactly, or equivalently
 to give a quantitative bound on the growth of $|\Atom_L^{G_{\ne 0}}|$. Three
 approaches present themselves, each requiring substantial additional work.
 
+\begin{sloppypar}
 \textbf{(i) Substitution-theoretic.} Stérin~\cite{Sterin2020} realizes
 $\Tplus$ as a four-state finite-state transducer between bases $2$ and $3$.
 A related transducer-substitution system for the parallel reduction would,
 combined with the classification of Pansiot~\cite{Pansiot1984} or
 Devyatov~\cite{Devyatov2015}, determine the asymptotic growth class of
 $\Atom_L^{G_{\ne 0}}$.
+\end{sloppypar}
 
 \textbf{(ii) Markov-operator-spectral.} Wirsching~\cite{Wirsching1998}
 constructs a Markov operator $W_3$ on residue-density functions for the
 $\Tplus$ predecessor problem. An analogous operator for the parallel
 reduction would have an action on $(c, d)$-space; its spectrum would
 determine the asymptotic growth of the shift-class populations
-$|\Obs_L^{G_a}|$.
+$|\Obs_L^{G_a}|$. A unified treatment --- for instance, expressing $c_W$
+in terms of Wirsching's invariant density $\varphi$ --- appears not to be
+in the literature.
 
 \textbf{(iii) Generating-function-combinatorial.} A direct enumeration via
 generating functions in $L$ is in principle accessible, but the absence of a
@@ -963,6 +995,7 @@ stopping times and shift indices --- makes the analysis delicate.
 
 \subsection{Bridges to nontrivial cycles}
 
+\begin{sloppypar}
 The shift-zero class $\Obs_L^{G_0}$ encodes residues for which the two
 parallel stopping times remain rigidly tied. Whether the existence or
 non-existence of additional nontrivial cycles of $\Tminus$ is reflected in
@@ -975,15 +1008,7 @@ and extended numerically by Belaga--Mignotte~\cite{BelagaMignotte2006}, give
 one indication of how rigidly the Diophantine geometry constrains cycle
 structure; an analogous bound expressed in terms of $\Obs_L^{G_0}$ would be
 of independent interest.
-
-\subsection{Connection to Wirsching's framework}
-
-The Lagarias intertwining of Section~\ref{sec:tplus} transfers our results
-to $\Tplus$, but Wirsching's framework~\cite{Wirsching1998} approaches the
-related predecessor-density problem from a Markov-operator perspective.
-A unified treatment --- for instance, expressing $c_W$ in terms of
-Wirsching's invariant density $\varphi$ --- appears not to be in the
-literature.
+\end{sloppypar}
 
 \subsection*{Acknowledgements}
 

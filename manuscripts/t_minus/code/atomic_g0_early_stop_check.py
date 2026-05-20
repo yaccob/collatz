@@ -35,8 +35,6 @@ def parallel_reduce(r, L):
     """
     if r % 2 == 0:
         return None
-    if r % 4 != 3:
-        return None
     v = v2(r - 1)
     if v <= 0 or v >= L:
         return None

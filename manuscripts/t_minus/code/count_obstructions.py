@@ -13,7 +13,7 @@ def v2(n):
     return c
 
 def parallel_reduce(r, L):
-    if r % 2 == 0 or r % 4 != 3:
+    if r % 2 == 0:
         return None
     v = v2(r - 1)
     if v <= 0 or v >= L:
@@ -83,11 +83,15 @@ def shift_index_from_endpoint(c, d):
     return None
 
 def is_atomic(r, L):
-    """Check if r is atomic at level L."""
+    """Check if r is atomic at level L: r mod 2^{L-1} is not an obstruction at L-1."""
     if L == 6:
         return True
-    result = parallel_reduce(r % (1 << (L-1)), L - 1)
-    return result is None
+    rp = r % (1 << (L - 1))
+    result = parallel_reduce(rp, L - 1)
+    if result is None:
+        return True
+    c_p, d_p = result
+    return 3 * d_p + c_p != 1
 
 L = int(sys.argv[1]) if len(sys.argv) > 1 else 8
 
