@@ -219,7 +219,7 @@ $r_- := r_0 + 2^{L_0}$ are obstruction residues at level $L_0 + 1$.
 The proof, given in Section~\ref{sec:lift}, proceeds by case analysis on a
 finite invariant of the parallel reduction. (The hypothesis $L_0 \ge 5$
 matches the smallest level for which $\Obs_{L_0}$ is non-empty, namely
-$L_0 = 5$ with $\Obs_5 = \{27\}$ (Remark~\ref{rem:empty-below-six}); for
+$L_0 = 5$ with $\Obs_5 = \{27\}$ (Remark~\ref{rem:smallest-level}); for
 $L_0 < 5$ the statement is vacuous. The proof in Section~\ref{sec:lift}
 only uses $L_0 > v$, which is automatic from $r_0 \in \Obs_{L_0}$ by
 Definition~\ref{def:obstruction}.) The lift is explicit: for each $r_0$,
@@ -418,7 +418,7 @@ The definition is algorithmic: given $r$ and $L$, one runs the parallel
 reduction, observes the terminal pair $(c_J, d_J)$, and checks
 $3 d_J + c_J = 1$. The computation terminates in at most $L$ steps.
 
-\begin{remark}\label{rem:empty-below-six}
+\begin{remark}\label{rem:smallest-level}
 A direct enumeration confirms $\Obs_L = \emptyset$ for $1 \le L \le 4$;
 the smallest level at which an obstruction residue exists is $L = 5$,
 with $\Obs_5 = \{27\}$. At the next level,
@@ -896,7 +896,7 @@ level $L - k$ — lies in $\Obs_{L-k}$; the converse need not hold. Let
 $L_0$ be the smallest level $\ge 5$ for which
 $r \bmod 2^{L_0} \in \Obs_{L_0}$. Then
 $r \bmod 2^{L_0 - 1} \notin \Obs_{L_0 - 1}$ (either because $L_0 = 5$
-and $\Obs_4 = \emptyset$ by Remark~\ref{rem:empty-below-six}, or by
+and $\Obs_4 = \emptyset$ by Remark~\ref{rem:smallest-level}, or by
 minimality), so $r \bmod 2^{L_0} \in \Atom_{L_0}$.
 \emph{Uniqueness:} the level $L_0$ is the smallest such by definition, hence
 unique. Given the atomic anchor $r_0 := r \bmod 2^{L_0}$, the residue $r$ is

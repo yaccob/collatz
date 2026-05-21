@@ -84,7 +84,7 @@ def identify_G_a(c, d, X):
 
 
 def main():
-    L_list = [int(x) for x in (sys.argv[1:] or ["6", "7", "8", "9", "10", "11", "12"])]
+    L_list = [int(x) for x in (sys.argv[1:] or ["5", "6", "7", "8", "9", "10", "11", "12"])]
     print(f"Lift theorem test (Theorems 3.1/3.2 of the manuscript), L_0 ∈ {L_list}\n")
 
     any_failure = [False]

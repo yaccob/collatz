@@ -67,13 +67,20 @@ def trace_X_proper(r, L):
     return {"a_K": a_K, "a_I": a_I, "c": c, "d": d, "X": 3 * d + c}
 
 
-# Atomic obstructions
+# Atomic obstructions per level (post-fb9a4da: Atom_5 = {27}, Atom_6 = {19}).
+# Used to enumerate Obs_L via the atom decomposition (Lemma 6.1): every
+# r in Obs_L has a unique anchor a in ATOMS[L_a] and lift bits j*2^{L_a}
+# producing r mod 2^L.
 ATOMS = {
-    6: {19, 27, 59},
+    5: {27},
+    6: {19},
     7: {79, 99},
     8: {67, 111, 157},
     9: {221, 303, 387, 447},
     10: {259, 431, 437, 551, 605, 831, 893},
+    11: {295, 861, 873, 875, 1087, 1101, 1199, 1205, 1279, 1539, 1661, 1733},
+    12: {197, 575, 583, 589, 735, 807, 1027, 1191, 1493, 1711, 1717,
+         2101, 2173, 2397, 2409, 2411, 2557, 3315, 3465, 3467, 3839},
 }
 
 
@@ -94,7 +101,7 @@ def main():
     print("Bidirectional X-invariant check (Definition 2.2 of the manuscript):\n")
 
     any_violation = False
-    for L in [6, 7, 8, 9]:
+    for L in [5, 6, 7, 8, 9, 10, 11, 12]:
         mod = 1 << L
         obstructions = obstructions_mod(L)
         classes = [r for r in range(1, mod, 2) if v2(r - 1) >= 1 and v2(r - 1) < L]

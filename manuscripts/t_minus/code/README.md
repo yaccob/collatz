@@ -25,10 +25,10 @@ runs on a modern laptop; raising the level argument to $L = 16$ takes
 | `atomic_anchor_verification.py` | Lemma 6.1 (atom decomposition): every obstruction has a unique atomic anchor. |
 | `atomic_g0_early_stop_check.py` | Theorem 6.2 (no shift-zero atoms): no atomic shift-zero obstructions at level $\ge 7$. Classifies the lift origin of every $G_0$-obstruction. |
 | `factor_complexity_construction.py` | Theorem 1.3 (constructive form): for every $u \in \{0,1\}^n$ and every base anchor $r_0 \in \mathcal{O}_6$, the constructive lift produces a residue in $\mathcal{O}_{6+n}$ whose binary representation contains $u$ as a factor. Checked for $n \le 10$. |
-| `lift_lemma_test.py` | Theorems 3.1 and 3.2 (lift theorem): empirical confirmation that both $r_+$ and $r_-$ are obstructions for every obstruction at $L_0 \le 12$. |
+| `lift_lemma_test.py` | Theorems 3.1 and 3.2 (lift theorem): empirical confirmation that both $r_+$ and $r_-$ are obstructions for every obstruction at $5 \le L_0 \le 12$. |
 | `lift_symmetry_verification.py` | Proposition 3.3 (lift symmetry): stop-type vs. resulting shift-index. |
 | `iso_synchronisation_verification.py` | Corollary 2.5 (simultaneous stop) and Lemma 2.4 (parity at termination): K- and I-track terminate at the same index, and the cumulative valuations satisfy $V_K^{(J)} - V_I^{(J)} = v$ at the terminal index. Verified for all $G_0$-obstructions at $L \le 16$. |
-| `x_invariant_bidirectional.py` | Definition 2.2 (Subsection 2.4): bidirectional consistency of the algebraic $X$-criterion with the dynamical stopping-time criterion across all odd residues $r$ with $v_2(r-1) \ge 1$, $L \le 12$. |
+| `x_invariant_bidirectional.py` | Definition 2.2 (Subsection 2.4): bidirectional consistency of the algebraic $X$-criterion with the dynamical stopping-time criterion across all odd residues $r$ with $v_2(r-1) \ge 1$, $5 \le L \le 12$. |
 | `x_invariant_non_obstructions.py` | Same as above, restricted to classes with $v_2(r-1) = 1$ (i.e. $r \equiv 3 \pmod 4$). |
 | `tplus_bijection_verification.py` | Lemma 7.2 / Theorem 7.3 (T_-/T_+ bijection): the involution $r \mapsto (-r) \bmod 2^L$ maps the T_- parallel reduction to the T_+ parallel reduction step-by-step, with terminal data related by $(c^+_J, d^+_J) = (c^-_J, -d^-_J)$; with the sign convention $X^+ := c - 3d$ (Remark 7.1) the X-criteria coincide and $\mathcal{O}_L \leftrightarrow \mathcal{O}_L^+$. |
 

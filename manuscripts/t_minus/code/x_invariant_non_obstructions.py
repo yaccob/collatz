@@ -65,13 +65,18 @@ def trace_X(r, L):
 
 def classify_obstr_at_level(L):
     """obstructions in t_{-1} ∩ t_{-3} mod 2^L (rigorously known)."""
-    # Atomic rigorous obstructions per level
+    # Atomic obstructions per level (post-fb9a4da: Atom_5 = {27}, Atom_6 = {19}).
+    # Used to enumerate Obs_L via the atom decomposition (Lemma 6.1).
     atoms = {
-        6: {19, 27, 59},
+        5: {27},
+        6: {19},
         7: {79, 99},
         8: {67, 111, 157},
         9: {221, 303, 387, 447},
         10: {259, 431, 437, 551, 605, 831, 893},
+        11: {295, 861, 873, 875, 1087, 1101, 1199, 1205, 1279, 1539, 1661, 1733},
+        12: {197, 575, 583, 589, 735, 807, 1027, 1191, 1493, 1711, 1717,
+             2101, 2173, 2397, 2409, 2411, 2557, 3315, 3465, 3467, 3839},
     }
     mod = 1 << L
     obstructions = set()
@@ -97,7 +102,7 @@ def main():
     )
 
     any_violation = False
-    for L in [6, 7, 8, 9]:
+    for L in [5, 6, 7, 8, 9, 10, 11, 12]:
         classes, obstructions = classify_obstr_at_level(L)
         print(f"=== Mod 2^{L} = {1<<L} ===")
         print(f"  Classes (r ≡ 3 mod 4, v_2(r-1)=1): {len(classes)}")
