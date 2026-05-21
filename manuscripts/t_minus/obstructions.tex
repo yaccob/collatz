@@ -62,7 +62,7 @@
 \email{collatz@yaccob.net}
 \date{\today}
 
-\subjclass[2020]{11B83, 37P05, 37B10, 37B40, 37A99, 68R15, 11A07}
+\subjclass[2020]{11B83, 37P05, 37B10, 37B40, 68R15}
 
 \keywords{Collatz conjecture, $3x-1$ map, residue dynamics, factor complexity, subshift, parallel reduction}
 
@@ -827,8 +827,9 @@ Allouche--Shallit~\cite{AlloucheShallit2003} for factor complexity of
 substitution and automatic sequences,
 Cassaigne~\cite{Cassaigne1997} for the general theory of subword
 complexity in terms of special factors, and
-Berth\'e--Rigo~\cite{BertheRigo2010} for a modern collected reference on
-combinatorics on words, automata and number theory.
+Berth\'e--Rigo~\cite{BertheRigo2010} and Lothaire~\cite{Lothaire2002}
+for modern collected references on combinatorics on words, automata
+and number theory.
 
 \begin{corollary}\label{cor:entropy}
 The topological entropy of $\Fac(\Obs)$ is $\log 2$.
@@ -1051,8 +1052,9 @@ $L \to \infty$.
 \begin{proof}
 By Lemma~\ref{lem:atom-decomp} every $r \in \Obs_L$ has a unique atomic
 anchor at some level $L_0 \in \{5, 6, \ldots, L\}$. Direct enumeration
-at the base levels gives $\Atom_5 = \{27\}$ and $\Atom_6 = \{19\}$,
-both with shift $a = 1$, so
+at the base levels (Remark~\ref{rem:smallest-level}; verified by
+\texttt{count\_obstructions.py} at $L = 5, 6$) gives
+$\Atom_5 = \{27\}$ and $\Atom_6 = \{19\}$, both with shift $a = 1$, so
 $|\Atom_5^{G_0}| = |\Atom_6^{G_0}| = 0$ and
 $|\Atom_5^{G_{\ne 0}}| = |\Atom_6^{G_{\ne 0}}| = 1$; the remaining
 level-$6$ obstructions $\{27, 59\} \subset \Obs_6$ are the two lifts of
@@ -1302,16 +1304,15 @@ The principal open question is to determine $c_W$ exactly, or equivalently
 to give a quantitative bound on the growth of $|\Atom_L^{G_{\ne 0}}|$. Three
 approaches present themselves, each requiring substantial additional work.
 
-% \sloppypar restores tolerant line breaking; this paragraph overflows
-% the column by ~4.5pt without it due to long compound terms.
-\begin{sloppypar}
 \textbf{(i) Substitution-theoretic.} Stérin~\cite{Sterin2020} realizes
-$\Tplus$ as a four-state finite-state transducer between bases $2$ and $3$.
-A related transducer-substitution system for the parallel reduction would,
-combined with the classification of Pansiot~\cite{Pansiot1984} or
-Devyatov~\cite{Devyatov2015}, determine the asymptotic growth class of
-$\Atom_L^{G_{\ne 0}}$.
-\end{sloppypar}
+$\Tplus$ as a four-state finite-state transducer between bases $2$ and
+$3$. An analogous construction for the parallel reduction, combined with
+Pansiot's classification~\cite{Pansiot1984} (refined by
+Devyatov~\cite{Devyatov2015}), would determine the asymptotic growth
+class of $\Atom_L^{G_{\ne 0}}$. The relevant question concerns
+\emph{non-primitive} substitution shifts: the primitive case is ruled out
+by Corollary~\ref{cor:no-substitution}, so any realisation must lie
+outside that classification (Remark~\ref{rem:non-primitive}).
 
 \textbf{(ii) Markov-operator-spectral.} Wirsching~\cite{Wirsching1998}
 constructs a Markov operator $W_3$ on residue-density functions for the
@@ -1327,26 +1328,21 @@ generating functions in $L$ is in principle accessible, but the absence of a
 closed-form recursion --- the count depends on the joint distribution of
 stopping times and shift indices --- makes the analysis delicate.
 
-\subsection{Bridges to nontrivial cycles}
+\subsection{Nontrivial cycles}
 
-% \sloppypar restores tolerant line breaking; this paragraph overflows
-% the column by ~1.8pt without it (long hyphenated terms and author names).
-\begin{sloppypar}
 The shift-zero class $\Obs_L^{G_0}$ encodes residues for which the two
-parallel stopping times remain rigidly tied. Whether the existence or
-non-existence of additional nontrivial cycles of $\Tminus$ is reflected in
-the structure of $\Obs_L^{G_0}$ for large $L$ --- in particular, whether
-one can extract a Diophantine obstruction from the strict lift balance of
-Corollary~\ref{cor:lift-balance} --- is a natural and apparently unexplored
-question. Classical lower bounds on the length of nontrivial $\Tplus$-cycles,
-established by Eliahou~\cite{Eliahou1993} using continued-fraction methods
-and extended numerically by Belaga--Mignotte~\cite{BelagaMignotte2006}, give
-one indication of how rigidly the Diophantine geometry constrains cycle
-structure; an analogous bound expressed in terms of $\Obs_L^{G_0}$ would be
-of independent interest.
-\end{sloppypar}
+parallel stopping times remain rigidly tied. Whether the existence (or
+absence) of additional nontrivial $\Tminus$-cycles is reflected in the
+structure of $\Obs_L^{G_0}$ for large $L$ --- in particular, whether one
+can extract a Diophantine obstruction from the strict lift balance of
+Corollary~\ref{cor:lift-balance} --- is a natural and apparently open
+question. Classical lower bounds on the length of nontrivial
+$\Tplus$-cycles, due to Eliahou~\cite{Eliahou1993} and extended by
+Belaga and Mignotte~\cite{BelagaMignotte2006}, indicate how rigidly the
+Diophantine geometry constrains cycle structure; an analogous bound in
+terms of $\Obs_L^{G_0}$ would be of independent interest.
 
-\subsection*{Acknowledgements}
+\section*{Acknowledgements}
 
 The author declares no funding or competing interests.
 
