@@ -91,8 +91,13 @@ def is_atomic(r, L):
     c_p, d_p = result
     return 3 * d_p + c_p != 1
 
-def count_at(L):
-    """Return (|Obs_L|, |Obs_L^{G_0}|, |Obs_L^{G_ne0}|, |Atom_L^{G_ne0}|)."""
+def count_at(L, atoms=True):
+    """Return (|Obs_L|, |Obs_L^{G_0}|, |Obs_L^{G_ne0}|, |Atom_L^{G_ne0}|).
+
+    When atoms=False, the atomic count is reported as 0 and the per-element
+    is_atomic recursion (which itself enumerates level L-1) is skipped.
+    Use atoms=False when only the total is needed downstream.
+    """
     obstructions = []
     for r in range(1, 1 << L, 2):
         endpoint = parallel_reduce(r, L)
@@ -102,7 +107,7 @@ def count_at(L):
     total = len(obstructions)
     g_0 = sum(1 for _, a in obstructions if a == 0)
     g_ne0 = total - g_0
-    atoms_ne0 = sum(1 for r, a in obstructions if a != 0 and is_atomic(r, L))
+    atoms_ne0 = sum(1 for r, a in obstructions if a != 0 and is_atomic(r, L)) if atoms else 0
     return total, g_0, g_ne0, atoms_ne0
 
 
@@ -119,7 +124,7 @@ print(f"|Atom_L^{{G_{{ne0}}}}| = {atoms_ne0}")
 # Verify the strict lift balance |Obs_L| = 2|Obs_{L-1}| + |Atom_L^{G_ne0}|
 # (Corollary 6.3) against the level L-1 count.
 if L >= 7:
-    total_prev, _, _, _ = count_at(L - 1)
+    total_prev, _, _, _ = count_at(L - 1, atoms=False)
     expected = 2 * total_prev + atoms_ne0
     assert total == expected, (
         f"Lift balance VIOLATED at L={L}: "

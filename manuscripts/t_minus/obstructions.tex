@@ -919,6 +919,11 @@ at level $L$. \qedhere
 For every $L \ge 7$, $|\Atom_L^{G_0}| = 0$.
 \end{theorem}
 
+The conclusion also holds at $L = 5, 6$ by direct enumeration (see the
+proof of Theorem~\ref{thm:series}); the bound $L \ge 7$ in the statement
+is the proof-method threshold, because the case analysis below requires
+$J \ge 2$, which is established as the first step of the proof.
+
 \begin{proof}
 Fix $L \ge 7$ and suppose $r \in \Obs_L^{G_0}$, so $\Xend(r, L) = 1$ with
 shift index $a = 0$, i.e.\ $(c_J, d_J) = (1, 0)$. Write $r' := r \bmod 2^{L-1}$.
@@ -1389,7 +1394,7 @@ $15$ & $3671$ & $3398$ & $273$ & $119$ \\
 $16$ & $7556$ & $7069$ & $487$ & $214$ \\
 \bottomrule
 \end{tabular}
-\caption{Direct enumeration counts at levels $L=5,\dots,16$: total obstructions, shift-zero and shift-nonzero subclasses, and atomic shift-nonzero obstructions. The decomposition $|\Obs_L| = |\Obs_L^{G_0}| + |\Obs_L^{G_{\ne 0}}|$ is read off each row, and the strict lift balance $|\Obs_L| = 2|\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$ (Corollary~\ref{cor:lift-balance}) holds row-by-row against the previous one for $L \ge 7$; it is also verified empirically at $L = 6$ against $L = 5$.}
+\caption{Direct enumeration counts at levels $L=5,\dots,16$: total obstructions, shift-zero and shift-nonzero subclasses, and atomic shift-nonzero obstructions. The decomposition $|\Obs_L| = |\Obs_L^{G_0}| + |\Obs_L^{G_{\ne 0}}|$ is read off each row, and the strict lift balance $|\Obs_L| = 2|\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$ (Corollary~\ref{cor:lift-balance}) holds row-by-row against the previous one for $L \ge 7$; the same identity holds at $L = 6$ against $L = 5$ by Lemma~\ref{lem:atom-decomp} together with the enumerated fact $|\Atom_6^{G_0}| = 0$ (proof of Theorem~\ref{thm:series}).}
 \label{tab:appendix-counts}
 \end{table}
 
