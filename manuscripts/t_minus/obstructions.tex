@@ -182,13 +182,13 @@ the set of all such residues. Definition~\ref{def:obstruction} in
 Section~\ref{sec:setup} restates this with the parallel reduction made
 explicit; the typical case is $v = 1$, i.e.\ $r \equiv 3 \pmod 4$.
 
-The family $(\Obs_L)_{L \ge 6}$ is small at first --- $\Obs_6 = \{19, 27, 59\}$ ---
-but grows rapidly: direct enumeration gives
+The family $(\Obs_L)_{L \ge 5}$ is small at first --- $\Obs_5 = \{27\}$,
+$\Obs_6 = \{19, 27, 59\}$ --- but grows rapidly: direct enumeration gives
 \[
-|\Obs_6| = 3, \quad |\Obs_7| = 8, \quad |\Obs_8| = 19, \quad \ldots, \quad |\Obs_{16}| = 7556,
+|\Obs_5| = 1, \quad |\Obs_6| = 3, \quad |\Obs_7| = 8, \quad |\Obs_8| = 19, \quad \ldots, \quad |\Obs_{16}| = 7556,
 \]
 and the density ratio $|\Obs_L|/2^L$ rises monotonically. Full counts at
-all levels $L = 6, \ldots, 16$ together with the shift-zero / shift-nonzero
+all levels $L = 5, \ldots, 16$ together with the shift-zero / shift-nonzero
 and atomic-shift-nonzero decompositions are collected in
 Table~\ref{tab:appendix-counts} (Appendix~\ref{sec:appendix}). Three structural
 questions arise:
@@ -212,15 +212,16 @@ $\Fac(\Obs)$ defined below turns out to be all of $\{0,1\}^*$.
 
 \begin{theorem}[Constructive lift]
 \label{thm:lift-intro}
-Let $L_0 \ge 6$ and $r_0 \in \Obs_{L_0}$. Then both $r_+ := r_0$ and
+Let $L_0 \ge 5$ and $r_0 \in \Obs_{L_0}$. Then both $r_+ := r_0$ and
 $r_- := r_0 + 2^{L_0}$ are obstruction residues at level $L_0 + 1$.
 \end{theorem}
 
 The proof, given in Section~\ref{sec:lift}, proceeds by case analysis on a
-finite invariant of the parallel reduction. (The hypothesis $L_0 \ge 6$ is
-the smallest level for which $\Obs_{L_0}$ is non-empty; for $L_0 < 6$ the
-statement is vacuous. The proof in Section~\ref{sec:lift} only uses
-$L_0 > v$, which is automatic from $r_0 \in \Obs_{L_0}$ by
+finite invariant of the parallel reduction. (The hypothesis $L_0 \ge 5$
+matches the smallest level for which $\Obs_{L_0}$ is non-empty, namely
+$L_0 = 5$ with $\Obs_5 = \{27\}$ (Remark~\ref{rem:empty-below-six}); for
+$L_0 < 5$ the statement is vacuous. The proof in Section~\ref{sec:lift}
+only uses $L_0 > v$, which is automatic from $r_0 \in \Obs_{L_0}$ by
 Definition~\ref{def:obstruction}.) The lift is explicit: for each $r_0$,
 the terminal data of the reduction at $r_+$ or $r_-$ is determined by a
 closed-form algebraic identity.
@@ -231,7 +232,7 @@ The density ratio $|\Obs_L|/2^L$ is non-decreasing in $L$, and the limit
 \[
 c_W := \lim_{L \to \infty} \frac{|\Obs_L|}{2^L}
 \]
-exists in $(0, 1]$. For every $L_0 \ge 6$, the rigorous lower bound
+exists in $(0, 1]$. For every $L_0 \ge 5$, the rigorous lower bound
 $c_W \ge |\Obs_{L_0}|/2^{L_0}$ holds; at $L_0 = 16$ this gives
 $c_W \ge 7556/65536 \approx 0.115$, sharpening the conservative
 bound $c_W \ge 3/64 \approx 0.047$ obtained from $L_0 = 6$.
@@ -418,9 +419,11 @@ reduction, observes the terminal pair $(c_J, d_J)$, and checks
 $3 d_J + c_J = 1$. The computation terminates in at most $L$ steps.
 
 \begin{remark}\label{rem:empty-below-six}
-A direct enumeration confirms $\Obs_L = \emptyset$ for $1 \le L \le 5$;
-the smallest level at which an obstruction residue exists is $L = 6$,
-with $\Obs_6 = \{19, 27, 59\}$.
+A direct enumeration confirms $\Obs_L = \emptyset$ for $1 \le L \le 4$;
+the smallest level at which an obstruction residue exists is $L = 5$,
+with $\Obs_5 = \{27\}$. At the next level,
+$\Obs_6 = \{19, 27, 59\}$, comprising the new atomic residue $19$
+and the two lifts $\{27, 59\}$ of $27 \in \Obs_5$.
 \end{remark}
 
 The connection between this algebraic definition and the dynamics of
@@ -726,7 +729,7 @@ $|\Obs_{L_0+1}|/2^{L_0+1} \ge |\Obs_{L_0}|/2^{L_0}$: the density ratio is
 non-decreasing. Since $\Obs_L \subseteq \{1, \ldots, 2^L\}$ the ratio is
 bounded above by $1$. By monotone convergence,
 $c_W := \lim_{L \to \infty} |\Obs_L|/2^L$ exists in $[\rho_{L_0}, 1]$ for any
-$L_0 \ge 6$. Specialising to $L_0 = 6$ and using the direct enumeration
+$L_0 \ge 5$. Specialising to $L_0 = 6$ and using the direct enumeration
 $\Obs_6 = \{19, 27, 59\}$ (Section~\ref{sec:setup}; verified computationally
 in Appendix~\ref{sec:appendix}), $c_W \ge 3/64$. \qedhere
 \end{proof}
@@ -831,7 +834,7 @@ $\{0,1\}^\Z$.
 
 \begin{corollary}
 \label{cor:no-substitution}
-The obstruction family $(\Obs_L)_{L \ge 6}$, viewed as a graded family of
+The obstruction family $(\Obs_L)_{L \ge 5}$, viewed as a graded family of
 finite languages over $\{0,1\}$, is
 \begin{enumerate}[label=(\roman*)]
 \item not the language of a proper subshift of finite type, that is, one
@@ -876,24 +879,24 @@ $\Atom_L^{G_a} := \Atom_L \cap \Obs_L^{G_a}$.
 
 \begin{lemma}[Atom decomposition]
 \label{lem:atom-decomp}
-For every $L \ge 6$,
+For every $L \ge 5$,
 \[
-|\Obs_L| = \sum_{L_0 = 6}^{L} |\Atom_{L_0}| \cdot 2^{L - L_0}.
+|\Obs_L| = \sum_{L_0 = 5}^{L} |\Atom_{L_0}| \cdot 2^{L - L_0}.
 \]
 \end{lemma}
 
 \begin{proof}
-We show that every $r \in \Obs_L$ has a unique smallest $L_0 \ge 6$ with
+We show that every $r \in \Obs_L$ has a unique smallest $L_0 \ge 5$ with
 $r \bmod 2^{L_0} \in \Atom_{L_0}$. \emph{Existence:} starting from $r$ at
 level $L$, consider the descending sequence $r_k := r \bmod 2^{L-k}$ for
-$k = 0, 1, \ldots, L - 6$. By the lift theorem (Theorem~\ref{thm:lift-intro}),
+$k = 0, 1, \ldots, L - 5$. By the lift theorem (Theorem~\ref{thm:lift-intro}),
 whenever $r_{k+1} \in \Obs_{L-k-1}$, the level-$(L-k)$ residue
 $r_k = r \bmod 2^{L-k}$ — being one of the two lifts of $r_{k+1}$ at
 level $L - k$ — lies in $\Obs_{L-k}$; the converse need not hold. Let
-$L_0$ be the smallest level $\ge 6$ for which
+$L_0$ be the smallest level $\ge 5$ for which
 $r \bmod 2^{L_0} \in \Obs_{L_0}$. Then
-$r \bmod 2^{L_0 - 1} \notin \Obs_{L_0 - 1}$ (either because $L_0 = 6$
-and $\Obs_5 = \emptyset$ by Remark~\ref{rem:empty-below-six}, or by
+$r \bmod 2^{L_0 - 1} \notin \Obs_{L_0 - 1}$ (either because $L_0 = 5$
+and $\Obs_4 = \emptyset$ by Remark~\ref{rem:empty-below-six}, or by
 minimality), so $r \bmod 2^{L_0} \in \Atom_{L_0}$.
 \emph{Uniqueness:} the level $L_0$ is the smallest such by definition, hence
 unique. Given the atomic anchor $r_0 := r \bmod 2^{L_0}$, the residue $r$ is
@@ -1034,13 +1037,17 @@ $L \to \infty$.
 
 \begin{proof}
 By Lemma~\ref{lem:atom-decomp} every $r \in \Obs_L$ has a unique atomic
-anchor at some level $L_0 \in \{6, 7, \ldots, L\}$, and at the base
-level $|\Atom_6| = |\Obs_6| = 3$ (the level-$6$ obstructions
-$\{19, 27, 59\}$ are atomic by Remark~\ref{rem:empty-below-six}). For
-$L \ge 7$, Theorem~\ref{thm:no-G0-atom} kills all $G_0$-atoms above the
-base level, so
+anchor at some level $L_0 \in \{5, 6, \ldots, L\}$. Direct enumeration
+at the base levels gives $\Atom_5 = \{27\}$ and $\Atom_6 = \{19\}$,
+both with shift $a = 1$, so
+$|\Atom_5^{G_0}| = |\Atom_6^{G_0}| = 0$ and
+$|\Atom_5^{G_{\ne 0}}| = |\Atom_6^{G_{\ne 0}}| = 1$; the remaining
+level-$6$ obstructions $\{27, 59\} \subset \Obs_6$ are the two lifts of
+$27 \in \Atom_5$ and are not atomic at $L = 6$. For $L \ge 7$,
+Theorem~\ref{thm:no-G0-atom} kills all $G_0$-atoms above the base
+levels, so
 \[
-|\Obs_L| = |\Atom_6| \cdot 2^{L-6} + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}| \cdot 2^{L - L_0}
+|\Obs_L| = 2^{L-5} + 2^{L-6} + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}| \cdot 2^{L - L_0}
         = 3 \cdot 2^{L-6} + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}| \cdot 2^{L - L_0}.
 \]
 Dividing both sides by $2^L$,
@@ -1238,9 +1245,10 @@ $\Xend^{+} := c - 3d$ of Remark~\ref{rem:Xplus-sign} gives
 Hence $r \in \Obs_L$ iff $\overline{r} \in \Obs_L^{+}$. Since
 $r \mapsto \overline{r}$ is an involution on the odd residues in
 $\{1, \ldots, 2^L - 1\}$, it restricts to a bijection
-$\Obs_L \leftrightarrow \Obs_L^{+}$. At the base level $L = 6$ this
-identifies $\Obs_6^{+} = \{2^6 - r : r \in \Obs_6\} = \{5, 37, 45\}$,
-the explicit anchor set used in the $\Tplus$ analogue of the
+$\Obs_L \leftrightarrow \Obs_L^{+}$. Concretely, at $L = 5$ this gives
+$\Obs_5^{+} = \{5\}$, and at $L = 6$ it gives
+$\Obs_6^{+} = \{2^6 - r : r \in \Obs_6\} = \{5, 37, 45\}$, the anchor set
+parallel to $\Obs_6$ in the $\Tplus$ analogue of the
 factor-complexity construction below.
 
 For the remaining claims, observe that
@@ -1350,7 +1358,8 @@ Table~\ref{tab:appendix-counts}.
 \toprule
 $L$ & $|\Obs_L|$ & $|\Obs_L^{G_0}|$ & $|\Obs_L^{G_{\ne 0}}|$ & $|\Atom_L^{G_{\ne 0}}|$ \\
 \midrule
-$6$  & $3$    & $1$    & $2$   & $2$   \\
+$5$  & $1$    & $0$    & $1$   & $1$   \\
+$6$  & $3$    & $1$    & $2$   & $1$   \\
 $7$  & $8$    & $4$    & $4$   & $2$   \\
 $8$  & $19$   & $12$   & $7$   & $3$   \\
 $9$  & $42$   & $31$   & $11$  & $4$   \\
@@ -1363,7 +1372,7 @@ $15$ & $3671$ & $3398$ & $273$ & $119$ \\
 $16$ & $7556$ & $7069$ & $487$ & $214$ \\
 \bottomrule
 \end{tabular}
-\caption{Direct enumeration counts at levels $L=6,\dots,16$: total obstructions, shift-zero and shift-nonzero subclasses, and atomic shift-nonzero obstructions. The decomposition $|\Obs_L| = |\Obs_L^{G_0}| + |\Obs_L^{G_{\ne 0}}|$ is read off each row, and the strict lift balance $|\Obs_L| = 2|\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$ (Corollary~\ref{cor:lift-balance}) holds row-by-row against the previous one.}
+\caption{Direct enumeration counts at levels $L=5,\dots,16$: total obstructions, shift-zero and shift-nonzero subclasses, and atomic shift-nonzero obstructions. The decomposition $|\Obs_L| = |\Obs_L^{G_0}| + |\Obs_L^{G_{\ne 0}}|$ is read off each row, and the strict lift balance $|\Obs_L| = 2|\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$ (Corollary~\ref{cor:lift-balance}) holds row-by-row against the previous one for $L \ge 7$; it is also verified empirically at $L = 6$ against $L = 5$.}
 \label{tab:appendix-counts}
 \end{table}
 

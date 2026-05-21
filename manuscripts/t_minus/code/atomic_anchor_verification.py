@@ -62,10 +62,10 @@ def is_obstr(r, L):
 def find_atomic_L0(r, L):
     """Find smallest L_0 ≤ L such that r mod 2^{L_0} is obstruction at L_0
     AND r mod 2^{L_0-1} is not obstruction at L_0-1. Returns L_0."""
-    for L0 in range(6, L + 1):
+    for L0 in range(5, L + 1):
         r_mod = r % (1 << L0)
         if is_obstr(r_mod, L0):
-            if L0 == 6 or not is_obstr(r % (1 << (L0 - 1)), L0 - 1):
+            if not is_obstr(r % (1 << (L0 - 1)), L0 - 1):
                 return L0, r_mod
     return None, None
 

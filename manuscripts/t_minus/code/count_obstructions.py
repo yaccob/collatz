@@ -84,8 +84,6 @@ def shift_index_from_endpoint(c, d):
 
 def is_atomic(r, L):
     """Check if r is atomic at level L: r mod 2^{L-1} is not an obstruction at L-1."""
-    if L == 6:
-        return True
     rp = r % (1 << (L - 1))
     result = parallel_reduce(rp, L - 1)
     if result is None:
