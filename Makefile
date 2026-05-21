@@ -2,9 +2,9 @@
 
 all: paper
 
-# Build the t_minus manuscript PDF. Build artefacts go into manuscripts/t_minus/_build/.
-PAPER_DIR  := $(CURDIR)/manuscripts/t_minus
-PAPER_BASE := obstructions
+# Build the manuscript PDF. Build artefacts go into manuscripts/obstruction_residues/_build/.
+PAPER_DIR  := $(CURDIR)/manuscripts/obstruction_residues
+PAPER_BASE := obstruction_residues
 
 paper:
 	@mkdir -p "$(PAPER_DIR)/_build"
@@ -32,6 +32,6 @@ check-py:
 
 help:
 	@echo "Available targets:"
-	@echo "  paper       — build the t_minus manuscript PDF"
+	@echo "  paper       — build the manuscript PDF"
 	@echo "  paper-clean — remove build artefacts (_build/)"
 	@echo "  check-py    — py_compile sanity check across all tracked .py"

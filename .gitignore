@@ -4,4 +4,4 @@ __pycache__/
 *.pyc
 
 # Claude Code per-machine state
-.claude/settings.local.json
+.claude/

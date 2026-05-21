@@ -1,7 +1,7 @@
 # Supporting code for *Obstruction residues for the $3x-1$ map*
 
 This directory contains the verification scripts referenced in the
-appendix of the manuscript `obstructions.tex`. Each script enumerates
+appendix of the manuscript `obstruction_residues.tex`. Each script enumerates
 a finite range of obstruction residues, runs the parallel reduction
 defined in §2 of the paper, and reports the result.
 
@@ -68,6 +68,6 @@ laptop:
 ## Reproducibility
 
 This directory is hosted at
-<https://github.com/yaccob/collatz/tree/main/manuscripts/t_minus/code>.
+<https://github.com/yaccob/collatz/tree/main/manuscripts/obstruction_residues/code>.
 For stable citation, use that URL together with a specific commit hash
 or release tag.
