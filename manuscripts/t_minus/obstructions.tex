@@ -482,7 +482,12 @@ by $2^e$:
 All terms are integers; reducing modulo~$3$ yields $2^e - 1 \equiv 0 \pmod 3$,
 hence $e$ even, hence $\delta$ even.
 
-In both cases $\delta$ is even. \qedhere
+In both cases $\delta$ is even. For the bound, $\Vk^{(J)} \in [0, L]$ and
+$\Vi^{(J)} \in [0, L - v]$ (cumulative valuations are bounded by the
+respective initial modulus exponents), so
+$\Vk^{(J)} - \Vi^{(J)} \in [v - L, L]$ and hence
+$\delta_J = \Vk^{(J)} - \Vi^{(J)} - v \in [-L, L - v] \subseteq [-L, L]$.
+\qedhere
 \end{proof}
 
 \subsection{The shift-\texorpdfstring{$a$}{a} normal form}
@@ -492,24 +497,24 @@ Writing $\delta_J = 2a$ with $a \in \Z$, the parity lemma yields
 c_J = 4^a, \qquad d_J = \frac{1 - 4^a}{3}.
 \]
 We call this the \emph{shift-$a$ normal form} and $a$ the \emph{shift index}
-of $r$ at level $L$, denoted $a(r, L)$. The obstruction family partitions:
+of $r$ at level $L$, denoted $a(r, L)$. In particular,
+$\Vk^{(J)} - \Vi^{(J)} = 2a + v$. The obstruction family partitions:
 \[
 \Obs_L = \bigsqcup_{a \in \Z} \Obs_L^{G_a}, \qquad \Obs_L^{G_a} := \{\, r \in \Obs_L : a(r, L) = a \,\}.
 \]
 For $a = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
-The shift index is bounded: from $0 \le \Vk^{(J)} \le L$ and
-$0 \le \Vi^{(J)} \le L - v$ we have
-$\Vk^{(J)} - \Vi^{(J)} \in [v - L,\, L]$, so
-$2a + v = \Vk^{(J)} - \Vi^{(J)}$ gives $2a \in [-L,\, L - v]$ and hence
-$a \in [-L/2,\, (L - v)/2] \subseteq [-L/2,\, L/2]$. In particular
-$|a| \le L/2$.
+By the bound $\delta_J \in [-L, L - v]$ from Lemma~\ref{lem:parity},
+$a = \delta_J/2 \in [-L/2,\, (L - v)/2] \subseteq [-L/2,\, L/2]$;
+in particular $|a| \le L/2$.
 
 \subsection{Simultaneous stop and stop types}
 
 \begin{corollary}[Simultaneous stop]
 \label{cor:sync}
 If $\Xend(r, L) = 1$, then the K-track and I-track satisfy the termination
-condition $v_\alpha \ge \vtwo(\beta)$ at the same index $J$.
+condition $v_\alpha \ge \vtwo(\beta)$ at the same index $J$. Moreover, the
+terminal step valuations satisfy $\vi^{(J)} = \vk^{(J)} + 2a$, where $a$
+is the shift index of $r$ at level $L$ from the shift-$a$ normal form above.
 \end{corollary}
 
 \begin{proof}
@@ -854,8 +859,10 @@ SFT under a one-block factor map and inherits the entropy constraint.
 Primitive substitution shifts have factor complexity in one of the polynomial
 classes $\Theta(1)$, $\Theta(n)$, $\Theta(n \log \log n)$, $\Theta(n \log n)$,
 $\Theta(n^2)$ (Pansiot~\cite{Pansiot1984}; refined by
-Devyatov~\cite{Devyatov2015}), giving entropy zero --- but our
-$p_W(n) = 2^n$ has positive entropy. \qedhere
+Devyatov~\cite{Devyatov2015}), and therefore have topological entropy
+zero. The obstruction family has $p_W(n) = 2^n$ and hence entropy
+$\log 2 > 0$, so it cannot be the factor language of a primitive
+substitution shift. \qedhere
 \end{proof}
 
 \begin{remark}\label{rem:non-primitive}
@@ -918,8 +925,9 @@ shift index $a = 0$, i.e.\ $(c_J, d_J) = (1, 0)$. Write $r' := r \bmod 2^{L-1}$.
 We first note $J \ge 2$: at $J = 0$ the terminal pair is $(2^{-v}, -2^{-v})$,
 whose second coordinate $-2^{-v}$ is nonzero for every $v$, contradicting
 $d_J = 0$; at $J = 1$ the update rule gives
-$d_1 = (3 \cdot (-2^{-v}) + 2^{-v} - 1)/2^{\vi^{(0)}} = -(1 + 2^{1-v})/2^{\vi^{(0)}} \ne 0$
-for $v \ge 1$, again contradicting $d_J = 0$. Hence $J \ge 2$, so the case
+$d_1 = (3 \cdot (-2^{-v}) + 2^{-v} - 1)/2^{\vi^{(0)}} = -(1 + 2^{1-v})/2^{\vi^{(0)}}$,
+whose numerator is strictly negative for $v \ge 1$ (since $2^{1-v} + 1 > 0$),
+so $d_1 \ne 0$ and again contradicting $d_J = 0$. Hence $J \ge 2$, so the case
 distinction below over the indices $J - 1$ and $J$ is well-defined.
 The parallel reduction at $(r', L-1)$ starts from the same residue class
 $a_K \bmod 2^{L-1}, a_I \bmod 2^{L-1-v}$ as at $(r, L)$, with the modulus
@@ -1200,13 +1208,22 @@ $\vi^{+,(j)} = \vi^{(j)}$.
 \emph{Simultaneous termination.} The termination condition of the
 $(\overline{r}, L)$ reduction at index $j$ is
 $\vk^{+,(j)} \ge L - \Vk^{(j)}$ or $\vi^{+,(j)} \ge L - v - \Vi^{(j)}$.
-By the induction, while both reductions are still running, the
-valuations and cumulative valuations match across $+/-$; so the
-termination condition fires at the same index $J$ in both reductions.
-The residue congruence~\eqref{eq:invol-residue} at $j = J$ follows by
-applying the inductive step one final time (which is valid because the
-inductive hypothesis at $j = J - 1$ only requires the reductions to be
-running there, not at $J$).
+We show termination at exactly $J$ in two directions. \emph{No earlier
+stop:} if the $\Tplus$ reduction stopped at some $j' < J$, then by the
+inductive step at $j'$ (valid because both reductions still run at $j'$)
+the valuation equalities $\vk^{+,(j')} = \vk^{-,(j')}$ and
+$\vi^{+,(j')} = \vi^{-,(j')}$ hold, so the $\Tminus$ reduction would
+also satisfy its stop condition at $j'$, contradicting the definition
+of $J$. \emph{Stop at $J$:} the residue congruence~\eqref{eq:invol-residue}
+at $j = J$ follows by applying the inductive step one final time (which
+is valid because the inductive hypothesis at $j = J - 1$ only requires
+the reductions to be running there, not at $J$). Combining this
+congruence with the $\Tminus$ K-track stop
+$3 a_K^{-,(J)} - 1 \equiv 0 \pmod{2^{L - \Vk^{(J)}}}$ yields
+$3 a_K^{+,(J)} + 1 \equiv -(3 a_K^{-,(J)} - 1) \equiv 0 \pmod{2^{L - \Vk^{(J)}}}$,
+so $\vk^{+,(J)} \ge L - \Vk^{(J)}$ and the $\Tplus$ K-track stops at $J$;
+the analogous calculation on the I-track gives
+$\vi^{+,(J)} \ge L - v - \Vi^{(J)}$.
 
 (iv): At $j = 0$, $c_0^{+} = 2^{-v} = c_0^{-}$ and
 $d_0^{+} = +2^{-v} = -\, d_0^{-}$. Inductively, given
