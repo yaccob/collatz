@@ -214,17 +214,17 @@ $\Fac(\Obs)$ defined below turns out to be all of $\{0,1\}^*$.
 
 \begin{theorem}[Constructive lift]
 \label{thm:lift-intro}
-Let $L_0 \ge 5$ and $r_0 \in \Obs_{L_0}$. Then both $r_+ := r_0$ and
+Let $r_0 \in \Obs_{L_0}$. Then both $r_+ := r_0$ and
 $r_- := r_0 + 2^{L_0}$ are obstruction residues at level $L_0 + 1$.
 \end{theorem}
 
 The proof, given in Section~\ref{sec:lift}, proceeds by case analysis on a
-finite invariant of the parallel reduction. (The hypothesis $L_0 \ge 5$
-matches the smallest level for which $\Obs_{L_0}$ is non-empty, namely
-$L_0 = 5$ with $\Obs_5 = \{27\}$ (Remark~\ref{rem:smallest-level}); for
-$L_0 < 5$ the statement is vacuous. The proof in Section~\ref{sec:lift}
-only uses $L_0 > v$, which is automatic from $r_0 \in \Obs_{L_0}$ by
-Definition~\ref{def:obstruction}.) The lift is explicit: for each $r_0$,
+finite invariant of the parallel reduction. (No explicit lower bound on
+$L_0$ is needed: for $L_0 \le 4$ the family $\Obs_{L_0}$ is empty
+(Remark~\ref{rem:smallest-level}) and the statement is vacuous; the
+smallest non-vacuous level is $L_0 = 5$ with $\Obs_5 = \{27\}$. The
+proof in Section~\ref{sec:lift} only uses $L_0 > v$, which is automatic
+from $r_0 \in \Obs_{L_0}$ by Definition~\ref{def:obstruction}.) The lift is explicit: for each $r_0$,
 the terminal data of the reduction at $r_+$ or $r_-$ is determined by a
 closed-form algebraic identity.
 
@@ -290,7 +290,9 @@ difference between the $2$-adic valuations of the two parallel trajectories.
 Theorem~\ref{thm:lift-intro} is proved by case analysis on how the shift
 index evolves under lift; Theorem~\ref{thm:fc-intro} is the iterative
 consequence; Theorem~\ref{thm:density-intro} follows by monotonicity
-together with a refined classification by shift index.
+from the lift. A refined classification by shift index
+(Section~\ref{sec:Ga}) then re-expresses $c_W$ as a convergent series and
+isolates the remaining open question.
 
 The shift-$a$ normal form is, to the best of our knowledge, new; in
 particular, it differs from the Markov-operator setup of
@@ -448,8 +450,9 @@ Then
 \[
 \delta_J := \Vk^{(J)} - \Vi^{(J)} - v
 \]
-is an \emph{even} integer (possibly negative) with $|\delta_J| \le L$,
-where $v := \vtwo(r-1)$, and for any index $j$ we write
+is an \emph{even} integer (possibly negative) with
+$\delta_J \in [-L,\, L - v]$, where $v := \vtwo(r-1)$, and for any
+index $j$ we write
 $\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and
 $\Vi^{(j)} := \sum_{i < j} \vi^{(i)}$ for the cumulative valuations
 along the K- and I-tracks.
@@ -488,7 +491,7 @@ In both cases $\delta$ is even. For the bound, $\Vk^{(J)} \in [0, L]$ and
 $\Vi^{(J)} \in [0, L - v]$ (cumulative valuations are bounded by the
 respective initial modulus exponents), so
 $\Vk^{(J)} - \Vi^{(J)} \in [v - L, L]$ and hence
-$\delta_J = \Vk^{(J)} - \Vi^{(J)} - v \in [-L, L - v] \subseteq [-L, L]$.
+$\delta_J = \Vk^{(J)} - \Vi^{(J)} - v \in [-L, L - v]$.
 \qedhere
 \end{proof}
 
@@ -506,8 +509,7 @@ $\Vk^{(J)} - \Vi^{(J)} = 2a + v$. The obstruction family partitions:
 \]
 For $a = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
 By the bound $\delta_J \in [-L, L - v]$ from Lemma~\ref{lem:parity},
-$a = \delta_J/2 \in [-L/2,\, (L - v)/2] \subseteq [-L/2,\, L/2]$;
-in particular $|a| \le L/2$.
+$a = \delta_J/2 \in [-L/2,\, (L - v)/2]$; in particular $|a| \le L/2$.
 
 \subsection{Simultaneous stop and stop types}
 
@@ -534,8 +536,11 @@ $\vtwo(b_K^{(J)}) = L - \Vk^{(J)}$, and using $\Vk - \Vi = 2a + v$:
 
 \begin{definition}[Stop type]\label{def:stop-type}
 The \emph{stop type} at $(r, L)$ is \emph{EE} (equality) if
-$\vk^{(J)} = \vtwo(b_K^{(J)})$ (and hence $\vi^{(J)} = \vtwo(b_I^{(J)})$),
-and \emph{SS} (strict) if both inequalities are strict.
+$\vk^{(J)} = \vtwo(b_K^{(J)})$ and $\vi^{(J)} = \vtwo(b_I^{(J)})$, and
+\emph{SS} (strict) if $\vk^{(J)} > \vtwo(b_K^{(J)})$ and
+$\vi^{(J)} > \vtwo(b_I^{(J)})$. By Corollary~\ref{cor:sync} these two
+cases are exhaustive: a K-track equality forces an I-track equality,
+and a K-track strict inequality forces an I-track strict inequality.
 \end{definition}
 
 \subsection{The parameter \texorpdfstring{$v$}{v} and the typical case \texorpdfstring{$v = 1$}{v = 1}}
@@ -800,7 +805,10 @@ The case $n = 0$ is the empty word, which is trivially a factor of every
 $w_r$, so $p_W(0) = 1 = 2^0$. Fix $n \ge 1$ and
 $u = (u_0, u_1, \ldots, u_{n-1}) \in \{0,1\}^n$. Choose
 any anchor $r_0 \in \Obs_6 = \{19, 27, 59\}$ (verified by direct enumeration;
-see Appendix~\ref{sec:appendix}). Define inductively
+see Appendix~\ref{sec:appendix}). In fact each of the three anchors
+individually realises every pattern, as direct enumeration via the
+lift-symmetry table confirms; for the proof one anchor suffices.
+Define inductively
 \[
 r_k := r_{k-1} + u_{k-1} \cdot 2^{5 + k}, \qquad k = 1, 2, \ldots, n.
 \]
@@ -1010,6 +1018,18 @@ $r' \in \Obs_{L-1}^{G_{a'}}$.
 In either case, $r' \in \Obs_{L-1}$, so $r$ is not atomic. \qedhere
 \end{proof}
 
+\begin{corollary}\label{cor:no-G0-atom-all}
+For every $L \ge 5$, $|\Atom_L^{G_0}| = 0$.
+\end{corollary}
+
+\begin{proof}
+For $L \ge 7$, this is Theorem~\ref{thm:no-G0-atom}. At the two base
+levels direct enumeration (verified by \texttt{count\_obstructions.py})
+gives $\Atom_5 = \{27\}$ and $\Atom_6 = \{19\}$, each with shift index
+$a = 1 \ne 0$, so $|\Atom_5^{G_0}| = |\Atom_6^{G_0}| = 0$ as well.
+\qedhere
+\end{proof}
+
 \subsection{Strict lift balance and series representation}
 
 Write $g_L := |\Obs_L^{G_0}|$ and $h_L := |\Obs_L^{G_{\ne 0}}|$. The lift
@@ -1030,12 +1050,12 @@ $G_a$, $a \ne 0$ & $1$ & $1$ \\
 \label{tab:lift-balance}
 \end{table}
 
-Summing and adding the atomic contributions, which by Theorem~\ref{thm:no-G0-atom}
-occur only in $h_L$:
+Summing and adding the atomic contributions, which by
+Corollary~\ref{cor:no-G0-atom-all} occur only in $h_L$:
 
 \begin{corollary}[Strict lift balance]
 \label{cor:lift-balance}
-For every $L \ge 7$,
+For every $L \ge 6$,
 \[
 g_L = 2 g_{L-1} + h_{L-1}, \qquad h_L = h_{L-1} + |\Atom_L^{G_{\ne 0}}|.
 \]
@@ -1053,16 +1073,13 @@ $L \to \infty$.
 
 \begin{proof}
 By Lemma~\ref{lem:atom-decomp} every $r \in \Obs_L$ has a unique atomic
-anchor at some level $L_0 \in \{5, 6, \ldots, L\}$. Direct enumeration
-at the base levels (Remark~\ref{rem:smallest-level}; verified by
-\texttt{count\_obstructions.py} at $L = 5, 6$) gives
-$\Atom_5 = \{27\}$ and $\Atom_6 = \{19\}$, both with shift $a = 1$, so
-$|\Atom_5^{G_0}| = |\Atom_6^{G_0}| = 0$ and
-$|\Atom_5^{G_{\ne 0}}| = |\Atom_6^{G_{\ne 0}}| = 1$; the remaining
-level-$6$ obstructions $\{27, 59\} \subset \Obs_6$ are the two lifts of
-$27 \in \Atom_5$ and are not atomic at $L = 6$. For $L \ge 7$,
-Theorem~\ref{thm:no-G0-atom} kills all $G_0$-atoms above the base
-levels, so
+anchor at some level $L_0 \in \{5, 6, \ldots, L\}$. By
+Corollary~\ref{cor:no-G0-atom-all}, $|\Atom_{L_0}^{G_0}| = 0$ for every
+$L_0 \ge 5$, so each atom contributes to $\Atom_{L_0}^{G_{\ne 0}}$.
+Direct enumeration at the two base levels (verified by
+\texttt{count\_obstructions.py}) gives $\Atom_5 = \{27\}$ and
+$\Atom_6 = \{19\}$, both with shift index $a = 1$, so
+$|\Atom_5^{G_{\ne 0}}| = |\Atom_6^{G_{\ne 0}}| = 1$. Hence
 \[
 |\Obs_L| = 2^{L-5} + 2^{L-6} + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}| \cdot 2^{L - L_0}
         = 3 \cdot 2^{L-6} + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}| \cdot 2^{L - L_0}.
@@ -1144,13 +1161,13 @@ of Theorem~\ref{thm:tplus-bijection} below is exact.
 
 \begin{lemma}[Residue-level involution]\label{lem:involution-step}
 Let $r$ be odd with $v := \vtwo(r-1) \ge 1$ and $L > v$, and set
-$\overline{r} := 2^L - r$. By part~(i) below, the $\Tplus$ reduction
-at $\overline{r}$ in the sense of Section~\ref{sec:tplus} uses parameter
-$\vtwo(\overline{r}+1) = v$, so the two reductions share a single $v$.
-In~(iii)–(iv), $\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and
+$\overline{r} := 2^L - r$. Then $\vtwo(\overline{r}+1) = v$ as well
+(part~(i) of the lemma), so the $\Tplus$ reduction at $\overline{r}$ in
+the sense of Section~\ref{sec:tplus} uses the same parameter $v$. In
+the conclusions below, $\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and
 $\Vi^{(j)} := \sum_{i < j} \vi^{(i)}$ denote the common cumulative
 valuations of the two reductions, equal across $\Tplus/\Tminus$ by the
-valuation equalities established in the proof. Then:
+valuation equalities established in the proof. The conclusions:
 \begin{enumerate}[label=(\roman*)]
 \item $\overline{r}$ is odd with $\vtwo(\overline{r} + 1) = v < L$;
 \item the $\Tminus$ parallel reduction at $(r, L)$ and the $\Tplus$
@@ -1412,7 +1429,7 @@ $15$ & $3671$ & $3398$ & $273$ & $119$ \\
 $16$ & $7556$ & $7069$ & $487$ & $214$ \\
 \bottomrule
 \end{tabular}
-\caption{Direct enumeration counts at levels $L=5,\dots,16$: total obstructions, shift-zero and shift-nonzero subclasses, and atomic shift-nonzero obstructions. The decomposition $|\Obs_L| = |\Obs_L^{G_0}| + |\Obs_L^{G_{\ne 0}}|$ is read off each row, and the strict lift balance $|\Obs_L| = 2|\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$ (Corollary~\ref{cor:lift-balance}) holds row-by-row against the previous one for $L \ge 7$; the same identity holds at $L = 6$ against $L = 5$ by Lemma~\ref{lem:atom-decomp} together with the enumerated fact $|\Atom_6^{G_0}| = 0$ (proof of Theorem~\ref{thm:series}).}
+\caption{Direct enumeration counts at levels $L=5,\dots,16$: total obstructions, shift-zero and shift-nonzero subclasses, and atomic shift-nonzero obstructions. The decomposition $|\Obs_L| = |\Obs_L^{G_0}| + |\Obs_L^{G_{\ne 0}}|$ is read off each row, and the strict lift balance $|\Obs_L| = 2|\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$ (Corollary~\ref{cor:lift-balance}) holds row-by-row against the previous one for $L \ge 6$.}
 \label{tab:appendix-counts}
 \end{table}
 
@@ -1428,6 +1445,10 @@ strict lift balance of Corollary~\ref{cor:lift-balance} is asserted
 row-by-row by the script \texttt{count\_obstructions.py} against the
 previous-level count, so any drift in the enumeration would manifest as
 an immediate hard failure rather than silently shifting the bound.
+Each rigorous-verification script exits non-zero on any violation of
+the asserted theorem (a convention checked statically by
+\texttt{meta\_test\_exit\_convention.py}), so the bound is reproducible
+end-to-end by running the script.
 
 % =============================================================================
 \bibliographystyle{amsalpha}
