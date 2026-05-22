@@ -9,9 +9,11 @@ problem and adjacent residue-dynamical questions.
 .
 ├── Makefile                       build orchestration
 ├── README.md                      this file
+├── .githooks/                     versioned git hooks (pre-commit PDF rebuild)
 └── manuscripts/
     └── obstruction_residues/      obstruction-residue theory for the 3x-1 map
         ├── obstruction_residues.tex   LaTeX source (amsart)
+        ├── obstruction_residues.pdf   built PDF (kept in sync via pre-commit hook)
         ├── references.bib             BibTeX bibliography
         └── code/                      verification scripts (pure Python stdlib)
 ```
@@ -19,12 +21,18 @@ problem and adjacent residue-dynamical questions.
 ## Build
 
 ```sh
-make paper           # build manuscripts/obstruction_residues/_build/obstruction_residues.pdf
-make paper-clean     # remove build artefacts
+make paper           # build manuscripts/obstruction_residues/obstruction_residues.pdf
+make paper-clean     # remove latexmk cache (_build/)
 make check-py        # py_compile sanity check on all tracked Python
+make install-hooks   # enable .githooks/pre-commit (one-time per clone)
 ```
 
 Requires TeX Live (`latexmk`, `pdflatex`, `bibtex`) and Python 3.10+.
+
+After cloning, run `make install-hooks` once. The pre-commit hook then
+rebuilds and re-stages the PDF whenever `obstruction_residues.tex` or
+`references.bib` is part of a commit, so the committed PDF stays in
+sync with the committed source.
 
 ## Manuscripts
 

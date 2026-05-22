@@ -1,4 +1,4 @@
-.PHONY: all paper paper-clean check-py help
+.PHONY: all paper paper-clean check-py install-hooks help
 
 all: paper
 
@@ -9,11 +9,16 @@ PAPER_BASE := obstruction_residues
 paper:
 	@mkdir -p "$(PAPER_DIR)/_build"
 	cd "$(PAPER_DIR)" && latexmk -pdf -outdir=_build -interaction=nonstopmode $(PAPER_BASE).tex
+	@cp "$(PAPER_DIR)/_build/$(PAPER_BASE).pdf" "$(PAPER_DIR)/$(PAPER_BASE).pdf"
 	@echo ""
-	@echo "PDF: $(PAPER_DIR)/_build/$(PAPER_BASE).pdf"
+	@echo "PDF: $(PAPER_DIR)/$(PAPER_BASE).pdf"
 
 paper-clean:
 	rm -rf "$(PAPER_DIR)/_build"
+
+install-hooks:
+	git config core.hooksPath .githooks
+	@echo "git hooks path set to .githooks/"
 
 # Parse every tracked .py file with py_compile. Catches syntax errors
 # introduced by sweeping refactors.
@@ -32,6 +37,7 @@ check-py:
 
 help:
 	@echo "Available targets:"
-	@echo "  paper       — build the manuscript PDF"
-	@echo "  paper-clean — remove build artefacts (_build/)"
-	@echo "  check-py    — py_compile sanity check across all tracked .py"
+	@echo "  paper        — build the manuscript PDF"
+	@echo "  paper-clean  — remove build artefacts (_build/)"
+	@echo "  check-py     — py_compile sanity check across all tracked .py"
+	@echo "  install-hooks— enable .githooks/pre-commit (one-time per clone)"
