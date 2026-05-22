@@ -1,7 +1,6 @@
 # collatz
 
-Publication-ready manuscripts and supporting code on the $3x \pm 1$
-problem and adjacent residue-dynamical questions.
+Publication-ready manuscripts and supporting code on the $3x+1$ problem.
 
 ## Layout
 
