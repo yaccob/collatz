@@ -1,13 +1,13 @@
 #!/bin/sh
-# Pre-commit hook: when the TeX source or its bibliography is staged,
-# rebuild the manuscript PDF and stage the result so the committed PDF
-# always matches the committed source.
+# Pre-commit hook: when any manuscript's TeX source or bibliography is
+# staged, rebuild all manuscript PDFs and stage the results so committed
+# PDFs always match the committed sources.
 set -e
 
-SRC_CHANGED=$(git diff --cached --name-only | grep -E '^manuscripts/obstruction_residues/(obstruction_residues\.tex|references\.bib)$' || true)
+SRC_CHANGED=$(git diff --cached --name-only | grep -E '^manuscripts/[^/]+/[^/]+\.(tex|bib)$' || true)
 [ -z "$SRC_CHANGED" ] && exit 0
 
-echo "[pre-commit] TeX source staged — rebuilding manuscript PDF..."
-make paper >/dev/null
-git add manuscripts/obstruction_residues/obstruction_residues.pdf
-echo "[pre-commit] PDF rebuilt and staged."
+echo "[pre-commit] Manuscript source staged — rebuilding..."
+make papers >/dev/null
+git add manuscripts/*/*.pdf
+echo "[pre-commit] Manuscript PDFs rebuilt and staged."

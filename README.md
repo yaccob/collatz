@@ -21,18 +21,21 @@ problem and adjacent residue-dynamical questions.
 ## Build
 
 ```sh
-make paper           # build manuscripts/obstruction_residues/obstruction_residues.pdf
-make paper-clean     # remove latexmk cache (_build/)
-make check-py        # py_compile sanity check on all tracked Python
+make papers          # build all manuscript PDFs in this repo
+make clean           # remove all build artefacts (_build/, __pycache__/)
+make check           # sanity check (currently: all tracked .py parse)
 make install-hooks   # enable .githooks/pre-commit (one-time per clone)
 ```
+
+Convention: a manuscript is a directory `manuscripts/<slug>/` containing
+`<slug>.tex`. The built PDF is placed next to its source.
 
 Requires TeX Live (`latexmk`, `pdflatex`, `bibtex`) and Python 3.10+.
 
 After cloning, run `make install-hooks` once. The pre-commit hook then
-rebuilds and re-stages the PDF whenever `obstruction_residues.tex` or
-`references.bib` is part of a commit, so the committed PDF stays in
-sync with the committed source.
+rebuilds and re-stages any manuscript PDF whenever its TeX source or
+bibliography is part of a commit, so committed PDFs stay in sync with
+their sources.
 
 ## Manuscripts
 
