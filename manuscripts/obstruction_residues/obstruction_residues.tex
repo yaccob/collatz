@@ -6,6 +6,15 @@
 \usepackage[english]{babel}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{microtype}
+% Pre-trigger microtype's expansion setup for the OT1-encoded cmr sizes that
+% are first used inside math (5pt scriptscriptstyle) and inside the .bbl
+% (9pt body), so pdfTeX doesn't warn about expansion-not-yet-declared on
+% first glyph use.
+\AtBeginDocument{%
+  \sbox0{\fontencoding{OT1}\fontfamily{cmr}\selectfont
+    \fontsize{5pt}{6pt}\selectfont a%
+    \fontsize{9pt}{11pt}\selectfont a}%
+}
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
@@ -761,7 +770,7 @@ obstructions $\Obs_6 = \{19, 27, 59\}$. By raising $L_0$ and computing
 $|\Obs_{L_0}|$ directly, tighter rigorous bounds for $c_W$ follow
 (Table~\ref{tab:density-bounds}):
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
 \toprule
@@ -1060,7 +1069,7 @@ Write $g_L := |\Obs_L^{G_0}|$ and $h_L := |\Obs_L^{G_{\ne 0}}|$. The lift
 symmetry of Proposition~\ref{prop:lift-symmetry} gives, per parent at
 $L - 1$ (Table~\ref{tab:lift-balance}):
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{c|cc}
 \toprule
@@ -1435,7 +1444,7 @@ $\{(c, d) : 3d + c = 1\}$.
 We have run this enumeration through $L = 16$, producing the counts of
 Table~\ref{tab:appendix-counts}.
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{rrrrr}
 \toprule
