@@ -137,9 +137,9 @@ The two maps are structurally parallel: both perform the operation
 ``multiply by three, add a small constant, strip the factors of two from the
 result''. They differ only in the sign of the additive constant. The
 trajectories of $\Tminus$ are, however, \emph{not} believed to converge to a
-single attractor: three nontrivial cycles are classically known --- the
-fixed cycle through~$1$, the $\{5, 7\}$-cycle, and the seventeen-family cycle
-through $\{17, 25, 37, 55, 65, 49, 73, \ldots\}$; see
+single attractor: three cycles are classically known --- the trivial
+fixed cycle through~$1$, the $\{5, 7\}$-cycle, and the $7$-cycle
+$17 \to 25 \to 37 \to 55 \to 41 \to 61 \to 91 \to 17$; see
 Lagarias~\cite{Lagarias2010bib} for historical attribution. The question of
 whether further cycles exist remains as open as the Collatz conjecture itself.
 The two maps are connected through a classical identity going back to
@@ -148,7 +148,7 @@ corresponds, via the substitution $r = 2m+1$, to a single $\Tplus$-step
 followed by a $\Tplus$-trajectory. This \emph{Lagarias intertwining}
 illustrates that any structural feature of $\Tminus$ has a $\Tplus$
 counterpart; the explicit transfer we use in
-Section~\ref{sec:tplus}, however, is different — a residue-level
+Section~\ref{sec:tplus}, however, is different --- a residue-level
 involution $r \mapsto 2^L - r$ that conjugates the $\Tminus$ parallel
 reduction into the $\Tplus$ parallel reduction step-by-step
 (Lemma~\ref{lem:involution-step}).
@@ -363,8 +363,8 @@ $2$-adic valuation.
 Fix $r$ a positive odd integer with $r \ne 1$, set $v := \vtwo(r-1)$,
 and write $m := (r - 1)/2^v$; then $m$ is odd. The inequality $v \ge 1$
 is automatic for odd $r > 1$ since $r - 1$ is then even. (We use $v$ as
-a parameter throughout; the special case $v = 1$ — equivalently
-$r \equiv 3 \pmod 4$ — is the typical reader picture and is presented
+a parameter throughout; the special case $v = 1$ --- equivalently
+$r \equiv 3 \pmod 4$ --- is the typical reader picture and is presented
 first wherever a concrete calculation helps.)
 
 Fix a level $L > v$. We run two $\Tminus$-reductions in parallel:
@@ -618,7 +618,7 @@ d_{J+1} = \frac{3(1 - 4^a)/3 + 4^a - 1}{2^{\vi^{(J)}}} = 0.
 After this step, $\Vk^{(J+1)} = L_0$, so the K-track modulus has
 valuation $1$, and the next step would require $\vk^{(J+1)} < 1$. Since
 $a_K^{(J+1)}$ is odd, $3 a_K^{(J+1)} - 1$ is even, hence
-$\vk^{(J+1)} \ge 1$ — so the next step is impossible. Termination
+$\vk^{(J+1)} \ge 1$ --- so the next step is impossible. Termination
 occurs at index $J+1$ with
 $(c_{J+1}, d_{J+1}) = (1, 0)$, hence $\Xend = 1$ and
 $r_+ \in \Obs_{L_0+1}^{G_0}$.
@@ -930,8 +930,8 @@ $r \bmod 2^{L_0} \in \Atom_{L_0}$. \emph{Existence:} starting from $r$ at
 level $L$, consider the descending sequence $r_k := r \bmod 2^{L-k}$ for
 $k = 0, 1, \ldots, L - 5$. By the lift theorem (Theorem~\ref{thm:lift-intro}),
 whenever $r_{k+1} \in \Obs_{L-k-1}$, the level-$(L-k)$ residue
-$r_k = r \bmod 2^{L-k}$ — being one of the two lifts of $r_{k+1}$ at
-level $L - k$ — lies in $\Obs_{L-k}$; the converse need not hold. Let
+$r_k = r \bmod 2^{L-k}$ --- being one of the two lifts of $r_{k+1}$ at
+level $L - k$ --- lies in $\Obs_{L-k}$; the converse need not hold. Let
 $L_0$ be the smallest level $\ge 5$ for which
 $r \bmod 2^{L_0} \in \Obs_{L_0}$. Then
 $r \bmod 2^{L_0 - 1} \notin \Obs_{L_0 - 1}$ (either because $L_0 = 5$
@@ -1013,7 +1013,7 @@ parent at $J' + 1 \le J - 1$, again contradicting the definition of $J$.
 At index $J - 1$, a child I-stop requires $\Vi^{(J)} \ge L - 1 - v$;
 by the terminal synchronisation $\Vi^{(J)} = \Vk^{(J)} - v$ (from
 $a = 0$, equivalently $\delta_J = 0$), this is exactly
-$\Vk^{(J)} \ge L - 1$ — the Case~B branch below — so in Case~A neither
+$\Vk^{(J)} \ge L - 1$ --- the Case~B branch below --- so in Case~A neither
 child stop fires before index $J$.
 
 \emph{Case A: $\Vk^{(J)} < L - 1$.} The K-track stop at level $L - 1$
@@ -1024,9 +1024,9 @@ the Case-A hypothesis $\Vk^{(J)} < L - 1$), so the $(r', L-1)$ reduction
 runs at least as far as index $J$; at $j = J$ we have
 $\Vk^{(J)} + \vk^{(J)} \ge L > L - 1$, hence the K-track stop at level
 $L - 1$ fires at $J$ and the reduction terminates there. (The I-track
-stop at level $L - 1$ also fires at $J$ by the same chain — at $j = J$
+stop at level $L - 1$ also fires at $J$ by the same chain --- at $j = J$
 the synchronisation $\vi^{(J)} = \vk^{(J)}$, $\Vk^{(J)} - \Vi^{(J)} = v$
-holds — but only the first track to stop matters for termination.) The
+holds --- but only the first track to stop matters for termination.) The
 terminal data of the two reductions coincide: $(c_J, d_J) = (1, 0)$, so
 $r' \in \Obs_{L-1}^{G_0}$ and $r$ is not atomic.
 
