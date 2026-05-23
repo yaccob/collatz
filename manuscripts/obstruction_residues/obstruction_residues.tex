@@ -1183,15 +1183,16 @@ of Theorem~\ref{thm:tplus-bijection} below is exact.
 
 \begin{lemma}[Residue-level involution]\label{lem:involution-step}
 Let $r$ be odd with $v := \vtwo(r-1) \ge 1$ and $L > v$, and set
-$\overline{r} := 2^L - r$. Then $\vtwo(\overline{r}+1) = v$ as well
-(part~(i) of the lemma), so the $\Tplus$ reduction at $\overline{r}$ in
-the sense of Section~\ref{sec:tplus} uses the same parameter $v$. In
-the conclusions below, $\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and
-$\Vi^{(j)} := \sum_{i < j} \vi^{(i)}$ denote the common cumulative
-valuations of the two reductions, equal across $\Tplus/\Tminus$ by the
-valuation equalities established in the proof. The conclusions:
+$\overline{r} := 2^L - r$. In the conclusions below, write
+$\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and
+$\Vi^{(j)} := \sum_{i < j} \vi^{(i)}$ for the cumulative valuations
+along the two tracks; the proof shows that they coincide across the
+$\Tplus$ and $\Tminus$ reductions, so a single notation suffices.
+Conclusions:
 \begin{enumerate}[label=(\roman*)]
-\item $\overline{r}$ is odd with $\vtwo(\overline{r} + 1) = v < L$;
+\item $\overline{r}$ is odd with $\vtwo(\overline{r} + 1) = v < L$
+  (so the $\Tplus$ reduction at $\overline{r}$ in the sense of
+  Section~\ref{sec:tplus} uses the same parameter $v$);
 \item the $\Tminus$ parallel reduction at $(r, L)$ and the $\Tplus$
   parallel reduction at $(\overline{r}, L)$, both with parameter $v$,
   terminate at the same index $J$;
@@ -1405,7 +1406,8 @@ index) and is the subject of ongoing work.
 
 \section*{Funding and competing interests}
 
-The author declares no funding or competing interests.
+The author received no funding for this research and declares no
+competing interests.
 
 % =============================================================================
 \appendix
