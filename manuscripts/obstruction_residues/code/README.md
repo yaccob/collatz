@@ -68,6 +68,13 @@ laptop:
 ## Reproducibility
 
 This directory is hosted at
-<https://github.com/yaccob/collatz/tree/main/manuscripts/obstruction_residues/code>.
-For stable citation, use that URL together with a specific commit hash
-or release tag.
+<https://github.com/yaccob/collatz/tree/main/manuscripts/obstruction_residues/code>
+and permanently archived on Zenodo:
+
+- Concept DOI (always resolves to the latest archived version):
+  <https://doi.org/10.5281/zenodo.20356496>
+- Version DOI for the `v0.1.0` snapshot:
+  <https://doi.org/10.5281/zenodo.20356497>
+
+For stable citation prefer the concept DOI; use the version DOI when
+the exact archived snapshot matters (e.g. reviewer correspondence).
