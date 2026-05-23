@@ -1,6 +1,6 @@
 # High-performance enumeration of |Obs_L|
 
-Rust counterpart to `../count_obstructions.py`, designed to push the
+Rust counterpart to `../python/count_obstructions.py`, designed to push the
 rigorous lower bound
 
   c_W >= |Obs_L| / 2^L

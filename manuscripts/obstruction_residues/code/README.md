@@ -1,14 +1,24 @@
 # Supporting code for *Obstruction residues for the $3x-1$ map*
 
-This directory contains the verification scripts referenced in the
+This directory contains the verification code referenced in the
 appendix of the manuscript `obstruction_residues.tex`. Each script enumerates
 a finite range of obstruction residues, runs the parallel reduction
 defined in §2 of the paper, and reports the result.
 
+## Layout
+
+- `python/` — Python verification scripts (one per rigorous result; pure
+  stdlib, no third-party dependencies). The bulk of the appendix table is
+  verified here.
+- `rust/` — Rust enumerator (`obstruction_residues_count`) that pushes the
+  level $L$ further than is feasible in Python; runs the same algorithm.
+- `LICENSE` — MIT, applies to both `python/` and `rust/`.
+
 ## Requirements
 
-- Python 3.10 or newer (uses `fractions.Fraction` and standard library only;
-  no third-party dependencies).
+- Python 3.10 or newer for `python/` (uses `fractions.Fraction` and standard
+  library only; no third-party dependencies).
+- Rust toolchain (`cargo`, stable channel) for `rust/`.
 
 ## Scripts and the results they verify
 
@@ -49,14 +59,25 @@ the script header for what claim (if any) is being explored.
 
 ## Usage
 
-Each script is self-contained and can be run with no arguments (default
-parameters chosen for a reasonable runtime), or with an optional
+Each Python script is self-contained and can be run with no arguments
+(default parameters chosen for a reasonable runtime), or with an optional
 positional level argument:
 
 ```sh
-python atomic_g0_early_stop_check.py            # default L
-python atomic_g0_early_stop_check.py 14         # explicit level
+python3 python/atomic_g0_early_stop_check.py            # default L
+python3 python/atomic_g0_early_stop_check.py 14         # explicit level
 ```
+
+The Rust enumerator is built and run from its own subdirectory:
+
+```sh
+cd rust/ && cargo build --release
+./target/release/count_obstructions_rs 20            # single level
+./target/release/count_obstructions_rs 5 28          # sweep L = 5..28
+```
+
+See `rust/README.md` for the full set of flags (chunked checkpoints,
+`--resume`, custom runlog path).
 
 Runtimes scale roughly as $O(L \cdot 2^L)$. Typical numbers on a modern
 laptop:
