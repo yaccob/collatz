@@ -365,6 +365,11 @@ Fix a level $L > v$. We run two $\Tminus$-reductions in parallel:
 The initial relation $m = (r-1)/2^v$ writes as $a_I^{(0)} = 2^{-v} a_K^{(0)} - 2^{-v}$.
 At each step $j \ge 0$, we update both tracks according to the basic step,
 denoting $\vk^{(j)} := \vtwo(3 a_K^{(j)} - 1)$ and $\vi^{(j)} := \vtwo(3 a_I^{(j)} - 1)$.
+Cumulative valuations along the two tracks are denoted
+$\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and
+$\Vi^{(j)} := \sum_{i < j} \vi^{(i)}$, so that the residual $2$-adic
+valuation of $b_K^{(j)}$ is $L - \Vk^{(j)}$ and that of $b_I^{(j)}$ is
+$L - v - \Vi^{(j)}$.
 The reduction proceeds as long as both tracks can step; it terminates as
 soon as either condition fails. We write $J = J(r, L)$ for the index of
 termination.
@@ -449,17 +454,13 @@ The central algebraic fact of this paper is the following.
 
 \begin{lemma}[Parity lemma]
 \label{lem:parity}
-Suppose the parallel reduction at $(r, L)$ terminates with $\Xend(r, L) = 1$.
-Then
+Suppose the parallel reduction at $(r, L)$ terminates with $\Xend(r, L) = 1$,
+and write $v := \vtwo(r-1)$. Then
 \[
 \delta_J := \Vk^{(J)} - \Vi^{(J)} - v
 \]
 is an \emph{even} integer (possibly negative) with
-$\delta_J \in [-L,\, L - v]$, where $v := \vtwo(r-1)$, and for any
-index $j$ we write
-$\Vk^{(j)} := \sum_{i < j} \vk^{(i)}$ and
-$\Vi^{(j)} := \sum_{i < j} \vi^{(i)}$ for the cumulative valuations
-along the K- and I-tracks.
+$\delta_J \in [-(L-1),\, L - 1 - v]$.
 \end{lemma}
 
 \begin{proof}
@@ -491,11 +492,11 @@ by $2^e$:
 All terms are integers; reducing modulo~$3$ yields $2^e - 1 \equiv 0 \pmod 3$,
 hence $e$ even, hence $\delta$ even.
 
-In both cases $\delta$ is even. For the bound, $\Vk^{(J)} \in [0, L]$ and
-$\Vi^{(J)} \in [0, L - v]$ (cumulative valuations are bounded by the
-respective initial modulus exponents), so
-$\Vk^{(J)} - \Vi^{(J)} \in [v - L, L]$ and hence
-$\delta_J = \Vk^{(J)} - \Vi^{(J)} - v \in [-L, L - v]$.
+In both cases $\delta$ is even. For the bound, each firing step satisfies
+$\vk^{(j)} < L - \Vk^{(j)}$ and $\vi^{(j)} < L - v - \Vi^{(j)}$ (else the
+respective stop would have fired at $j$), so $\Vk^{(J)} \le L - 1$ and
+$\Vi^{(J)} \le L - 1 - v$; hence
+$\delta_J = \Vk^{(J)} - \Vi^{(J)} - v \in [-(L-1), L - 1 - v]$.
 \qedhere
 \end{proof}
 
@@ -512,8 +513,9 @@ $\Vk^{(J)} - \Vi^{(J)} = 2a + v$. The obstruction family partitions:
 \Obs_L = \bigsqcup_{a \in \Z} \Obs_L^{G_a}, \qquad \Obs_L^{G_a} := \{\, r \in \Obs_L : a(r, L) = a \,\}.
 \]
 For $a = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
-By the bound $\delta_J \in [-L, L - v]$ from Lemma~\ref{lem:parity},
-$a = \delta_J/2 \in [-L/2,\, (L - v)/2]$; in particular $|a| \le L/2$.
+By the bound $\delta_J \in [-(L-1), L - 1 - v]$ from Lemma~\ref{lem:parity},
+$a = \delta_J/2 \in [-(L-1)/2,\, (L - 1 - v)/2]$; in particular
+$|a| \le (L-1)/2$.
 
 \subsection{Simultaneous stop and stop types}
 
@@ -744,10 +746,12 @@ $|\Obs_{L_0+1}| \ge 2 |\Obs_{L_0}|$, equivalently
 $|\Obs_{L_0+1}|/2^{L_0+1} \ge |\Obs_{L_0}|/2^{L_0}$: the density ratio is
 non-decreasing. Since $\Obs_L \subseteq \{1, \ldots, 2^L\}$ the ratio is
 bounded above by $1$. By monotone convergence,
-$c_W := \lim_{L \to \infty} |\Obs_L|/2^L$ exists in $[\rho_{L_0}, 1]$ for any
-$L_0 \ge 5$. Specialising to $L_0 = 6$ and using the direct enumeration
-$\Obs_6 = \{19, 27, 59\}$ (Section~\ref{sec:setup}; verified computationally
-in Appendix~\ref{sec:appendix}), $c_W \ge 3/64$. \qedhere
+$c_W := \lim_{L \to \infty} |\Obs_L|/2^L$ exists in $[\rho_{L_0}, 1]$ for every
+$L_0 \ge 5$. Substituting the direct enumeration
+$|\Obs_{16}| = 7556$ (Appendix~\ref{sec:appendix},
+Table~\ref{tab:appendix-counts}) yields $c_W \ge 7556/65536 \approx 0.115$;
+the conservative bound $c_W \ge 3/64$ is recovered at $L_0 = 6$ from
+$\Obs_6 = \{19, 27, 59\}$ (Section~\ref{sec:setup}). \qedhere
 \end{proof}
 
 The conservative bound $\rho_6 = 3/64$ uses only the three explicit
@@ -789,6 +793,8 @@ $L$-bit word, least significant bit first:
 \[
 w_r \in \{0,1\}^L, \qquad w_r[k] := \lfloor r / 2^k \rfloor \bmod 2, \quad k = 0, \ldots, L-1.
 \]
+In particular $w_r[0] = 1$ (since $r$ is odd) and $w_r[L-1]$ is the
+leading bit of $r$ in this $L$-bit representation.
 The \emph{language of obstruction words} at level $L$ is
 $\Fac_L := \{w_r : r \in \Obs_L\}$, and the \emph{factor language} of the
 obstruction family is
@@ -987,6 +993,17 @@ K-track modulus at level $L$ at index $J'+1$ has valuation
 $L - \Vk^{(J'+1)} \le 1$. Since $a_K^{(J'+1)}$ is odd, $\vk^{(J'+1)} \ge 1$,
 so the next step is impossible: the $(r, L)$ reduction would stop at
 $J' + 1 \le J - 1$, contradicting the definition of $J$.
+The same argument applied to the I-track rules out the child I-track
+stop firing at any index $J' \le J - 2$: an I-stop at $J'$ would force
+$\Vi^{(J'+1)} \ge L - 1 - v$, so the I-track modulus at level $L$ at
+index $J'+1$ would have valuation $L - v - \Vi^{(J'+1)} \le 1$ and
+$\vi^{(J'+1)} \ge 1$ (since $a_I^{(J'+1)}$ is odd) would terminate the
+parent at $J' + 1 \le J - 1$, again contradicting the definition of $J$.
+At index $J - 1$, a child I-stop requires $\Vi^{(J)} \ge L - 1 - v$;
+by the terminal synchronisation $\Vi^{(J)} = \Vk^{(J)} - v$ (from
+$a = 0$, equivalently $\delta_J = 0$), this is exactly
+$\Vk^{(J)} \ge L - 1$ — the Case~B branch below — so in Case~A neither
+child stop fires before index $J$.
 
 \emph{Case A: $\Vk^{(J)} < L - 1$.} The K-track stop at level $L - 1$
 does not fire at any index $\le J - 1$ (the indices $J' \le J - 2$ are
@@ -1386,7 +1403,7 @@ on $c_W$. A complete treatment of the $(ax+b)$ family raises new
 phenomena (Mersenne asymmetry, a sub-class hierarchy, a signed sync
 index) and is the subject of ongoing work.
 
-\section*{Acknowledgements}
+\section*{Funding and competing interests}
 
 The author declares no funding or competing interests.
 
