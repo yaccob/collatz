@@ -3,5 +3,8 @@ manuscripts/*/_build/
 __pycache__/
 *.pyc
 
+# Rust build artefacts
+target/
+
 # Claude Code per-machine state
 .claude/
