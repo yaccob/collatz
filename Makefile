@@ -1,4 +1,4 @@
-.PHONY: all papers clean check install-hooks help
+.PHONY: all papers clean check install-hooks help FORCE
 
 all: papers
 
@@ -12,11 +12,20 @@ BUILD_DIRS  := $(foreach d,$(PAPER_DIRS),$(d)/_build)
 
 papers: $(PAPER_PDFS)
 
-manuscripts/%.pdf: manuscripts/%.tex
+# FORCE prereq makes the recipe run on every `make papers` invocation, so the
+# outer PDF stays in sync with _build/ even when an external tool (e.g. an IDE
+# LaTeX extension) modified the outer copy more recently than the .tex source.
+# latexmk inside the recipe is itself incremental, so this stays fast.
+# `cmp -s ... || cp ...` keeps the outer PDF's timestamp stable when content
+# already matches, avoiding spurious rebuilds for downstream tools that watch
+# the file's mtime.
+manuscripts/%.pdf: manuscripts/%.tex FORCE
 	@mkdir -p $(dir $@)_build
 	cd ./$(dir $@) && latexmk -pdf -outdir=_build -interaction=nonstopmode $(notdir $<)
-	@cp $(dir $@)_build/$(notdir $@) $@
+	@cmp -s $(dir $@)_build/$(notdir $@) $@ || cp $(dir $@)_build/$(notdir $@) $@
 	@echo "PDF: $@"
+
+FORCE:
 
 clean:
 	rm -rf $(BUILD_DIRS)
