@@ -18,20 +18,58 @@ $r \in \{1, \dots, 2^L\}$ runs in parallel via `rayon`.
 
 ## Run
 
-    ./target/release/count_obstructions_rs L_start [L_end]
+    ./target/release/count_obstructions_rs L_start [L_end] [flags]
+
+Flags:
+
+    --output FILE     append-only TSV runlog (default: ./obs_runlog.tsv)
+    --chunk-bits N    process 2^N odd r per chunk (default: 24)
+    --resume          skip chunks/levels already recorded in --output
 
 Examples:
 
-    # single level
+    # single level, default runlog in cwd
     ./target/release/count_obstructions_rs 24
 
-    # sweep
-    ./target/release/count_obstructions_rs 5 28
+    # sweep, writing to a stable location outside the repo
+    ./target/release/count_obstructions_rs 5 28 \
+      --output ~/research/obs_runlog.tsv
 
-Each row reports $|\mathcal{O}_L|$, the resulting ratio
-$|\mathcal{O}_L|/2^L$, the wall-clock time, and (for $L >$ `L_start`)
-the lift-balance check $|\mathcal{O}_L| - 2|\mathcal{O}_{L-1}|$
+    # if the above is interrupted partway through L=28, resume:
+    ./target/release/count_obstructions_rs 5 28 \
+      --output ~/research/obs_runlog.tsv --resume
+
+Each row in the stdout summary reports $|\mathcal{O}_L|$, the resulting
+ratio $|\mathcal{O}_L|/2^L$, the wall-clock time, and (for $L >$
+`L_start`) the lift-balance check $|\mathcal{O}_L| - 2|\mathcal{O}_{L-1}|$
 (Corollary lift-balance).
+
+## Checkpoint / resume
+
+Within each level $L$, work is split into chunks of $2^{\text{chunk\_bits}}$
+odd $r$ each, processed sequentially with internal rayon parallelism.
+After each chunk completes, one line is appended to the runlog (TSV):
+
+    chunk    L  chunk_idx  chunk_size  k_start  k_end  count  wall_sec  ts_epoch
+
+When a level finishes, a `level` line is appended:
+
+    level    L  -          -           -        -      total  wall_sec  ts_epoch
+
+With `--resume`, the binary reads the runlog before starting: levels
+with a `level` line are skipped entirely, partially-completed levels
+resume from the first chunk not recorded. The chunk_bits used on resume
+must match what is recorded; otherwise the binary refuses to mix.
+
+Practical guidance:
+
+- `--chunk-bits 24` (default) gives chunks of ~16M odd $r$. On 8 cores
+  this is ~1–2 s per chunk at $L \approx 32$, scaling roughly $\times 2$
+  per added $L$. Crash granularity is therefore at most one chunk lost
+  ($\le 10$ s of work at $L = 36$, $\sim 1$ min at $L = 40$).
+- `--chunk-bits` smaller than the level allows: clamps to $L - 1$
+  automatically.
+- The runlog is append-only and crash-safe (each chunk line is `flush()`-ed).
 
 ## Verification
 
