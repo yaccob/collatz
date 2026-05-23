@@ -414,7 +414,8 @@ as the obstruction certificate (Definition~\ref{def:obstruction}).
 
 \begin{definition}[Obstruction residue]
 \label{def:obstruction}
-Let $r$ be a positive odd integer and write $v := \vtwo(r-1) \ge 1$. We
+Let $r$ be a positive odd integer with $r \ne 1$, and write
+$v := \vtwo(r-1) \ge 1$. We
 call $r$ an \emph{obstruction residue at level $L > v$} if $\Xend(r, L) = 1$.
 We write
 \[
@@ -516,7 +517,7 @@ $\Vk^{(J)} - \Vi^{(J)} = 2a + v$. The obstruction family partitions:
 For $a = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
 By the bound $\delta_J \in [-(L-1), L - 1 - v]$ from Lemma~\ref{lem:parity},
 $a = \delta_J/2 \in [-(L-1)/2,\, (L - 1 - v)/2]$; in particular
-$|a| \le (L-1)/2$.
+$|a| \le \lfloor (L-1)/2 \rfloor$ (using that $a$ is an integer).
 
 \subsection{Simultaneous stop and stop types}
 
@@ -800,7 +801,7 @@ The \emph{language of obstruction words} at level $L$ is
 $\Fac_L := \{w_r : r \in \Obs_L\}$, and the \emph{factor language} of the
 obstruction family is
 \[
-\Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ is a factor of } w_r \text{ for some } r \in \Obs_L,\, L \ge 1 \,\}.
+\Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ is a factor of } w_r \text{ for some } r \in \Obs_L,\, L \ge 5 \,\}.
 \]
 The \emph{factor complexity function} is
 $p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$. Trivially $p_W(n) \le 2^n$.
