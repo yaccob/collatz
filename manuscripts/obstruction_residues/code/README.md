@@ -21,7 +21,7 @@ runs on a modern laptop; raising the level argument to $L = 16$ takes
 
 | Script | Verifies |
 |:---|:---|
-| `count_obstructions.py` | Appendix table (counts $\|\mathcal{O}_L\|$, $\|\mathcal{O}_L^{G_0}\|$, $\|\mathcal{O}_L^{G_{\ne 0}}\|$, $\|\mathcal{A}_L^{G_{\ne 0}}\|$) and the element lists of $\mathcal{O}_L$ and $\mathcal{A}_L^{G_{\ne 0}}$ (truncated at 30 entries), **and asserts** the strict lift balance $\|\mathcal{O}_L\| = 2\|\mathcal{O}_{L-1}\| + \|\mathcal{A}_L^{G_{\ne 0}}\|$ (Corollary 6.3) against the level-$(L-1)$ count. |
+| `count_obstructions.py` | Appendix table (counts $\|\mathcal{O}_L\|$, $\|\mathcal{O}_L^{G_0}\|$, $\|\mathcal{O}_L^{G_{\ne 0}}\|$, $\|\mathcal{A}_L^{G_{\ne 0}}\|$) and the element lists of $\mathcal{O}_L$ and $\mathcal{A}_L^{G_{\ne 0}}$ (truncated at 30 entries), **and asserts** the strict lift balance $\|\mathcal{O}_L\| = 2\|\mathcal{O}_{L-1}\| + \|\mathcal{A}_L^{G_{\ne 0}}\|$ (Corollary 6.4) against the level-$(L-1)$ count. |
 | `atomic_anchor_verification.py` | Lemma 6.1 (atom decomposition): every obstruction has a unique atomic anchor. |
 | `atomic_g0_early_stop_check.py` | Theorem 6.2 (no shift-zero atoms): no atomic shift-zero obstructions at level $\ge 7$. Classifies the lift origin of every $G_0$-obstruction. |
 | `factor_complexity_construction.py` | Theorem 1.3 (constructive form): for every $u \in \{0,1\}^n$ and every base anchor $r_0 \in \mathcal{O}_6$, the constructive lift produces a residue in $\mathcal{O}_{6+n}$ whose binary representation contains $u$ as a factor. Checked for $n \le 10$. |

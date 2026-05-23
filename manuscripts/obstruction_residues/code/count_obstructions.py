@@ -138,7 +138,7 @@ print(fmt(f"Obs_{L}", obs_list))
 print(fmt(f"Atom_{L}^{{G_ne0}}", atom_list))
 
 # Verify the strict lift balance |Obs_L| = 2|Obs_{L-1}| + |Atom_L^{G_ne0}|
-# (Corollary 6.3) against the level L-1 count.
+# (Corollary 6.4) against the level L-1 count.
 if L >= 7:
     total_prev, _, _, _, _, _ = count_at(L - 1, atoms=False)
     expected = 2 * total_prev + atoms_ne0
@@ -147,5 +147,5 @@ if L >= 7:
         f"|Obs_L|={total}, 2|Obs_{{L-1}}|+|Atom_L^{{G_ne0}}|=2*{total_prev}+{atoms_ne0}={expected}"
     )
     print(
-        f"Lift balance (Corollary 6.3): {total} = 2*{total_prev} + {atoms_ne0} ✓"
+        f"Lift balance (Corollary 6.4): {total} = 2*{total_prev} + {atoms_ne0} ✓"
     )

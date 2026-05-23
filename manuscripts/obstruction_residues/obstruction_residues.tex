@@ -343,6 +343,10 @@ has \emph{terminated}.
 Since $3$ is odd, $\vtwo(3\beta) = \vtwo(\beta)$, so
 $\vtwo(\beta') = \vtwo(\beta) - v_\alpha$: the modulus strictly decreases at
 each step, and the reduction always terminates after finitely many steps.
+Iterates of $\beta$ are in general of the form $3^j \cdot 2^k$ rather
+than literal powers of two; only the $2$-adic valuation $\vtwo(\beta)$ is
+used downstream, so we track $\beta$ as a positive integer of known
+$2$-adic valuation.
 
 \subsection{The two-track setup}
 
@@ -930,10 +934,11 @@ at level $L$. \qedhere
 For every $L \ge 7$, $|\Atom_L^{G_0}| = 0$.
 \end{theorem}
 
-The conclusion also holds at $L = 5, 6$ by direct enumeration (see the
-proof of Theorem~\ref{thm:series}); the bound $L \ge 7$ in the statement
-is the proof-method threshold, because the case analysis below requires
-$J \ge 2$, which is established as the first step of the proof.
+The conclusion also holds at $L = 5, 6$ by direct enumeration (see
+Corollary~\ref{cor:no-G0-atom-all}); the bound $L \ge 7$ in the statement
+is conservative. The case analysis below applies verbatim at $L = 6$
+and is vacuous at $L = 5$, where $|\Obs_5^{G_0}| = 0$; we defer both
+base cases to Corollary~\ref{cor:no-G0-atom-all} for clarity.
 
 \begin{proof}
 Fix $L \ge 7$ and suppose $r \in \Obs_L^{G_0}$, so $\Xend(r, L) = 1$ with
