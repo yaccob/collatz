@@ -69,15 +69,22 @@ impl Dyadic {
     }
 }
 
-/// Decide whether r is an obstruction at level L.
+/// Decide whether r is an obstruction at level L; if so, return the shift index a.
+///
+/// At termination the parameter c equals 2^{c_exp}. For an obstruction with shift
+/// index a, the parity lemma forces c = 4^a, i.e. c_exp = 2a. We return Some(a)
+/// when 3 d_J + c_J = 1 (the X-invariant condition) and c_exp is even; None
+/// otherwise. The c_exp parity check is defensive — the parity lemma rules out
+/// odd c_exp for obstructions, but we don't want to silently miscount if a
+/// future code change broke that invariant.
 #[inline]
-fn is_obstruction(r: u64, l: u32) -> bool {
+fn obstruction_shift(r: u64, l: u32) -> Option<i32> {
     if r & 1 == 0 || r == 1 {
-        return false;
+        return None;
     }
     let v = (r - 1).trailing_zeros();
     if v == 0 || v >= l {
-        return false;
+        return None;
     }
 
     let mut a_k: u128 = r as u128;
@@ -107,7 +114,16 @@ fn is_obstruction(r: u64, l: u32) -> bool {
                 num: 3 * d.num,
                 exp: d.exp,
             };
-            return three_d.add(c).is_one();
+            if three_d.add(c).is_one() {
+                if c_exp.rem_euclid(2) == 0 {
+                    return Some(c_exp / 2);
+                } else {
+                    // parity lemma violation — should never happen for an obstruction
+                    return None;
+                }
+            } else {
+                return None;
+            }
         }
 
         let new_c_exp = c_exp + v_k as i32 - v_i as i32;
@@ -132,13 +148,43 @@ fn is_obstruction(r: u64, l: u32) -> bool {
     }
 }
 
+/// Boolean wrapper for callers that don't need the shift index.
+/// Currently only used by the test module; kept as a named entry point so
+/// callers can opt out of the HashMap overhead in the future.
+#[cfg(test)]
+#[inline]
+fn is_obstruction(r: u64, l: u32) -> bool {
+    obstruction_shift(r, l).is_some()
+}
+
 /// Count obstructions for odd r corresponding to k in [k_start, k_end)
-/// (i.e. r = 2*k + 1).
-fn count_chunk(l: u32, k_start: u64, k_end: u64) -> u64 {
+/// (i.e. r = 2*k + 1), bucketed by shift index. Total count is the sum of
+/// the returned map's values.
+fn count_chunk_shifts(l: u32, k_start: u64, k_end: u64) -> HashMap<i32, u64> {
     (k_start..k_end)
         .into_par_iter()
-        .filter(|&k| is_obstruction(2 * k + 1, l))
-        .count() as u64
+        .fold(
+            HashMap::<i32, u64>::new,
+            |mut acc, k| {
+                if let Some(a) = obstruction_shift(2 * k + 1, l) {
+                    *acc.entry(a).or_insert(0) += 1;
+                }
+                acc
+            },
+        )
+        .reduce(HashMap::<i32, u64>::new, |mut a, b| {
+            for (k, v) in b {
+                *a.entry(k).or_insert(0) += v;
+            }
+            a
+        })
+}
+
+/// Total count for the chunk (sum of shift buckets). Used only in tests; main
+/// path goes through count_chunk_shifts directly.
+#[cfg(test)]
+fn count_chunk(l: u32, k_start: u64, k_end: u64) -> u64 {
+    count_chunk_shifts(l, k_start, k_end).values().sum()
 }
 
 /// Full level count (no checkpointing). Kept for tests.
@@ -160,6 +206,10 @@ struct LevelState {
     /// True if a `level` line has been written: skip entirely
     level_done: bool,
     level_total: u64,
+    /// Per-shift count accumulated across chunks completed in prior runs.
+    /// Populated from chunk_shift rows in --stats-output when resuming.
+    /// Empty if no stats-output was used previously.
+    done_shifts: HashMap<i32, u64>,
 }
 
 fn read_runlog(path: &Path) -> HashMap<u32, LevelState> {
@@ -205,6 +255,48 @@ fn read_runlog(path: &Path) -> HashMap<u32, LevelState> {
     state
 }
 
+/// Read chunk_shift rows from the stats output and accumulate per-level
+/// shift sums into `state`. Must be called *after* `read_runlog` so that the
+/// LevelState entries exist (and so we can tell which chunks have already
+/// been counted as "done" via the matching runlog rows). Idempotent in the
+/// face of additional level_shift rows already present — we ignore those and
+/// recompute from chunk_shift, which is the authoritative per-chunk data.
+fn read_stats(path: &Path, state: &mut HashMap<u32, LevelState>) {
+    let file = match File::open(path) {
+        Ok(f) => f,
+        Err(_) => return,
+    };
+    for line in BufReader::new(file).lines().map_while(Result::ok) {
+        if line.is_empty() || line.starts_with('#') {
+            continue;
+        }
+        let cols: Vec<&str> = line.split('\t').collect();
+        if cols.len() < 8 {
+            continue;
+        }
+        if cols[0] != "chunk_shift" {
+            continue;
+        }
+        let l: u32 = match cols[1].parse() {
+            Ok(v) => v,
+            Err(_) => continue,
+        };
+        let ci: u64 = cols[2].parse().unwrap_or(u64::MAX);
+        let a: i32 = match cols[6].parse() {
+            Ok(v) => v,
+            Err(_) => continue,
+        };
+        let cnt: u64 = cols[7].parse().unwrap_or(0);
+        if let Some(entry) = state.get_mut(&l) {
+            // Only count chunks that the runlog records as done; otherwise
+            // a malformed/interrupted line could double-count.
+            if ci != u64::MAX && entry.done_chunks.contains_key(&ci) {
+                *entry.done_shifts.entry(a).or_insert(0) += cnt;
+            }
+        }
+    }
+}
+
 fn epoch_secs() -> u64 {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -228,11 +320,27 @@ fn ensure_header(path: &Path) -> std::io::Result<()> {
     Ok(())
 }
 
+fn ensure_stats_header(path: &Path) -> std::io::Result<()> {
+    if path.exists() {
+        return Ok(());
+    }
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    let mut f = File::create(path)?;
+    writeln!(f, "# obstruction-residues shift-class statistics (TSV)")?;
+    writeln!(f, "# Per-chunk shift counts: chunk_shift\\tL\\tchunk_idx\\tchunk_size\\tk_start\\tk_end\\ta\\tcount")?;
+    writeln!(f, "# Per-level totals:      level_shift\\tL\\t-\\t-\\t-\\t-\\ta\\tcount")?;
+    writeln!(f, "# kind\tL\tchunk_idx\tchunk_size\tk_start\tk_end\ta\tcount")?;
+    Ok(())
+}
+
 fn run_level(
     l: u32,
     chunk_bits: u32,
     prior: &LevelState,
     log: &mut impl Write,
+    stats: Option<&mut dyn Write>,
 ) -> std::io::Result<u64> {
     if l < 1 || l > 63 {
         panic!("L must be in 1..=63");
@@ -267,6 +375,15 @@ fn run_level(
             l, already, n_chunks, total
         );
     }
+    // Accumulator for the per-level shift distribution. Built up across
+    // chunks; flushed as level_shift rows after the last chunk. If the run
+    // is interrupted between chunks the partial sum is in chunk_shift rows.
+    // On resume, seed with the per-shift sum already gathered from chunks
+    // completed in prior runs (read from the stats output by read_stats);
+    // otherwise the level_shift row would only reflect the post-resume
+    // chunks. Empty if --stats-output wasn't used previously.
+    let mut level_shifts: HashMap<i32, u64> = prior.done_shifts.clone();
+    let mut stats = stats;
 
     for ci in 0..n_chunks {
         if prior.done_chunks.contains_key(&ci) {
@@ -275,7 +392,8 @@ fn run_level(
         let k_start = ci * chunk_size;
         let k_end = k_start + chunk_size;
         let t0 = Instant::now();
-        let c = count_chunk(l, k_start, k_end);
+        let chunk_shifts = count_chunk_shifts(l, k_start, k_end);
+        let c: u64 = chunk_shifts.values().sum();
         let wall = t0.elapsed().as_secs_f64();
         let ts = epoch_secs();
         writeln!(
@@ -284,6 +402,23 @@ fn run_level(
             l, ci, chunk_size, k_start, k_end, c, wall, ts
         )?;
         log.flush()?;
+        if let Some(s) = stats.as_deref_mut() {
+            // Stable ordering: sorted by a ascending.
+            let mut keys: Vec<i32> = chunk_shifts.keys().copied().collect();
+            keys.sort();
+            for a in &keys {
+                let cnt = chunk_shifts[a];
+                writeln!(
+                    s,
+                    "chunk_shift\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
+                    l, ci, chunk_size, k_start, k_end, a, cnt
+                )?;
+            }
+            s.flush()?;
+        }
+        for (a, cnt) in &chunk_shifts {
+            *level_shifts.entry(*a).or_insert(0) += cnt;
+        }
         total += c;
         already += 1;
         eprintln!(
@@ -306,6 +441,18 @@ fn run_level(
         l, total, level_wall, ts
     )?;
     log.flush()?;
+    if let Some(s) = stats.as_deref_mut() {
+        let mut keys: Vec<i32> = level_shifts.keys().copied().collect();
+        keys.sort();
+        for a in &keys {
+            writeln!(
+                s,
+                "level_shift\t{}\t-\t-\t-\t-\t{}\t{}",
+                l, a, level_shifts[a]
+            )?;
+        }
+        s.flush()?;
+    }
     eprintln!(
         "L={:>2}: DONE  total={}  ratio={:.8}  wall={:.1}s",
         l,
@@ -322,17 +469,20 @@ struct Cli {
     l_start: u32,
     l_end: u32,
     output: PathBuf,
+    stats_output: Option<PathBuf>,
     chunk_bits: u32,
     resume: bool,
 }
 
 fn print_usage(prog: &str) {
     eprintln!(
-        "Usage: {} L_start [L_end] [--output FILE] [--chunk-bits N] [--resume]\n\n\
+        "Usage: {} L_start [L_end] [--output FILE] [--stats-output FILE] [--chunk-bits N] [--resume]\n\n\
          Enumerate |Obs_L| for L in [L_start, L_end].\n\n\
-         --output FILE    append-only TSV runlog (default: ./obs_runlog.tsv)\n\
-         --chunk-bits N   process 2^N odd r per chunk (default: 24)\n\
-         --resume         skip chunks/levels already recorded in --output",
+         --output FILE         append-only TSV runlog (default: ./obs_runlog.tsv)\n\
+         --stats-output FILE   if set, write per-chunk and per-level shift-class\n\
+                               distribution to this TSV (separate from --output)\n\
+         --chunk-bits N        process 2^N odd r per chunk (default: 24)\n\
+         --resume              skip chunks/levels already recorded in --output",
         prog
     );
 }
@@ -344,6 +494,7 @@ fn parse_cli() -> Cli {
         std::process::exit(1);
     }
     let mut output = PathBuf::from("./obs_runlog.tsv");
+    let mut stats_output: Option<PathBuf> = None;
     let mut chunk_bits: u32 = 24;
     let mut resume = false;
     let mut positionals: Vec<String> = Vec::new();
@@ -353,6 +504,10 @@ fn parse_cli() -> Cli {
             "--output" => {
                 i += 1;
                 output = PathBuf::from(&args[i]);
+            }
+            "--stats-output" => {
+                i += 1;
+                stats_output = Some(PathBuf::from(&args[i]));
             }
             "--chunk-bits" => {
                 i += 1;
@@ -383,6 +538,7 @@ fn parse_cli() -> Cli {
         l_start,
         l_end,
         output,
+        stats_output,
         chunk_bits,
         resume,
     }
@@ -392,15 +548,23 @@ fn main() -> std::io::Result<()> {
     let cli = parse_cli();
     let n_threads = rayon::current_num_threads();
     eprintln!(
-        "# rayon threads: {}  chunk_bits: {}  output: {}  resume: {}",
+        "# rayon threads: {}  chunk_bits: {}  output: {}  stats: {}  resume: {}",
         n_threads,
         cli.chunk_bits,
         cli.output.display(),
+        cli.stats_output
+            .as_ref()
+            .map(|p| p.display().to_string())
+            .unwrap_or_else(|| "<none>".to_string()),
         cli.resume
     );
 
     let prior = if cli.resume {
-        read_runlog(&cli.output)
+        let mut s = read_runlog(&cli.output);
+        if let Some(p) = &cli.stats_output {
+            read_stats(p, &mut s);
+        }
+        s
     } else {
         if cli.output.exists() {
             eprintln!(
@@ -409,11 +573,26 @@ fn main() -> std::io::Result<()> {
             );
             std::process::exit(2);
         }
+        if let Some(p) = &cli.stats_output {
+            if p.exists() {
+                eprintln!(
+                    "ERROR: --stats-output {} exists. Pass --resume to continue, or remove it.",
+                    p.display()
+                );
+                std::process::exit(2);
+            }
+        }
         HashMap::new()
     };
 
     ensure_header(&cli.output)?;
     let mut log = OpenOptions::new().append(true).open(&cli.output)?;
+    let mut stats_file = if let Some(p) = &cli.stats_output {
+        ensure_stats_header(p)?;
+        Some(OpenOptions::new().append(true).open(p)?)
+    } else {
+        None
+    };
 
     println!(
         "# {:>3} {:>16} {:>14} {:>12}",
@@ -425,7 +604,13 @@ fn main() -> std::io::Result<()> {
         let entry_default = LevelState::default();
         let entry = prior.get(&l).unwrap_or(&entry_default);
         let level_start = Instant::now();
-        let n = run_level(l, cli.chunk_bits, entry, &mut log)?;
+        let n = run_level(
+            l,
+            cli.chunk_bits,
+            entry,
+            &mut log,
+            stats_file.as_mut().map(|f| f as &mut dyn Write),
+        )?;
         let wall = level_start.elapsed().as_secs_f64();
         let ratio = n as f64 / (1u128 << l) as f64;
         let lift = match prev {
