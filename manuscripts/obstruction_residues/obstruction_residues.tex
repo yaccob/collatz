@@ -9,6 +9,7 @@
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{placeins}
 \usepackage{hyperref}
 \usepackage{xurl}
 \hypersetup{
@@ -1473,6 +1474,10 @@ Each rigorous-verification script exits non-zero on any violation of
 the asserted theorem (a convention checked statically by
 \texttt{meta\_test\_exit\_convention.py}), so the bound is reproducible
 end-to-end by running the script.
+
+% Flush any pending floats (Table~\ref{tab:appendix-counts}) before the
+% bibliography starts, so no bib entry can be split across the table.
+\FloatBarrier
 
 % =============================================================================
 \bibliographystyle{amsalpha}
