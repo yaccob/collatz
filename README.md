@@ -49,3 +49,8 @@ associated binary language, and structural-rigidity corollaries
 a primitive substitution shift). See `manuscripts/obstruction_residues/obstruction_residues.tex`
 for the full text and `manuscripts/obstruction_residues/code/README.md` for the
 mapping between scripts and verified results.
+
+## License
+
+- Manuscripts and other text/figure content: [CC-BY 4.0](LICENSE).
+- Verification code under `manuscripts/*/code/`: [MIT](manuscripts/obstruction_residues/code/LICENSE).

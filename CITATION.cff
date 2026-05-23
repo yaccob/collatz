@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Obstruction residues for the 3x-1 map: full factor complexity, positive density, and a constructive lift"
+type: software
+authors:
+  - family-names: Stemberger
+    given-names: Jakob
+    # orcid: "https://orcid.org/0000-0000-0000-0000"  # add once registered
+version: v0.1.0
+date-released: "2026-05-23"
+url: "https://github.com/yaccob/collatz"
+license: CC-BY-4.0
