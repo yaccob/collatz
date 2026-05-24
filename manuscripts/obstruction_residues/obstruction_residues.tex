@@ -65,7 +65,7 @@
 \newcommand{\vtwo}{v_{2}}
 
 % --- Document -----------------------------------------------------------------
-\title[Obstruction residues for the $3x-1$ map]{Obstruction residues for the \texorpdfstring{$3x-1$}{3x-1} map:\\
+\title[Obstruction residues for the $3n-1$ map]{Obstruction residues for the \texorpdfstring{$3n-1$}{3n-1} map:\\
   full factor complexity, positive density,\\ and a constructive lift}
 
 \author{Jakob Stemberger}
@@ -76,22 +76,22 @@
 
 \subjclass[2020]{11B83, 37P05, 37B10, 37B40, 68R15}
 
-\keywords{Collatz conjecture, $3x-1$ map, residue dynamics, factor complexity, subshift, parallel reduction}
+\keywords{Collatz conjecture, $3n-1$ map, residue dynamics, factor complexity, subshift, parallel reduction}
 
 \begin{document}
 
 \begin{abstract}
 We study a family $\Obs_L \subseteq \{1, \ldots, 2^L\}$ of residue classes
-modulo $2^L$ arising naturally in the dynamics of the $3x-1$ map
+modulo $2^L$ arising naturally in the dynamics of the $3n-1$ map
 $\Tminus(n) := (3n-1)/2^{\vtwo(3n-1)}$. The family is defined by an
 algebraic criterion on a two-track parallel reduction.
 We prove three structural results: a constructive lift between
 modular levels, the existence of a positive asymptotic density $c_W$
 with rigorous lower bound $c_W \ge 7556/65536 \approx 0.115$, and full
-factor complexity $p_W(n) = 2^n$ of the associated language of binary
+factor complexity $p_W(\ell) = 2^\ell$ of the associated language of binary
 representations.
 The central technical tool is a parity lemma in the residue system, which
-forces the terminal data of the parallel reduction into a shift-$a$ normal
+forces the terminal data of the parallel reduction into a shift-$s$ normal
 form with integer-valued shift index. A finer classification by shift
 index yields a strict lift balance, an exact series representation of
 $c_W$, and reduces the open question of $c_W$'s exact value to a single
@@ -107,7 +107,7 @@ $\Tplus$ analogue step-by-step.
 \section{Introduction}
 % =============================================================================
 
-\subsection{The Collatz map and its \texorpdfstring{$3x-1$}{3x-1} cousin}
+\subsection{The Collatz map and its \texorpdfstring{$3n-1$}{3n-1} cousin}
 
 Let $\Nodd$ denote the set of positive odd integers, and let $\vtwo(m)$ denote
 the $2$-adic valuation of an integer $m \ne 0$. The \emph{Collatz map}
@@ -128,7 +128,7 @@ remains open. We refer the reader
 to the annotated bibliographies of Lagarias~\cite{Lagarias2010,Lagarias2010bib}
 for a comprehensive overview of the literature.
 
-The Collatz map has a natural cousin, the \emph{$3x-1$ map} $\Tminus$ acting
+The Collatz map has a natural cousin, the \emph{$3n-1$ map} $\Tminus$ acting
 on the same domain:
 \[
 \Tminus(n) := \frac{3n-1}{2^{\vtwo(3n-1)}}.
@@ -255,7 +255,7 @@ $\Xend$-criterion of Section~\ref{sec:setup}, gives the explicit value
 $7556/65536 \approx 0.115$ stated above. Raising $L_0$ further admits
 substantial additional improvement, but the exact value of $c_W$ remains
 an open problem. We give in
-Section~\ref{sec:Ga} a refined decomposition that exhibits $c_W$ as a
+Section~\ref{sec:Gs} a refined decomposition that exhibits $c_W$ as a
 rigorously convergent series and isolates the remaining open question to a
 single quantitative bound on a sub-family of obstructions.
 
@@ -266,13 +266,13 @@ of $r$ as an $L$-bit word, least significant bit first. The
 \Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ is a factor of some } w_r,\; r \in \Obs_L \text{ for some } L \,\},
 \]
 and the \emph{factor complexity function} is
-$p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$.
+$p_W(\ell) := |\Fac(\Obs) \cap \{0,1\}^\ell|$.
 
 \begin{theorem}[Full factor complexity]
 \label{thm:fc-intro}
-For every $n \ge 0$,
+For every $\ell \ge 0$,
 \[
-p_W(n) = 2^n.
+p_W(\ell) = 2^\ell.
 \]
 \end{theorem}
 
@@ -288,23 +288,23 @@ Devyatov~\cite{Devyatov2015}.
 
 \subsection{Strategy}
 
-All three theorems rest on a single algebraic structure: the \emph{shift-$a$
+All three theorems rest on a single algebraic structure: the \emph{shift-$s$
 normal form} of the terminal data. We prove in Section~\ref{sec:setup}
 (Lemma~\ref{lem:parity}) that whenever the parallel reduction terminates
 with $\Xend = 1$, the terminal pair has the form
 \[
-(\cend, \dend) = \left(4^a, \frac{1 - 4^a}{3}\right) \qquad \text{for some } a \in \Z.
+(\cend, \dend) = \left(4^s, \frac{1 - 4^s}{3}\right) \qquad \text{for some } a \in \Z.
 \]
-The integer $a$, which we call the \emph{shift index}, measures the
+The integer $s$, which we call the \emph{shift index}, measures the
 difference between the $2$-adic valuations of the two parallel trajectories.
 Theorem~\ref{thm:lift-intro} is proved by case analysis on how the shift
 index evolves under lift; Theorem~\ref{thm:fc-intro} is the iterative
 consequence; Theorem~\ref{thm:density-intro} follows by monotonicity
 from the lift. A refined classification by shift index
-(Section~\ref{sec:Ga}) then re-expresses $c_W$ as a convergent series and
+(Section~\ref{sec:Gs}) then re-expresses $c_W$ as a convergent series and
 isolates the remaining open question.
 
-The shift-$a$ normal form is, to the best of our knowledge, new; in
+The shift-$s$ normal form is, to the best of our knowledge, new; in
 particular, it differs from the Markov-operator setup of
 Wirsching~\cite{Wirsching1998}, which works with an invariant
 probability-density function rather than a terminal algebraic datum. The
@@ -320,10 +320,10 @@ contains the proof of Theorem~\ref{thm:lift-intro}, split into the two
 stop-type cases. Section~\ref{sec:density} derives
 Theorem~\ref{thm:density-intro} as a direct corollary. Section~\ref{sec:fc}
 proves Theorem~\ref{thm:fc-intro} and derives the structural rigidity
-corollary. Section~\ref{sec:Ga} develops the classification by shift index,
+corollary. Section~\ref{sec:Gs} develops the classification by shift index,
 proves the strict lift balance and series representation, and isolates the
 remaining open problem. Section~\ref{sec:tplus} transfers the results to the
-$3x+1$ side via the residue bijection. Section~\ref{sec:open} discusses open
+$3n+1$ side via the residue bijection. Section~\ref{sec:open} discusses open
 questions. Appendix~\ref{sec:appendix} summarizes computational
 verifications.
 
@@ -511,22 +511,22 @@ $\delta_J = \Vk^{(J)} - \Vi^{(J)} - v \in [-(L-1), L - 1 - v]$.
 \qedhere
 \end{proof}
 
-\subsection{The shift-\texorpdfstring{$a$}{a} normal form}
+\subsection{The shift-\texorpdfstring{$s$}{s} normal form}
 
-Writing $\delta_J = 2a$ with $a \in \Z$, the parity lemma yields
+Writing $\delta_J = 2s$ with $s \in \Z$, the parity lemma yields
 \[
-c_J = 4^a, \qquad d_J = \frac{1 - 4^a}{3}.
+c_J = 4^s, \qquad d_J = \frac{1 - 4^s}{3}.
 \]
-We call this the \emph{shift-$a$ normal form} and $a$ the \emph{shift index}
-of $r$ at level $L$, denoted $a(r, L)$. In particular,
-$\Vk^{(J)} - \Vi^{(J)} = 2a + v$. The obstruction family partitions:
+We call this the \emph{shift-$s$ normal form} and $s$ the \emph{shift index}
+of $r$ at level $L$, denoted $s(r, L)$. In particular,
+$\Vk^{(J)} - \Vi^{(J)} = 2s + v$. The obstruction family partitions:
 \[
-\Obs_L = \bigsqcup_{a \in \Z} \Obs_L^{G_a}, \qquad \Obs_L^{G_a} := \{\, r \in \Obs_L : a(r, L) = a \,\}.
+\Obs_L = \bigsqcup_{s \in \Z} \Obs_L^{G_s}, \qquad \Obs_L^{G_s} := \{\, r \in \Obs_L : s(r, L) = s \,\}.
 \]
-For $a = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
+For $s = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
 By the bound $\delta_J \in [-(L-1), L - 1 - v]$ from Lemma~\ref{lem:parity},
-$a = \delta_J/2 \in [-(L-1)/2,\, (L - 1 - v)/2]$; in particular
-$|a| \le \lfloor (L-1)/2 \rfloor$ (using that $a$ is an integer).
+$s = \delta_J/2 \in [-(L-1)/2,\, (L - 1 - v)/2]$; in particular
+$|s| \le \lfloor (L-1)/2 \rfloor$ (using that $s$ is an integer).
 
 \subsection{Simultaneous stop and stop types}
 
@@ -534,18 +534,18 @@ $|a| \le \lfloor (L-1)/2 \rfloor$ (using that $a$ is an integer).
 \label{cor:sync}
 If $\Xend(r, L) = 1$, then the K-track and I-track satisfy the termination
 condition $v_\alpha \ge \vtwo(\beta)$ at the same index $J$. Moreover, the
-terminal step valuations satisfy $\vi^{(J)} = \vk^{(J)} + 2a$, where $a$
-is the shift index of $r$ at level $L$ from the shift-$a$ normal form above.
+terminal step valuations satisfy $\vi^{(J)} = \vk^{(J)} + 2s$, where $s$
+is the shift index of $r$ at level $L$ from the shift-$s$ normal form above.
 \end{corollary}
 
 \begin{proof}
-From the shift-$a$ normal form, $a_I^{(J)} = 4^a a_K^{(J)} + (1-4^a)/3$, so
-$A_I^{(J)} = 4^a A_K^{(J)}$ and hence $\vi^{(J)} = \vk^{(J)} + 2a$.
+From the shift-$s$ normal form, $a_I^{(J)} = 4^s a_K^{(J)} + (1-4^s)/3$, so
+$A_I^{(J)} = 4^s A_K^{(J)}$ and hence $\vi^{(J)} = \vk^{(J)} + 2s$.
 Combining with $\vtwo(b_I^{(J)}) = (L-v) - \Vi^{(J)}$ and
-$\vtwo(b_K^{(J)}) = L - \Vk^{(J)}$, and using $\Vk - \Vi = 2a + v$:
+$\vtwo(b_K^{(J)}) = L - \Vk^{(J)}$, and using $\Vk - \Vi = 2s + v$:
 \begin{align*}
 \vi^{(J)} \ge \vtwo(b_I^{(J)})
-  &\iff \vk^{(J)} + 2a \ge L - v - \Vi^{(J)} \\
+  &\iff \vk^{(J)} + 2s \ge L - v - \Vi^{(J)} \\
   &\iff \vk^{(J)} \ge L - \Vk^{(J)} \\
   &\iff \vk^{(J)} \ge \vtwo(b_K^{(J)}). \qedhere
 \end{align*}
@@ -567,7 +567,7 @@ typical case is $v = 1$ (equivalently $r \equiv 3 \pmod 4$); for $r \equiv 1
 \pmod 4$ the value of $v$ is $\ge 2$. In every formula above, setting $v = 1$
 recovers the original initial pair $(c_0, d_0) = (\tfrac{1}{2}, -\tfrac{1}{2})$
 and the parity relation $\Vk^{(J)} - \Vi^{(J)} \equiv 1 \pmod 2$. The
-shift-$a$ normal form $(c_J, d_J) = (4^a, (1-4^a)/3)$ is independent of $v$.
+shift-$s$ normal form $(c_J, d_J) = (4^s, (1-4^s)/3)$ is independent of $v$.
 The subsequent sections work with the general case throughout; explicit
 calculations use $v = 1$ wherever this aids the reader.
 
@@ -585,14 +585,14 @@ We now prove Theorem~\ref{thm:lift-intro}: for every $r_0 \in \Obs_{L_0}$,
 both lifts $r_+ := r_0$ and $r_- := r_0 + 2^{L_0}$ are obstructions at level
 $L_0 + 1$. The two halves are stated and proved separately as
 Theorems~\ref{thm:lift-plus} and~\ref{thm:lift-minus}; together they
-constitute Theorem~\ref{thm:lift-intro}. Throughout, $a \in \Z$ is the
+constitute Theorem~\ref{thm:lift-intro}. Throughout, $s \in \Z$ is the
 shift index of $r_0$ at level $L_0$, and we use the synchronization
-$\vi^{(J)} = \vk^{(J)} + 2a$ (Corollary~\ref{cor:sync}) freely.
+$\vi^{(J)} = \vk^{(J)} + 2s$ (Corollary~\ref{cor:sync}) freely.
 
 \subsection{The \texorpdfstring{$r_+$}{r+} lift}
 
 \begin{theorem}\label{thm:lift-plus}
-Let $r_0 \in \Obs_{L_0}^{G_a}$. Then $r_+ := r_0 \in \Obs_{L_0+1}$.
+Let $r_0 \in \Obs_{L_0}^{G_s}$. Then $r_+ := r_0 \in \Obs_{L_0+1}$.
 \end{theorem}
 
 \begin{proof}
@@ -608,12 +608,12 @@ $\vk^{(j)}, \vi^{(j)}, c_j, d_j$ for $j \le J$ to those at $(r_0, L_0)$.
 \emph{Stop type EE at $L_0$.} Here $\vk^{(J)} = L_0 - \Vk^{(J)}$ exactly. At
 level $L_0 + 1$, the K-track modulus at index $J$ has $2$-adic valuation
 $L_0 + 1 - \Vk^{(J)} = \vk^{(J)} + 1 > \vk^{(J)}$, so the step is permitted.
-Taking one more step, with $c_J = 4^a$, $d_J = (1 - 4^a)/3$:
+Taking one more step, with $c_J = 4^s$, $d_J = (1 - 4^s)/3$:
 \[
-c_{J+1} = 4^a \cdot 2^{\vk^{(J)} - \vi^{(J)}} = 4^a \cdot 2^{-2a} = 1,
+c_{J+1} = 4^s \cdot 2^{\vk^{(J)} - \vi^{(J)}} = 4^s \cdot 2^{-2s} = 1,
 \]
 \[
-d_{J+1} = \frac{3(1 - 4^a)/3 + 4^a - 1}{2^{\vi^{(J)}}} = 0.
+d_{J+1} = \frac{3(1 - 4^s)/3 + 4^s - 1}{2^{\vi^{(J)}}} = 0.
 \]
 After this step, $\Vk^{(J+1)} = L_0$, so the K-track modulus has
 valuation $1$, and the next step would require $\vk^{(J+1)} < 1$. Since
@@ -627,13 +627,13 @@ $r_+ \in \Obs_{L_0+1}^{G_0}$.
 $\vk^{(J)} \ge L_0 + 1 - \Vk^{(J)}$ (integer), which is exactly the
 termination condition at level $L_0 + 1$. Termination at $(r_+, L_0+1)$
 occurs at index $J$ with terminal data unchanged, so
-$r_+ \in \Obs_{L_0+1}^{G_a}$. \qedhere
+$r_+ \in \Obs_{L_0+1}^{G_s}$. \qedhere
 \end{proof}
 
 \subsection{The \texorpdfstring{$r_-$}{r-} lift}
 
 \begin{theorem}\label{thm:lift-minus}
-Let $r_0 \in \Obs_{L_0}^{G_a}$. Then $r_- := r_0 + 2^{L_0} \in \Obs_{L_0+1}$.
+Let $r_0 \in \Obs_{L_0}^{G_s}$. Then $r_- := r_0 + 2^{L_0} \in \Obs_{L_0+1}$.
 \end{theorem}
 
 \begin{proof}
@@ -685,15 +685,15 @@ $\vi^{(J),-} := L_0 - v - \Vi^{(J)}$, also permitted, and one more step
 follows. The required strict inequality
 $\vtwo(\Delta_I^{(J)}) = L_0 - v - \Vi^{(J)} < \vi^{(J)}$ is the
 I-track version of SS: by the synchronisation
-$\vi^{(J)} = \vk^{(J)} + 2a$ of Corollary~\ref{cor:sync} together with
-$\Vk^{(J)} - \Vi^{(J)} = 2a + v$, the K-track strict inequality
+$\vi^{(J)} = \vk^{(J)} + 2s$ of Corollary~\ref{cor:sync} together with
+$\Vk^{(J)} - \Vi^{(J)} = 2s + v$, the K-track strict inequality
 $\vk^{(J)} > L_0 - \Vk^{(J)}$ is equivalent to
-$\vi^{(J)} > L_0 - v - \Vi^{(J)}$. Using $\Vk - \Vi = 2a + v$, the new exponent in the update rule
-is $\vk^{(J),-} - \vi^{(J),-} = -2a$, so
+$\vi^{(J)} > L_0 - v - \Vi^{(J)}$. Using $\Vk - \Vi = 2s + v$, the new exponent in the update rule
+is $\vk^{(J),-} - \vi^{(J),-} = -2s$, so
 \[
-c_{J+1} = c_J \cdot 2^{-2a} = 4^a \cdot 4^{-a} = 1,
+c_{J+1} = c_J \cdot 2^{-2s} = 4^s \cdot 4^{-s} = 1,
 \qquad
-d_{J+1} = \frac{3 \cdot (1 - 4^a)/3 + 4^a - 1}{2^{\vi^{(J),-}}} = 0.
+d_{J+1} = \frac{3 \cdot (1 - 4^s)/3 + 4^s - 1}{2^{\vi^{(J),-}}} = 0.
 \]
 After this step $\Vk^{(J+1)} = L_0$ and $\Vi^{(J+1)} = L_0 - v$, so both
 moduli have valuation $1$ and the next step on either track is impossible
@@ -709,13 +709,13 @@ $\vtwo(A_{K,-}^{(J)}) \ge L_0 + 1 - \Vk^{(J)}$, which is the K-track stop
 condition at level $L_0+1$. The same argument on the I-track gives
 $\vtwo(A_{I,-}^{(J)}) \ge L_0 + 1 - v - \Vi^{(J)}$, the I-track stop
 condition at level $L_0+1$. Termination therefore occurs at index $J$ with
-terminal data unchanged, so $r_- \in \Obs_{L_0+1}^{G_a}$. \qedhere
+terminal data unchanged, so $r_- \in \Obs_{L_0+1}^{G_s}$. \qedhere
 \end{proof}
 
 \subsection{The lift symmetry}
 
 \begin{proposition}[Lift symmetry]\label{prop:lift-symmetry}
-Let $r_0 \in \Obs_{L_0}^{G_a}$. The shift indices of the two level-$(L_0+1)$
+Let $r_0 \in \Obs_{L_0}^{G_s}$. The shift indices of the two level-$(L_0+1)$
 lifts $r_+ := r_0$ and $r_- := r_0 + 2^{L_0}$ depend only on the stop type
 of $r_0$ at $L_0$ (Definition~\ref{def:stop-type}) as follows (both lifts
 at level $L_0+1$):
@@ -725,8 +725,8 @@ at level $L_0+1$):
 \toprule
 Stop type of $r_0$ at $L_0$ & shift index of $r_+$ & shift index of $r_-$ \\
 \midrule
-EE & $0$ & $a$ \\
-SS & $a$ & $0$ \\
+EE & $0$ & $s$ \\
+SS & $s$ & $0$ \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -739,11 +739,11 @@ computes the terminal data of the lift and identifies the resulting
 shift index. \qedhere
 \end{proof}
 
-So lifting an obstruction with shift index $a \ne 0$ always produces one
-shift-$a$ obstruction and one shift-zero obstruction at the next level;
+So lifting an obstruction with shift index $s \ne 0$ always produces one
+shift-$s$ obstruction and one shift-zero obstruction at the next level;
 lifting a shift-zero obstruction produces two shift-zero obstructions.
 This is the symmetry that drives the recurrence developed in
-Section~\ref{sec:Ga}.
+Section~\ref{sec:Gs}.
 
 % =============================================================================
 \section{Positive density}
@@ -790,7 +790,7 @@ These are not asymptotic estimates: they are finite-level computations
 producing rigorous bounds at the cost of $O(L_0 \cdot 2^{L_0})$ operations
 to enumerate obstructions modulo $2^{L_0}$. The exact value of $c_W$ is
 not pinned down by this approach; we return to it in
-Section~\ref{sec:Ga}.
+Section~\ref{sec:Gs}.
 
 % =============================================================================
 \section{Full factor complexity}
@@ -813,18 +813,18 @@ obstruction family is
 \Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ is a factor of } w_r \text{ for some } r \in \Obs_L,\, L \ge 5 \,\}.
 \]
 The \emph{factor complexity function} is
-$p_W(n) := |\Fac(\Obs) \cap \{0,1\}^n|$. Trivially $p_W(n) \le 2^n$.
+$p_W(\ell) := |\Fac(\Obs) \cap \{0,1\}^\ell|$. Trivially $p_W(\ell) \le 2^\ell$.
 
 \subsection{The main theorem}
 
 \begin{theorem}[restating Theorem~\ref{thm:fc-intro}]
-For every $n \ge 0$, $p_W(n) = 2^n$.
+For every $\ell \ge 0$, $p_W(\ell) = 2^\ell$.
 \end{theorem}
 
 \begin{proof}
 The case $n = 0$ is the empty word, which is trivially a factor of every
-$w_r$, so $p_W(0) = 1 = 2^0$. Fix $n \ge 1$ and
-$u = (u_0, u_1, \ldots, u_{n-1}) \in \{0,1\}^n$. Choose
+$w_r$, so $p_W(0) = 1 = 2^0$. Fix $\ell \ge 1$ and
+$u = (u_0, u_1, \ldots, u_{\ell-1}) \in \{0,1\}^\ell$. Choose
 any anchor $r_0 \in \Obs_6 = \{19, 27, 59\}$ (verified by direct enumeration;
 see Appendix~\ref{sec:appendix}). In fact each of the three anchors
 individually realises every pattern, as direct enumeration via the
@@ -841,14 +841,14 @@ is the $r_-$ lift and lies in $\Obs_{6+k}$ by Theorem~\ref{thm:lift-minus}.
 
 By construction, $w_{r_n}[5+k] = u_{k-1}$ for $k = 1, \ldots, n$, so $u$
 appears as a factor of $w_{r_n}$ at positions $6, \ldots, 5+n$. Thus
-$u \in \Fac(\Obs)$ for every $u \in \{0,1\}^n$, hence $p_W(n) \ge 2^n$.
-Combined with the trivial upper bound, $p_W(n) = 2^n$. \qedhere
+$u \in \Fac(\Obs)$ for every $u \in \{0,1\}^\ell$, hence $p_W(\ell) \ge 2^\ell$.
+Combined with the trivial upper bound, $p_W(\ell) = 2^\ell$. \qedhere
 \end{proof}
 
 \subsection{Entropy and substitution-shift rigidity}
 
 The \emph{topological entropy} of a language $\mathcal{L} \subseteq \{0,1\}^*$
-is $h(\mathcal{L}) := \limsup_{n \to \infty} (1/n) \log p_{\mathcal{L}}(n)$;
+is $h(\mathcal{L}) := \limsup_{\ell \to \infty} (1/\ell) \log p_{\mathcal{L}}(\ell)$;
 the factor-complexity function $p_{\mathcal{L}}$ itself goes back to the
 foundational symbolic-dynamics papers of
 Morse--Hedlund~\cite{MorseHedlund1938,MorseHedlund1940}. See
@@ -892,7 +892,7 @@ Primitive substitution shifts have factor complexity in one of the polynomial
 classes $\Theta(1)$, $\Theta(n)$, $\Theta(n \log \log n)$, $\Theta(n \log n)$,
 $\Theta(n^2)$ (Pansiot~\cite{Pansiot1984}; refined by
 Devyatov~\cite{Devyatov2015}), and therefore have topological entropy
-zero. The obstruction family has $p_W(n) = 2^n$ and hence entropy
+zero. The obstruction family has $p_W(\ell) = 2^\ell$ and hence entropy
 $\log 2 > 0$, so it cannot be the factor language of a primitive
 substitution shift. \qedhere
 \end{proof}
@@ -906,15 +906,15 @@ remains open (see Section~\ref{sec:open}).
 \end{remark}
 
 % =============================================================================
-\section{The \texorpdfstring{$G_a$}{Ga} classification}
-\label{sec:Ga}
+\section{The \texorpdfstring{$G_s$}{Gs} classification}
+\label{sec:Gs}
 % =============================================================================
 
 \subsection{Atomic obstructions}
 
 An obstruction $r \in \Obs_L$ is \emph{atomic at level $L$} if
 $r \bmod 2^{L-1} \notin \Obs_{L-1}$. We write $\Atom_L \subseteq \Obs_L$ and
-$\Atom_L^{G_a} := \Atom_L \cap \Obs_L^{G_a}$.
+$\Atom_L^{G_s} := \Atom_L \cap \Obs_L^{G_s}$.
 
 \begin{lemma}[Atom decomposition]
 \label{lem:atom-decomp}
@@ -959,7 +959,7 @@ base cases to Corollary~\ref{cor:no-G0-atom-all} for clarity.
 
 \begin{proof}
 Fix $L \ge 7$ and suppose $r \in \Obs_L^{G_0}$, so $\Xend(r, L) = 1$ with
-shift index $a = 0$, i.e.\ $(c_J, d_J) = (1, 0)$. Write $r' := r \bmod 2^{L-1}$.
+shift index $s = 0$, i.e.\ $(c_J, d_J) = (1, 0)$. Write $r' := r \bmod 2^{L-1}$.
 We first note $J \ge 2$: at $J = 0$ the terminal pair is $(2^{-v}, -2^{-v})$,
 whose second coordinate $-2^{-v}$ is nonzero for every $v$, contradicting
 $d_J = 0$; at $J = 1$ the update rule gives
@@ -981,8 +981,8 @@ stop fires.
 
 Termination of the reduction at $(r, L)$ at index $J$ means at least one
 track satisfies its stop condition there; by Corollary~\ref{cor:sync}, both
-do. Since $a = 0$, at the terminal index $J$ the synchronisation
-$\vi^{(J)} = \vk^{(J)} + 2a = \vk^{(J)}$ and
+do. Since $s = 0$, at the terminal index $J$ the synchronisation
+$\vi^{(J)} = \vk^{(J)} + 2s = \vk^{(J)}$ and
 $\Vk^{(J)} - \Vi^{(J)} = v$ holds (Lemma~\ref{lem:parity}), so the
 K-track stop condition $\vk^{(J)} \ge L - \Vk^{(J)}$ and the I-track stop
 condition $\vi^{(J)} \ge (L - v) - \Vi^{(J)}$ at $j = J$ are equivalent:
@@ -992,7 +992,7 @@ stop conditions at $j = J$ read $\Vk^{(J)} + \vk^{(J)} \ge L$.
 (The K- and I-track stop conditions are not in general equivalent at
 $j < J$, so we rule out child stops on each track separately below;
 the equivalence is used only at the terminal index $J$, where it
-follows from $a = 0$.)
+follows from $s = 0$.)
 We split by the K-track value $\Vk^{(J)}$ (equivalently
 $\Vk^{(J-1)} + \vk^{(J-1)}$): either $\Vk^{(J)} < L - 1$ (Case~A) or
 $\Vk^{(J)} \ge L - 1$ (Case~B); these exhaust the integer possibilities.
@@ -1012,7 +1012,7 @@ $\vi^{(J'+1)} \ge 1$ (since $a_I^{(J'+1)}$ is odd) would terminate the
 parent at $J' + 1 \le J - 1$, again contradicting the definition of $J$.
 At index $J - 1$, a child I-stop requires $\Vi^{(J)} \ge L - 1 - v$;
 by the terminal synchronisation $\Vi^{(J)} = \Vk^{(J)} - v$ (from
-$a = 0$, equivalently $\delta_J = 0$), this is exactly
+$s = 0$, equivalently $\delta_J = 0$), this is exactly
 $\Vk^{(J)} \ge L - 1$ --- the Case~B branch below --- so in Case~A neither
 child stop fires before index $J$.
 
@@ -1059,7 +1059,7 @@ For every $L \ge 5$, $|\Atom_L^{G_0}| = 0$.
 For $L \ge 7$, this is Theorem~\ref{thm:no-G0-atom}. At the two base
 levels direct enumeration (verified by \texttt{count\_obstructions.py})
 gives $\Atom_5 = \{27\}$ and $\Atom_6 = \{19\}$, each with shift index
-$a = 1 \ne 0$, so $|\Atom_5^{G_0}| = |\Atom_6^{G_0}| = 0$ as well.
+$s = 1 \ne 0$, so $|\Atom_5^{G_0}| = |\Atom_6^{G_0}| = 0$ as well.
 \qedhere
 \end{proof}
 
@@ -1076,7 +1076,7 @@ $L - 1$ (Table~\ref{tab:lift-balance}):
 Parent at $L-1$ & Contribution to $g_L$ & Contribution to $h_L$ \\
 \midrule
 $G_0$ & $2$ & $0$ \\
-$G_a$, $a \ne 0$ & $1$ & $1$ \\
+$G_s$, $s \ne 0$ & $1$ & $1$ \\
 \bottomrule
 \end{tabular}
 \caption{Per-parent contribution of a level-$(L-1)$ obstruction to the level-$L$ shift-zero and shift-nonzero populations under the two lifts $r_\pm$.}
@@ -1111,7 +1111,7 @@ Corollary~\ref{cor:no-G0-atom-all}, $|\Atom_{L_0}^{G_0}| = 0$ for every
 $L_0 \ge 5$, so each atom contributes to $\Atom_{L_0}^{G_{\ne 0}}$.
 Direct enumeration at the two base levels (verified by
 \texttt{count\_obstructions.py}) gives $\Atom_5 = \{27\}$ and
-$\Atom_6 = \{19\}$, both with shift index $a = 1$, so
+$\Atom_6 = \{19\}$, both with shift index $s = 1$, so
 $|\Atom_5^{G_{\ne 0}}| = |\Atom_6^{G_{\ne 0}}| = 1$. Hence for every $L \ge 6$,
 \[
 |\Obs_L| = 2^{L-5} + 2^{L-6} + \sum_{L_0 = 7}^{L} |\Atom_{L_0}^{G_{\ne 0}}| \cdot 2^{L - L_0}
@@ -1185,8 +1185,8 @@ for the set of such residues.
 \begin{remark}\label{rem:Xplus-sign}
 The sign convention $\Xend^{+} := c - 3d$ (rather than $3d + c$) is the
 one forced by the affine algebra: with this combination the analogue of
-the parity lemma (Lemma~\ref{lem:parity}) yields the shift-$a$ normal
-form $(c_J, d_J) = (4^a, (4^a - 1)/3)$, and the residue-level bijection
+the parity lemma (Lemma~\ref{lem:parity}) yields the shift-$s$ normal
+form $(c_J, d_J) = (4^s, (4^s - 1)/3)$, and the residue-level bijection
 of Theorem~\ref{thm:tplus-bijection} below is exact.
 \end{remark}
 
@@ -1305,7 +1305,7 @@ restricts to a bijection $\Obs_L \leftrightarrow \Obs_L^{+}$.
 Consequently $|\Obs_L^{+}| = |\Obs_L|$, and
 Theorems~\ref{thm:lift-intro}, \ref{thm:density-intro}, and~\ref{thm:fc-intro}
 hold verbatim for $\Obs^{+}$, with the same density constant $c_W$ and
-factor complexity function $p_W^{+}(n) = 2^n$.
+factor complexity function $p_W^{+}(\ell) = 2^\ell$.
 \end{theorem}
 
 \begin{proof}
@@ -1372,7 +1372,7 @@ constructs a Markov operator $W_3$ on residue-density functions for the
 $\Tplus$ predecessor problem. An analogous operator for the parallel
 reduction would have an action on $(c, d)$-space; its spectrum would
 determine the asymptotic growth of the shift-class populations
-$|\Obs_L^{G_a}|$. A unified treatment --- for instance, expressing $c_W$
+$|\Obs_L^{G_s}|$. A unified treatment --- for instance, expressing $c_W$
 in terms of Wirsching's invariant density $\varphi$ --- appears not to be
 in the literature.
 
@@ -1411,7 +1411,7 @@ preparation as a separate paper.
 Significant partial results are also known for general multiplier $a$ ---
 in particular structure theorems for $a = -1$ and for the
 negative-Mersenne family $a = -(2^{v} - 1)$ with explicit lower bounds
-on $c_W$. A complete treatment of the $(ax+b)$ family raises new
+on $c_W$. A complete treatment of the $(an+b)$ family raises new
 phenomena (Mersenne asymmetry, a sub-class hierarchy, a signed sync
 index) and is the subject of ongoing work.
 
