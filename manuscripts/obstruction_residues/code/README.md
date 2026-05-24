@@ -31,7 +31,7 @@ runs on a modern laptop; raising the level argument to $L = 16$ takes
 
 | Script | Verifies |
 |:---|:---|
-| `count_obstructions.py` | Appendix table (counts $\|\mathcal{O}_L\|$, $\|\mathcal{O}_L^{G_0}\|$, $\|\mathcal{O}_L^{G_{\ne 0}}\|$, $\|\mathcal{A}_L^{G_{\ne 0}}\|$) and the element lists of $\mathcal{O}_L$ and $\mathcal{A}_L^{G_{\ne 0}}$ (truncated at 30 entries), **and asserts** the strict lift balance $\|\mathcal{O}_L\| = 2\|\mathcal{O}_{L-1}\| + \|\mathcal{A}_L^{G_{\ne 0}}\|$ (Corollary 6.4) against the level-$(L-1)$ count. |
+| `count_obstructions.py` | Appendix table (counts $\lvert\mathcal{O}_L\rvert$, $\lvert\mathcal{O}_L^{G_0}\rvert$, $\lvert\mathcal{O}_L^{G_{\ne 0}}\rvert$, $\lvert\mathcal{A}_L^{G_{\ne 0}}\rvert$) and the element lists of $\mathcal{O}_L$ and $\mathcal{A}_L^{G_{\ne 0}}$ (truncated at 30 entries), **and asserts** the strict lift balance $\lvert\mathcal{O}_L\rvert = 2\lvert\mathcal{O}_{L-1}\rvert + \lvert\mathcal{A}_L^{G_{\ne 0}}\rvert$ (Corollary 6.4) against the level-$(L-1)$ count. |
 | `atomic_anchor_verification.py` | Lemma 6.1 (atom decomposition): every obstruction has a unique atomic anchor. |
 | `atomic_g0_early_stop_check.py` | Theorem 6.2 (no shift-zero atoms): no atomic shift-zero obstructions at level $\ge 7$. Classifies the lift origin of every $G_0$-obstruction. |
 | `factor_complexity_construction.py` | Theorem 1.3 (constructive form): for every $u \in \{0,1\}^n$ and every base anchor $r_0 \in \mathcal{O}_6$, the constructive lift produces a residue in $\mathcal{O}_{6+n}$ whose binary representation contains $u$ as a factor. Checked for $n \le 10$. |
@@ -79,12 +79,24 @@ cd rust/ && cargo build --release
 See `rust/README.md` for the full set of flags (chunked checkpoints,
 `--resume`, custom runlog path).
 
-Runtimes scale roughly as $O(L \cdot 2^L)$. Typical numbers on a modern
-laptop:
+Runtimes scale roughly as $O(L \cdot 2^L)$. Typical numbers for the
+**Python** scripts on a modern laptop:
 
 - $L = 12$: a few seconds per script.
 - $L = 16$: 30 seconds to a few minutes.
 - $L = 18$: 5–10 minutes for the heavier scripts.
+
+The **Rust** enumerator in `rust/` runs the same algorithm but with a
+custom dyadic representation and `rayon` parallelism, and pushes the
+reachable level by roughly a factor of two. Indicative wall times on
+an 8-core M1-class laptop:
+
+- $L = 24$: ~0.2 s
+- $L = 28$: ~3 s
+- $L = 32$: ~55 s
+
+See `rust/README.md` for the full scaling table, checkpoint/resume
+flags, and verification harness.
 
 ## Reproducibility
 

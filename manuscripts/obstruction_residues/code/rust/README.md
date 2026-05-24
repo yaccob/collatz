@@ -1,9 +1,9 @@
-# High-performance enumeration of |Obs_L|
+# High-performance enumeration of $\lvert\mathrm{Obs}_L\rvert$
 
 Rust counterpart to `../python/count_obstructions.py`, designed to push the
 rigorous lower bound
 
-  c_W >= |Obs_L| / 2^L
+  $c_W \ge \lvert\mathrm{Obs}_L\rvert / 2^L$
 
 (Theorem density-intro) to higher levels $L$ than is feasible in
 Python. The algorithm is identical — parallel two-track $T_-$ reduction,
@@ -39,15 +39,16 @@ Examples:
     ./target/release/count_obstructions_rs 5 28 \
       --output ~/research/obs_runlog.tsv --resume
 
-Each row in the stdout summary reports $|\mathcal{O}_L|$, the resulting
-ratio $|\mathcal{O}_L|/2^L$, the wall-clock time, and (for $L >$
-`L_start`) the lift-balance check $|\mathcal{O}_L| - 2|\mathcal{O}_{L-1}|$
+Each row in the stdout summary reports $\lvert\mathcal{O}_L\rvert$, the resulting
+ratio $\lvert\mathcal{O}_L\rvert/2^L$, the wall-clock time, and (for $L >$
+`L_start`) the lift-balance check $\lvert\mathcal{O}_L\rvert - 2\lvert\mathcal{O}_{L-1}\rvert$
 (Corollary lift-balance).
 
 ## Checkpoint / resume
 
-Within each level $L$, work is split into chunks of $2^{\text{chunk\_bits}}$
-odd $r$ each, processed sequentially with internal rayon parallelism.
+Within each level $L$, work is split into chunks of $2^N$ odd $r$
+each (where $N$ is the value of `--chunk-bits`), processed sequentially
+with internal rayon parallelism.
 After each chunk completes, one line is appended to the runlog (TSV):
 
     chunk    L  chunk_idx  chunk_size  k_start  k_end  count  wall_sec  ts_epoch
@@ -77,17 +78,17 @@ Practical guidance:
 
 cross-checks `count(L)` against the Table tab:appendix-counts values for
 $L = 5, \dots, 16$ from the manuscript, and asserts the lift balance
-$|\mathcal{O}_L| \ge 2|\mathcal{O}_{L-1}|$ at every level up to $L = 14$.
+$\lvert\mathcal{O}_L\rvert \ge 2\lvert\mathcal{O}_{L-1}\rvert$ at every level up to $L = 14$.
 
 ## Observed scaling (8 cores, M1-class)
 
-| $L$ | $|\mathcal{O}_L|$ | $\rho_L$  | wall   |
-|----:|------------------:|----------:|-------:|
-| 16  |             7 556 | 0.115295  |   1 ms |
-| 20  |           132 078 | 0.125959  |   9 ms |
-| 24  |         2 251 983 | 0.134229  | 160 ms |
-| 28  |        37 876 608 | 0.141101  |   3 s  |
-| 32  |       631 538 769 | 0.147042  |  55 s  |
+| $L$ | $\lvert\mathcal{O}_L\rvert$ | $\rho_L$  | wall   |
+|----:|----------------------------:|----------:|-------:|
+| 16  |                       7 556 | 0.115295  |   1 ms |
+| 20  |                     132 078 | 0.125959  |   9 ms |
+| 24  |                   2 251 983 | 0.134229  | 160 ms |
+| 28  |                  37 876 608 | 0.141101  |   3 s  |
+| 32  |                 631 538 769 | 0.147042  |  55 s  |
 
 Doubling $L$ multiplies wall time by ~30 — the per-$L$ factor is ~2.1,
 matching the expected $2 \cdot \rho_L^{\text{work}}$ with the per-element
