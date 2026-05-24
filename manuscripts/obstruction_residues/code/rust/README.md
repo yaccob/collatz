@@ -22,9 +22,13 @@ $r \in \{1, \dots, 2^L\}$ runs in parallel via `rayon`.
 
 Flags:
 
-    --output FILE     append-only TSV runlog (default: ./obs_runlog.tsv)
-    --chunk-bits N    process 2^N odd r per chunk (default: 24)
-    --resume          skip chunks/levels already recorded in --output
+    --output FILE        append-only TSV runlog (default: ./obs_runlog.tsv)
+    --stats-output FILE  optional second TSV with per-chunk/per-level
+                         shift-class breakdown (off by default; not
+                         required to reproduce the manuscript counts —
+                         see "Optional: shift-class statistics" below)
+    --chunk-bits N       process 2^N odd r per chunk (default: 24)
+    --resume             skip chunks/levels already recorded in --output
 
 Examples:
 
@@ -71,6 +75,29 @@ Practical guidance:
 - `--chunk-bits` smaller than the level allows: clamps to $L - 1$
   automatically.
 - The runlog is append-only and crash-safe (each chunk line is `flush()`-ed).
+
+## Optional: shift-class statistics
+
+The parity lemma forces $c_J = 4^a$ for any obstruction, so the shift
+index $a \ge 0$ is already available from the same `(c_J, d_J)` the
+X-invariant check computes — no extra reduction work per residue. With
+`--stats-output FILE`, the binary writes a second TSV alongside the
+runlog, breaking the per-chunk and per-level counts down by $a$:
+
+    # kind         L  chunk_idx  chunk_size  k_start  k_end  a  count
+    chunk_shift    L  ...                                    a  count
+    level_shift    L  -          -           -        -      a  count
+
+The per-level total equals the sum of its `level_shift` rows over $a$,
+which in turn equals the corresponding `level` row in `--output`.
+
+This flag is **not** required to reproduce the manuscript's appendix
+table — the total counts written to `--output` are unchanged whether
+or not `--stats-output` is set. It is provided as exploratory tooling
+for the shift-class distribution and is off by default. `--resume`
+honours the stats file: partial `chunk_shift` rows are summed to seed
+the per-level accumulator so the final `level_shift` rows reflect
+the full level, not just the post-resume chunks.
 
 ## Verification
 
