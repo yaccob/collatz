@@ -117,7 +117,7 @@ $\lvert\mathcal{O}_L\rvert \ge 2\lvert\mathcal{O}_{L-1}\rvert$ at every level up
 | 28  |                  37 876 608 | 0.141101  |   3 s  |
 | 32  |                 631 538 769 | 0.147042  |  55 s  |
 
-Doubling $L$ multiplies wall time by ~30 — the per-$L$ factor is ~2.1,
+Doubling $L$ multiplies wall time by ~30 — the factor per unit of $L$ is ~2.1,
 matching the expected $2 \cdot \rho_L^{\text{work}}$ with the per-element
 reduction taking $\Theta(L)$ steps.
 
