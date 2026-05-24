@@ -1,4 +1,4 @@
-# Supporting code for *Obstruction residues for the $3x-1$ map*
+# Supporting code for *Obstruction residues for the $3n-1$ map*
 
 This directory contains the verification code referenced in the
 appendix of the manuscript `obstruction_residues.tex`. Each script enumerates
