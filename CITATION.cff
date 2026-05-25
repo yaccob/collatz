@@ -1,11 +1,11 @@
 cff-version: 1.2.0
 message: "If you use this work, please cite it as below."
-title: "Obstruction residues for the 3x-1 map: full factor complexity, positive density, and a constructive lift"
+title: "Collatz obstruction-residue theory: manuscripts and verification code"
 type: software
 authors:
   - family-names: Stemberger
     given-names: Jakob
-    # orcid: "https://orcid.org/0000-0000-0000-0000"  # add once registered
+    orcid: "https://orcid.org/0009-0001-2746-6877"
 version: v0.1.1
 date-released: "2026-05-23"
 url: "https://github.com/yaccob/collatz"
