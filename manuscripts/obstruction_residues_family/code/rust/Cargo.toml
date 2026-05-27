@@ -1,0 +1,16 @@
+[package]
+name = "or_family_falsifiers"
+version = "0.1.0"
+edition = "2021"
+description = "Rust falsifiers for the obstruction_residues_family knowledge-graph assets. Each binary (src/bin/) tries to refute one asset by searching for a counterexample over the widest feasible domain; it prints CONFIRM (no counterexample found in the searched domain) or FALSIFY <reason>. Shared reduction core in src/lib.rs."
+
+[dependencies]
+num-bigint = "0.4"
+num-traits = "0.2"
+num-integer = "0.1"
+rayon = "1.10"
+clap = { version = "4.5", features = ["derive"] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"

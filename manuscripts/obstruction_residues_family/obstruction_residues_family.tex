@@ -1,0 +1,1722 @@
+\documentclass[11pt,reqno]{amsart}
+
+% --- Packages -----------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{placeins}
+\usepackage{hyperref}
+\usepackage{xurl}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+}
+
+\raggedbottom
+
+% --- Theorem environments -----------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% --- Macros -------------------------------------------------------------------
+\newcommand{\Tab}{T_{a,b}}
+\newcommand{\Tneg}{T_{-}}
+\newcommand{\Tpos}{T_{+}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Qtwo}{\mathbb{Q}_{2}}
+\newcommand{\Ztwo}{\mathbb{Z}_{2}}
+\newcommand{\Ztwox}{\mathbb{Z}_{2}^{\times}}
+\newcommand{\Nodd}{\N_{\mathrm{odd}}}
+\newcommand{\Obs}{\mathcal{O}}
+\newcommand{\Atom}{\mathcal{A}}
+\newcommand{\Vk}{V_{K}}
+\newcommand{\Vi}{V_{I}}
+\newcommand{\vk}{v_{K}}
+\newcommand{\vi}{v_{I}}
+\newcommand{\vtwo}{v_{2}}
+\newcommand{\ord}{\mathrm{ord}}
+\newcommand{\Phij}{\Phi_{J}}
+\newcommand{\Psib}{\Psi_{b}}
+\newcommand{\cWa}{c_{W}^{(a)}}
+\newcommand{\cWab}{c_{W}^{(a,b)}}
+\newcommand{\Obsab}{\Obs_{L}^{(a,b)}}
+\newcommand{\Atomab}{\Atom_{L}^{(a,b)}}
+\newcommand{\Obstad}{\Obs^{\mathrm{2{\text{-}}ad},(a,b)}}
+\newcommand{\srcpath}[1]{\nolinkurl{#1}}
+\emergencystretch=3em
+
+% --- Document -----------------------------------------------------------------
+\title[Obstruction residues for the $(an+b)$ family]{Obstruction residues for the \texorpdfstring{$(an+b)$}{(an+b)} family:\\
+  bias conjugation and multiplier order}
+
+\author{Jakob Stemberger}
+\address{Independent researcher, Vienna, Austria}
+\email{jakob.stemberger@yaccob.net}
+\urladdr{https://orcid.org/0009-0001-2746-6877}
+\date{\today}
+
+\subjclass[2020]{11B83, 11S05, 37P05, 37B10, 37B40}
+
+\keywords{Collatz conjecture, $3n\pm1$ map, $(an+b)$ family, residue dynamics,
+  parallel reduction, 2-adic density, Wirsching operator}
+
+\begin{document}
+
+\begin{abstract}
+For odd integers $a, b$ with $\lvert a \rvert \ge 3$ and $b \ne 0$, the map
+$\Tab(n) := (an + b)/2^{\vtwo(an + b)}$ acts on the odd integers. The
+\emph{obstruction residues} $\Obsab \subseteq \{1, \ldots, 2^L\}$ are the
+odd residues at level $L$ for which an explicit two-track parallel reduction
+terminates with a vanishing affine certificate $\Phi_J = 0$; the
+$\Tneg$-manuscript proves a constructive lift, positive density $c_W$, and
+full factor complexity for the special case $(a,b) = (3,-1)$.
+
+We extend the theory to the whole class via two bridges. Along the bias
+axis, the multiplicative conjugation $\Psib(r) := br \bmod 2^L$ is a
+shift-preserving bijection $\Obs_L^{(a,1)} \to \Obsab$, so the cardinality
+$\lvert \Obsab \rvert$ and the asymptotic density $\cWa$ depend only on
+$a$. Along the multiplier axis, a diophantine identity for the reduction
+gives, modulo $\lvert a \rvert$, the order lemma
+$\delta_J \equiv 0 \pmod{e}$ with $e := \ord_{\lvert a \rvert}(2)$ (the
+$\Tneg$-manuscript's parity lemma is the case $a = 3$). The density $\cWa$
+exists as a monotone limit, and existence of obstructions ($\cWa > 0$) is
+equivalent to a finite diophantine solvability condition; a $2$-adic Haar
+interpretation places $\cWa$ in the Bernstein--Lagarias tradition. We
+further prove
+$L_{\min}(a) \ge e + 1$ (outside the negative-Mersenne case), a
+diophantine criterion for the levels carrying
+$J = 1$ atoms (with the Mersenne multipliers as its principal solutions),
+the no-shift-zero-atom theorem for all $\lvert a \rvert \ge
+3$ outside the negative-Mersenne case, and a polynomial bound on fixed-$J$
+atom counts with a constructive extremal family at $J = L - 4$ for $a = 3$.
+Beyond these theorems the quantitative size of $\cWa$ is so far only
+empirical: across the tested multipliers $\cWa > 0$ and
+$\cWa \approx C(a)\,4^{-e}$ for an $a$-dependent factor $C(a)$ that stays
+bounded in the tested range; whether $C(a)$ is bounded in general
+(equivalently $\cWa = \Theta(4^{-e})$) and whether $\alpha(a) < 2$ are the
+principal conjectures and remain open (a Wirsching-style operator is
+sketched as one route). The
+boundary $\lvert a \rvert = 1$ is excluded --- $\Obs_L^{(1,b)} =
+\emptyset$ for all $L$ at $a = +1$, while $a = -1$ is degenerate --- confirming
+the necessity of $\lvert a \rvert \ge 3$. The negative-Mersenne multipliers
+$a = -(2^{v_M} - 1)$ admit a finer sub-class hierarchy treated in a
+separate manuscript.
+\end{abstract}
+
+\maketitle
+
+% =============================================================================
+\section{Introduction}\label{sec:intro}
+% =============================================================================
+
+\subsection{Setting}
+
+For odd integers $a, b$ with $\lvert a \rvert \ge 3$ and $b \ne 0$, the
+\emph{affine accelerated map} $\Tab$ acts on the set $\Nodd$ of positive
+odd integers by
+\[
+\Tab(n) := \frac{an + b}{2^{\vtwo(an + b)}}.
+\]
+Two specialisations are classical: $(a,b) = (3,1)$ is the Collatz map
+$\Tpos$ (\cite{Lagarias2010,Lagarias2010bib}), and $(a,b) = (3,-1)$ is
+the $3n-1$ map $\Tneg$, which is known to admit at least three distinct
+cycles (the fixed cycle through $1$, the $\{5,7\}$-cycle, and the
+$7$-cycle through $17$; see \cite{Lagarias2010bib}). The Collatz
+conjecture asserts that every $\Tpos$-trajectory reaches $1$; the
+strongest unconditional progress towards it is Tao's theorem that
+almost all orbits attain almost bounded values
+\cite{Tao2022}. The analogous question for $\Tneg$ asks whether further
+cycles exist beyond the three known ones. Generalised $(an+b)$ maps go back to
+Hasse's generalised Syracuse algorithm, whose theory is developed by
+Matthews and Watts \cite{MatthewsWatts1984} and M\"oller
+\cite{Moeller1978} (the latter's title is literally ``Hasse's
+generalisation of the Syracuse algorithm''). The broader class of
+piecewise-defined generalised Collatz iterations is computationally
+universal --- Conway's undecidability of such iteration problems
+\cite{Conway1972} --- which is part of what makes an exact,
+level-by-level algebraic characterisation of a structured subfamily
+worthwhile; the present obstruction-residue viewpoint is exactly such a
+characterisation, rather than a measure-theoretic or heuristic one. The
+2-adic conjugation that underlies our bias-axis bridge
+(Section~\ref{sec:tools}) and the Haar interpretation of
+Section~\ref{sec:adic} are
+in the tradition of the $3x+1$ conjugacy map of Bernstein and Lagarias
+\cite{BernsteinLagarias1996}, who realise the Collatz dynamics as a
+conjugate of the shift on $\Ztwo$.
+
+Both maps share an algebraic feature that turns out to be visible at the
+level of \emph{residues modulo $2^L$}. The $\Tneg$-manuscript
+\cite{ObstructionResidues2026} introduces
+a family of residue classes $\Obs_L \subseteq \{1, \ldots, 2^L\}$
+characterised by an algebraic criterion on a two-track parallel
+reduction, and proves three structural results for this family:
+\begin{enumerate}[label=(\arabic*)]
+\item a constructive lift between modular levels $L$ and $L+1$;
+\item a strictly positive asymptotic density $c_W \in (0,\tfrac12]$ (only
+  odd residues can be obstructions, so $\tfrac12$ is the trivial ceiling)
+  with the rigorous lower bound $c_W \ge 7556/65536 \approx 0.115$;
+\item full factor complexity $p_W(\ell) = 2^\ell$ of the associated
+  language of binary representations.
+\end{enumerate}
+All three rest on a \emph{parity lemma}: at termination of the parallel
+reduction, the difference $\delta_J = \Vk^{(J)} - \Vi^{(J)} - v$ of
+cumulative valuations is forced to be an even integer.
+
+\subsection{The two bridges}
+
+The present paper develops the same theory in the wider $(an+b)$ setting,
+$\lvert a \rvert \ge 3$ and $b$ odd, by isolating two bridges from the
+$\Tneg$-manuscript's special case.
+
+\medskip
+\noindent\textbf{Bridge 1: bias axis (multiplicative conjugation).} The
+multiplicative map $\Psib(r) := br \bmod 2^L$ is a shift-preserving
+bijection $\Obs_L^{(a,1)} \to \Obsab$ for every odd $b \ne 0$
+(Theorem~\ref{thm:conjugation}). The $\Tneg$-manuscript's involution $r \mapsto
+2^L - r$ that transfers results from $\Tneg$ to $\Tpos$
+(\cite[Section~7]{ObstructionResidues2026}) is the special case $\Psi_{-1}$.
+As a consequence, the cardinalities $\lvert\Obsab\rvert$ and the
+asymptotic density $\cWab$ depend only on $a$, not on $b$
+(Corollary~\ref{cor:b-universality}). We write $\cWa := \cWab$
+unambiguously.
+
+\medskip
+\noindent\textbf{Bridge 2: multiplier axis (order lemma).} Reducing the
+\emph{diophantine identity} for $\Phi_J = 0$ modulo $\lvert a \rvert$
+forces $\delta_J \equiv 0 \pmod{e}$, where $e := \ord_{\lvert a \rvert}(2)$
+(Lemma~\ref{lem:order-lemma}). The $\Tneg$-manuscript's parity lemma is the
+case $a = 3, e = 2$. Unlike the conjugation theorem, the order lemma
+restricts but does not preserve structure across $a$: the step size $e$
+of the shift index grows with the multiplicative order and drives an
+empirical density law $\cWa \approx C(a)\,4^{-e}$ across the tested range
+$\lvert a \rvert \in \{3, 5, 7, 9, 15, 17, 21, 31\}$
+(Section~\ref{sec:scaling}).
+
+\subsection{Main results}
+
+For odd $a, b$ with $\lvert a \rvert \ge 3$ and $b \ne 0$ and a level $L
+\ge 1$, the obstruction set $\Obsab$ at level $L$ is defined in
+Section~\ref{sec:setup} (Definition~\ref{def:obstruction}) as the set
+of odd residues $r$ for which the two-track parallel reduction
+terminates with $\Phi_J = 0$. The shift index $\delta_J = \delta_J(r,L)$
+is the difference of cumulative valuations at termination; the constant
+$e := \ord_{\lvert a \rvert}(2)$ is the multiplicative order of $2$
+modulo $\lvert a \rvert$.
+
+\begin{theorem}[Conjugation, b-axis universality]\label{thm:conjugation-intro}
+For every odd $b \ne 0$ the multiplicative map $\Psib(r) := br \bmod 2^L$
+is a shift-preserving bijection $\Obs_L^{(a,1)} \to \Obsab$. In
+particular, the cardinality $\lvert\Obsab\rvert$ and the asymptotic
+density $\cWab = \lim_L \lvert\Obsab\rvert/2^L$ depend only on $a$.
+\end{theorem}
+
+\begin{theorem}[Diophantine identity, order lemma]\label{thm:order-intro}
+For every $r \in \Obsab$ with termination index $J$,
+\[
+a^{J+1} = \sum_{j=0}^{J} a^{J-j} X_j, \qquad X_j := 2^{\Vk^{(j)}} - 2^{\Vi^{(j)} + v}.
+\]
+Reducing modulo $\lvert a \rvert$ gives $\delta_J \equiv 0 \pmod{e}$.
+\end{theorem}
+
+\begin{theorem}[Density limit and existence criterion]\label{thm:adic-intro}
+The density $\cWab = \lim_L \lvert \Obsab \rvert / 2^L$ exists as a
+non-decreasing limit, and $\cWa > 0$ if and only if the diophantine
+identity above is realisable for at least one finite valuation tuple
+$(J, \Vk^{(j)}, \Vi^{(j)}, v)$.
+\end{theorem}
+
+\noindent A measure-theoretic reading of this density --- $\cWa =
+\mu_2(\Obstad)$, the Haar measure of the open set $\Obstad \subseteq
+\Ztwox$ of $2$-adic units that are eventually obstructions --- is recorded
+as Remark~\ref{rem:haar}, in the Bernstein--Lagarias tradition.
+
+\begin{theorem}[No shift-zero atom, generalised]\label{thm:no-G0-intro}
+Assume $a$ is not a negative Mersenne number $-(2^{v_M} - 1)$. For every
+level $L$,
+\[
+\lvert \Atom_L^{(a,b), G_0} \rvert = 0;
+\]
+every atomic obstruction has nonzero shift index.
+\end{theorem}
+
+\begin{proposition}[Atom localisation at fixed $J$]\label{prop:atom-J-intro}
+At fixed termination index $J$ the atomic $G_{\ne 0}$-count is bounded by
+$\lvert \Atom_L^{(a,b), G_{\ne 0}} \rvert_J \le \binom{L-1}{J} = O_J(L^{J})$
+(Proposition~\ref{prop:atom-J}): every such atom drives one track to the
+boundary of its modulus, and the boundary valuation data then determine the
+residue uniquely. For $(a,b) = (3,-1)$ the residue
+$r := 2^{L-2} + 3$ is an atomic obstruction at every \emph{even} level
+$L \ge 6$ with $J = L - 4$ and shift index $1$, realising the empirical
+extreme $J_{\max} = L - 4$.
+\end{proposition}
+
+\begin{theorem}[Degenerate edge case]\label{thm:edge-intro}
+For $a = +1$ and every odd $b$, $\Obsab = \emptyset$ for every $L$. For
+$a = -1$ the map degenerates ($an + b$ vanishes on part of the domain)
+and direct enumeration gives $\lvert \Obsab \rvert = 2^{L-2}$
+(Remark~\ref{rem:a-minus-1}); neither value of $\lvert a \rvert
+= 1$ supports the genuine obstruction dynamics that require $\lvert a
+\rvert \ge 3$.
+\end{theorem}
+
+Theorems~\ref{thm:conjugation-intro}--\ref{thm:no-G0-intro},
+Proposition~\ref{prop:atom-J-intro} and Theorem~\ref{thm:edge-intro} are proven
+across Sections~\ref{sec:tools} (conjugation and order lemma),
+\ref{sec:adic} (density limit and existence criterion),
+\ref{sec:structure} (no-shift-zero atom
+and atom localisation), and \ref{sec:edge} (degenerate edge case). Two further results
+(Theorem~\ref{thm:Lmin-lower} on the lower bound for the smallest
+non-trivial level and Proposition~\ref{prop:J1-character} on the
+characterisation of $J = 1$ atoms, for positive $a$) are stated in
+Section~\ref{sec:Lmin}.
+The principal open problems --- $\alpha(a) < 2$ and the existence
+conjecture $\cWa > 0$ for non-Mersenne
+$\lvert a \rvert$ --- are discussed in Section~\ref{sec:spectral}, and the
+empirical density scaling $\cWa \approx C(a)\,4^{-e}$ (with the
+boundedness of $C(a)$ itself conjectural) is reported in
+Section~\ref{sec:scaling}.
+
+\subsection{Relation to the negative-Mersenne case}
+
+For $a = -(2^{v_M} - 1)$ Mersenne with $v_M \ge 2$, the $(an+b)$ theory
+admits a finer sub-class hierarchy indexed by the shift index $j \in
+\Z$ (the iterated $A$-, $B$-, $C$-, and $F_1$-families, plus a
+$j = -1$ family $G_1$ specific to negative $a$); the $\Tneg$-manuscript-style
+density bound becomes $\cWa \ge 1/(2\lvert a \rvert)$, asymptotically
+sharp in $v_M$. We treat this case in a separate manuscript (in
+preparation) and only cite the relationship where it sharpens the general
+theory.
+
+\subsection{Outline}
+
+Section~\ref{sec:setup} fixes notation and defines the two-track parallel
+reduction. Section~\ref{sec:tools} proves the four foundational tools
+(conjugation, order lemma, diophantine identity, and the series
+representation of $\cWa$). Section~\ref{sec:adic} establishes the density
+limit and reduces existence of obstructions to a finite diophantine
+solvability condition (with a $2$-adic Haar interpretation).
+Section~\ref{sec:Lmin} establishes the lower bound $L_{\min}(a) \ge e + 1$
+and characterises the levels at which $J = 1$ atoms exist.
+Section~\ref{sec:structure} contains the structural results over $a$:
+the generalised no-shift-zero-atom theorem, polynomial atom bounds at
+fixed $J$, and the constructive $L - 4$ extremal family.
+Section~\ref{sec:spectral} discusses the principal open problem
+$\alpha(a) < 2$ (with a Wirsching-style operator sketched as one route).
+Section~\ref{sec:scaling} reports the empirical scaling $\cWa = \Theta(4^{-e})$.
+Section~\ref{sec:edge} treats the degenerate boundary $\lvert a \rvert = 1$
+($a = +1$ empty, $a = -1$ degenerate).
+Section~\ref{sec:neg-mersenne} records the relationship to the companion
+manuscript's negative-Mersenne sub-class analysis.
+Appendix~\ref{sec:errata} lists two
+refuted hypotheses that motivated the present development.
+
+% =============================================================================
+\section{Setup: parallel reduction and obstruction residues}\label{sec:setup}
+% =============================================================================
+
+\subsection{The two-track parallel reduction}
+
+Fix odd integers $a, b$ with $\lvert a \rvert \ge 3$ and $b \ne 0$. Let
+$r$ be a positive odd integer, and write
+\[
+v := \vtwo(r + b), \qquad m := (r + b)/2^v.
+\]
+Since $b$ is odd (which we always assume) and $r$ is odd, the sum
+$r + b$ is even, so $v = \vtwo(r+b) \ge 1$ and $m = (r+b)/2^v$ is odd.
+
+Fix a level $L > v$. The parallel reduction proceeds simultaneously on
+two tracks:
+\begin{itemize}
+\item the \emph{K-track}, $(a_K^{(0)}, b_K^{(0)}) := (r, 2^L)$;
+\item the \emph{I-track}, $(a_I^{(0)}, b_I^{(0)}) := (m, 2^{L-v})$.
+\end{itemize}
+At each step $j \ge 0$, let
+$A_K^{(j)} := a \cdot a_K^{(j)} + b$, $A_I^{(j)} := a \cdot a_I^{(j)} + b$,
+$\vk^{(j)} := \vtwo(A_K^{(j)})$, $\vi^{(j)} := \vtwo(A_I^{(j)})$, and
+update
+\[
+a_K^{(j+1)} := A_K^{(j)}/2^{\vk^{(j)}}, \qquad b_K^{(j+1)} := a \cdot b_K^{(j)}/2^{\vk^{(j)}},
+\]
+provided $\vk^{(j)} < \vtwo(b_K^{(j)})$; otherwise the K-track terminates
+at index $j$. The I-track is updated analogously with $\vi^{(j)}$ and
+$b_I^{(j)}$. Cumulative valuations are
+$\Vk^{(j)} := \sum_{i<j} \vk^{(i)}$ and
+$\Vi^{(j)} := \sum_{i<j} \vi^{(i)}$, so that the residual valuations of
+the moduli are $L - \Vk^{(j)}$ and $L - v - \Vi^{(j)}$ respectively.
+
+The reduction proceeds as long as both tracks can step; it terminates as
+soon as either condition fails. We write $J = J(r,L)$ for the index of
+termination.
+
+\subsection{The affine certificate}
+
+\begin{lemma}\label{lem:affine}
+For each $j$ with $0 \le j \le J$, there exist $c_j, d_j \in \Q$ with
+\[
+a_I^{(j)} = c_j \cdot a_K^{(j)} + d_j \qquad \text{in } \Q,
+\]
+where $c_0 = 2^{-v}$, $d_0 = b \cdot 2^{-v}$, and
+\[
+c_{j+1} = c_j \cdot 2^{\vk^{(j)} - \vi^{(j)}},
+\qquad
+d_{j+1} = \frac{a \cdot d_j + b(1 - c_j)}{2^{\vi^{(j)}}}.
+\]
+\end{lemma}
+
+\begin{proof}
+At $j = 0$: $m = (r+b)/2^v = 2^{-v} r + b \cdot 2^{-v}$. Inductively,
+$A_I^{(j)} = a(c_j a_K^{(j)} + d_j) + b = c_j A_K^{(j)} + (a d_j + b(1 - c_j))$.
+Dividing by $2^{\vi^{(j)}}$ and using $A_K^{(j)} = 2^{\vk^{(j)}} a_K^{(j+1)}$:
+\[
+a_I^{(j+1)} = c_j \cdot 2^{\vk^{(j)} - \vi^{(j)}} \cdot a_K^{(j+1)}
+            + \frac{a d_j + b(1 - c_j)}{2^{\vi^{(j)}}}. \qedhere
+\]
+\end{proof}
+
+Write $\delta_j := \Vk^{(j)} - \Vi^{(j)} - v$. From the update rule,
+$c_j = 2^{\delta_j}$ for every $j$. Define the \emph{affine certificate}
+at termination as
+\[
+\Phi_J := b(1 - c_J) + a \cdot d_J.
+\]
+
+\begin{definition}[Obstruction residue]\label{def:obstruction}
+Let $r$ be a positive odd integer with $r + b$ even, $v := \vtwo(r+b) \ge 1$,
+and $L > v$. We call $r$ an \emph{obstruction residue for $\Tab$ at
+level $L$} if $\Phi_J(r, L) = 0$. The set of all such residues in
+$\{1, \ldots, 2^L\}$ is denoted $\Obsab$.
+\end{definition}
+
+\begin{remark}[Terminal synchronisation]\label{rem:sync}
+The defining condition $\Phi_J = 0$ is equivalent to an \emph{exact}
+synchronisation of the two tracks at termination. From the affine relation
+$a_I^{(j)} = c_j a_K^{(j)} + d_j$ and $A_K^{(j)} = a\,a_K^{(j)} + b$ one has
+the identity
+\[
+A_I^{(j)} = a\,a_I^{(j)} + b = c_j A_K^{(j)} + \Phi_j, \qquad
+\Phi_j := b(1 - c_j) + a\,d_j,
+\]
+so $\Phi_J = 0 \iff A_I^{(J)} = c_J A_K^{(J)}$. Since
+$\vtwo(A_K^{(J)}) = \vk^{(J)}$ and $c_J = 2^{\delta_J}$, this forces
+$\vi^{(J)} = \vk^{(J)} + \delta_J$; substituting this and
+$\Vi^{(J)} = \Vk^{(J)} - v - \delta_J$ into the two stop conditions
+$\vk^{(J)} \ge L - \Vk^{(J)}$ and $\vi^{(J)} \ge L - v - \Vi^{(J)}$ makes
+them identical, so \emph{both tracks meet the termination condition at the
+same index $J$}. We call the terminal step \emph{exact} when
+$\vk^{(J)} = L - \Vk^{(J)}$ (equivalently the I-track equality holds) and
+\emph{strict} when $\vk^{(J)} > L - \Vk^{(J)}$; by the synchronisation the
+two tracks share this type. The certificate is thus the algebraic shadow
+of a synchronisation of stopping times for $\Tab$-iterates of $r$ and $m$;
+the present paper develops only the algebraic side.
+\end{remark}
+
+\subsection{The shift index}
+
+The integer $\delta_J(r, L) = \Vk^{(J)} - \Vi^{(J)} - v$ controls the
+fine structure of $\Obsab$. We refer to it as the \emph{shift index}.
+The shift-zero set is
+\[
+\Obs_L^{(a,b), G_0} := \{r \in \Obsab : \delta_J(r,L) = 0\},
+\qquad
+\Obs_L^{(a,b), G_{\ne 0}} := \Obsab \setminus \Obs_L^{(a,b), G_0},
+\]
+and analogously for $\Atom_L^{(a,b), G_0}, \Atom_L^{(a,b), G_{\ne 0}}$
+once atomic obstructions are defined below.
+
+\subsection{Lifts and atoms}\label{ssec:lifts}
+
+The obstruction sets at consecutive levels are linked by a lift map,
+which we record here because the density series
+(Corollary~\ref{cor:series}), the density limit
+(Section~\ref{sec:adic}), and the lower bound of
+Section~\ref{sec:scaling} all rest on it.
+
+\begin{definition}[Lift, atom]\label{def:atom}
+Let $r \in \Obsab$. The two residues $r$ and $r + 2^L$ in
+$\{1, \ldots, 2^{L+1}\}$ are the \emph{level-$(L+1)$ lifts} of $r$. An
+obstruction $r \in \Obsab$ is \emph{atomic} if it is not a lift of any
+level-$(L-1)$ obstruction, i.e.\ $r \bmod 2^{L-1} \notin
+\Obs_{L-1}^{(a,b)}$; the set of atomic obstructions at level $L$ is
+denoted $\Atomab$, and $\Atom_L^{(a,b), G_0}$, $\Atom_L^{(a,b), G_{\ne 0}}$
+are its shift-zero and nonzero-shift parts.
+\end{definition}
+
+\begin{theorem}[Lift theorem]\label{thm:lift}
+For every $r \in \Obsab$ both level-$(L+1)$ lifts $r$ and $r + 2^L$ lie in
+$\Obs_{L+1}^{(a,b)}$, and conversely every non-atomic obstruction at level
+$L+1$ is a lift of a unique obstruction at level $L$. Consequently, with
+$h_L := \lvert \Obsab \rvert$,
+\[
+h_{L+1} = 2 h_L + \lvert \Atom_{L+1}^{(a,b)} \rvert.
+\]
+\end{theorem}
+
+\begin{proof}
+For $(a,b) = (3,-1)$ this is the constructive lift of
+\cite[Theorems~3.1 and~3.2]{ObstructionResidues2026}. We recall the mechanism and
+its $a$-dependence. The lift $r_+ := r$ runs the same reduction with the
+modulus doubled, so its data agree with those of $r$ at level $L$ until
+the level-$(L+1)$ stop. By the terminal synchronisation
+(Remark~\ref{rem:sync}) the two tracks share an exact/strict terminal type,
+and the two cases are: if the terminal step at $L$ was \emph{exact}, one
+extra step at the terminal index yields, using
+$\vk^{(J)} - \vi^{(J)} = -\delta_J$,
+$c_{J+1} = c_J \cdot 2^{\vk^{(J)} - \vi^{(J)}} = 1$ and $d_{J+1} = 0$ (a
+shift-zero lift); if it was \emph{strict}, the index-$J$ data already satisfy
+the level-$(L+1)$ stop and the terminal certificate is unchanged (a
+shift-$s$ lift); both are obstructions. The
+lift $r_- := r + 2^L$ differs from $r_+$ by the discrepancy
+$\Delta_K^{(j)} = 2^{L - \Vk^{(j)}} a^j$ (and $\Delta_I^{(j)} =
+2^{L - v - \Vi^{(j)}} a^j$); because $a$ is odd, multiplying by $a$
+preserves the $2$-adic valuation, so while $\Vk^{(j)} < L$ the two
+summands of $a\,a_{K,-}^{(j)} + b = (a\,a_{K,+}^{(j)} + b) + a\,\Delta_K^{(j)}$
+sit at distinct valuations and the ultrametric identity forces the
+per-step valuations to match; the case split on the exact/strict terminal
+type is identical and yields the second lift. The multiplier $a$ enters only
+through $c_J = 2^{\delta_J}$, $d_J = b(c_J - 1)/a$ (replacing the $4^{s}$
+and $(1 - 4^{s})/3$ of the $a = 3$ case) and the factor $a^j$ in the
+discrepancy --- none of which affects the lift count of two. The argument
+therefore holds for every odd $a$ with $\lvert a \rvert \ge 3$ and odd
+$b \ne 0$. For the converse and the balance: an obstruction
+$r \in \Obs_{L+1}^{(a,b)}$ is either atomic --- contributing to
+$\lvert \Atom_{L+1}^{(a,b)} \rvert$ --- or, by Definition~\ref{def:atom},
+satisfies $r \bmod 2^{L} \in \Obsab$, in which case it is one of the two
+lifts of its unique parent $r \bmod 2^{L}$; the two alternatives are mutually
+exclusive and exhaustive, so $h_{L+1} = 2 h_L + \lvert \Atom_{L+1}^{(a,b)}
+\rvert$. (Direct enumeration confirms the balance for all tested $(a,b)$ and
+$L \le 16$.) \qedhere
+\end{proof}
+
+\subsection{Asymptotic density}
+
+The \emph{asymptotic obstruction density} is
+\[
+\cWab := \lim_{L \to \infty} \frac{\lvert \Obsab \rvert}{2^L}
+\]
+when this limit exists. The $\Tneg$-manuscript proves existence and positivity
+of $c_W = c_W^{(3,-1)}$; we extend both to the entire $(an+b)$ family in
+Section~\ref{sec:tools} (cardinality preservation under $\Psib$) and
+Section~\ref{sec:adic} (existence of the limit via the lift theorem).
+
+% =============================================================================
+\section{Foundational tools}\label{sec:tools}
+% =============================================================================
+
+\subsection{The conjugation theorem}
+
+\begin{theorem}[Conjugation theorem]\label{thm:conjugation}
+Let $a$ be an odd integer with $\lvert a \rvert \ge 3$ and $b$ a nonzero
+odd integer. For every level $L \ge 1$ the multiplicative map
+\[
+\Psib : \Z/2^L\Z \to \Z/2^L\Z, \qquad \Psib(r) := b r \bmod 2^L,
+\]
+restricts to a bijection $\Obs_L^{(a,1)} \to \Obsab$ that preserves the
+shift index: $\delta_J^{(a,b)}(\Psib(r)) = \delta_J^{(a,1)}(r)$ (trivially
+so at levels below $L_{\min}(a)$, where both sets are empty).
+\end{theorem}
+
+\begin{proof}
+Since $b$ is odd, $\Psib$ is a bijection of $\Z/2^L\Z$. We must show it
+restricts to obstructions and preserves the shift index.
+
+\emph{Step 1 (initial data).} For $r \in \Obs_L^{(a,1)}$,
+$\vtwo(r+1) = v$ and $m_K := (r+1)/2^v$ is odd. For $r' := \Psib(r) = br$,
+\[
+r' + b = br + b = b(r+1), \qquad \vtwo(r'+b) = \vtwo(b) + \vtwo(r+1) = 0 + v = v,
+\]
+since $b$ is odd. So $v_K^{\prime,(0)} := \vtwo(r' + b)$ equals $v$, and
+$m_K' := (r'+b)/2^v = b \cdot m_K$. The initial affine data satisfy
+$c_0^{(a,b)} = 2^{-v} = c_0^{(a,1)}$ and
+$d_0^{(a,b)} = b \cdot 2^{-v} = b \cdot d_0^{(a,1)}$.
+
+\emph{Step 2 (step-by-step conjugation).} We claim by induction:
+\begin{equation}\label{eq:conj-induction}
+a_K^{(a,b),(j)} \equiv b \cdot a_K^{(a,1),(j)} \pmod{2^{L - \Vk^{(j)}}},
+\qquad
+v_K^{(a,b),(j)} = v_K^{(a,1),(j)},
+\end{equation}
+and analogously for the I-track. Base case $j = 0$: $a_K^{(a,b),(0)} = b r
+= b \cdot a_K^{(a,1),(0)}$, and we showed $v_K$ matches at step $0$.
+Inductive step: write $a_K^{(a,b),(j)} = b \cdot a_K^{(a,1),(j)} + 2^{L -
+\Vk^{(j)}} \cdot \eta_j$ for some integer $\eta_j$. Then
+\[
+A_K^{(a,b),(j)} = a (b a_K^{(a,1),(j)} + 2^{L - \Vk^{(j)}} \eta_j) + b
+                = b A_K^{(a,1),(j)} + 2^{L - \Vk^{(j)}} \cdot a \eta_j.
+\]
+Since $b$ is odd, $\vtwo(b A_K^{(a,1),(j)}) = \vtwo(A_K^{(a,1),(j)}) =
+v_K^{(a,1),(j)}$; since $v_K^{(a,1),(j)} < L - \Vk^{(j)}$
+(non-termination), the second term has higher 2-adic valuation, so
+$v_K^{(a,b),(j)} = v_K^{(a,1),(j)}$ and dividing through gives
+$a_K^{(a,b),(j+1)} \equiv b a_K^{(a,1),(j+1)} \pmod{2^{L - \Vk^{(j+1)}}}$.
+
+\emph{Step 3 (termination and certificate).} The matching valuations
+yield $\Vk^{(a,b),(j)} = \Vk^{(a,1),(j)}$ and
+$\Vi^{(a,b),(j)} = \Vi^{(a,1),(j)}$ for every $j$, so termination
+occurs at the same index $J$ for both. From the update rule for $(c_j,
+d_j)$ and the initial data of Step~1, induction gives
+$c_J^{(a,b)} = c_J^{(a,1)}$ and $d_J^{(a,b)} = b \cdot d_J^{(a,1)}$.
+Therefore
+\[
+\Phi_J^{(a,b)} = b(1 - c_J^{(a,b)}) + a \cdot d_J^{(a,b)}
+              = b \bigl[(1 - c_J^{(a,1)}) + a \cdot d_J^{(a,1)}\bigr]
+              = b \cdot \Phi_J^{(a,1)},
+\]
+and since $b \ne 0$, $\Phi_J^{(a,b)} = 0 \iff \Phi_J^{(a,1)} = 0$.
+
+\emph{Step 4 (shift index).} $\delta_J = \Vk^{(J)} - \Vi^{(J)} - v$
+is unchanged because all summands are unchanged. \qedhere
+\end{proof}
+
+\begin{corollary}[$\Tneg$ to $\Tpos$ involution as $\Psi_{-1}$]\label{cor:involution}
+The $\Tneg$-manuscript's involution $r \mapsto 2^L - r$ inducing a bijection
+$\Obs_L^{(3,-1)} \leftrightarrow \Obs_L^{(3,1)}$
+(\cite[Section~7]{ObstructionResidues2026}) is the special case $\Psi_{-1}$ of
+Theorem~\ref{thm:conjugation}.
+\end{corollary}
+
+\begin{corollary}[b-axis universality of cardinality and density]\label{cor:b-universality}
+For every odd $b \ne 0$ and every $L \ge 1$,
+\[
+\lvert \Obsab \rvert = \lvert \Obs_L^{(a,1)} \rvert.
+\]
+In particular, $\cWab = \cWa$ depends only on $a$.
+\end{corollary}
+
+We have verified Theorem~\ref{thm:conjugation} numerically for
+$a = 3$, $L = 12$, and all odd $b \in \{-7, -5, \ldots, +13\}$: the
+cardinalities $\lvert \Obs_{12}^{(3, b)} \rvert = 409$ are identical and
+the shift-index assignments match under $\Psib$
+(code: \srcpath{code/python/factor_lang_check.py}).
+
+\subsection{The diophantine identity}
+
+\begin{theorem}[Diophantine identity]\label{thm:diophantine}
+For every $r \in \Obsab$ with termination index $J$, set
+\[
+X_j := 2^{\Vk^{(j)}} - 2^{\Vi^{(j)} + v}, \qquad 0 \le j \le J.
+\]
+Then
+\begin{equation}\label{eq:diophantine}
+a^{J+1} = \sum_{j=0}^{J} a^{J-j} \cdot X_j.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $D_j := 2^{\Vi^{(j)} + v} \cdot d_j$. From the $d$-update of
+Lemma~\ref{lem:affine},
+\begin{align*}
+D_{j+1} = 2^{\Vi^{(j+1)} + v} d_{j+1}
+  &= 2^{\Vi^{(j)} + \vi^{(j)} + v} \cdot \frac{a d_j + b(1 - c_j)}{2^{\vi^{(j)}}} \\
+  &= a D_j + b \cdot 2^{\Vi^{(j)} + v}(1 - c_j).
+\end{align*}
+Since $c_j = 2^{\delta_j} = 2^{\Vk^{(j)} - \Vi^{(j)} - v}$,
+$2^{\Vi^{(j)} + v}(1 - c_j) = 2^{\Vi^{(j)} + v} - 2^{\Vk^{(j)}} = -X_j$,
+so the recurrence simplifies to
+\begin{equation}\label{eq:D-recurrence}
+D_{j+1} = a D_j - b \cdot X_j, \qquad D_0 = b.
+\end{equation}
+Unrolling,
+\[
+D_{J+1} = a^{J+1} D_0 - b \sum_{j=0}^{J} a^{J-j} X_j
+       = b \biggl( a^{J+1} - \sum_{j=0}^{J} a^{J-j} X_j \biggr).
+\]
+On the other hand, the certificate $\Phi_J = b(1 - c_J) + a d_J = 0$
+multiplied by $2^{\Vi^{(J)} + v}$ gives $a D_J = b \cdot X_J$, and one
+step of \eqref{eq:D-recurrence} gives $D_{J+1} = a D_J - b X_J = 0$.
+Combining the two expressions for $D_{J+1}$ and using $b \ne 0$,
+\eqref{eq:diophantine} follows. \qedhere
+\end{proof}
+
+\begin{remark}\label{rem:b-independence}
+The diophantine identity~\eqref{eq:diophantine} is independent of $b$: it
+involves only $a$, the cumulative valuations $\Vk^{(j)}, \Vi^{(j)}$, and
+$v$. This is the structural reason behind the conjugation theorem:
+$\Psib$ preserves the entire valuation sequence (Step~3 of the proof of
+Theorem~\ref{thm:conjugation}), so an obstruction at $(a,1)$ produces
+the same valuation tuple at $(a,b)$ and~\eqref{eq:diophantine} is
+satisfied for the conjugated residue as well.
+\end{remark}
+
+\subsection{The order lemma}
+
+\begin{lemma}[Order lemma]\label{lem:order-lemma}
+Let $e := \ord_{\lvert a \rvert}(2)$, the multiplicative order of $2$
+modulo $\lvert a \rvert$. For every $r \in \Obsab$ with termination
+index $J$,
+\[
+\delta_J \equiv 0 \pmod{e}.
+\]
+\end{lemma}
+
+\begin{proof}
+Reducing~\eqref{eq:diophantine} modulo $\lvert a \rvert$ leaves only the
+$j = J$ term:
+\[
+0 \equiv X_J = 2^{\Vk^{(J)}} - 2^{\Vi^{(J)} + v} \pmod{\lvert a \rvert}.
+\]
+Since $\gcd(2, \lvert a \rvert) = 1$, the two powers are congruent and
+both invertible modulo $\lvert a \rvert$, so
+$2^{\Vk^{(J)} - (\Vi^{(J)} + v)} = 2^{\delta_J} \equiv 1
+\pmod{\lvert a \rvert}$. By definition of $e$ this gives $e \mid
+\delta_J$ when $\delta_J \ge 0$; when $\delta_J < 0$ the same congruence
+reads $2^{-\delta_J} \equiv 1 \pmod{\lvert a \rvert}$, so $e \mid
+(-\delta_J)$, hence $e \mid \delta_J$ in either case. \qedhere
+\end{proof}
+
+For $a = 3$, $e = \ord_3(2) = 2$, and Lemma~\ref{lem:order-lemma}
+specialises to the $\Tneg$-manuscript's parity lemma
+(\cite[Lemma~2.4]{ObstructionResidues2026}): $\delta_J$ is even. The
+\emph{shift-$s$ normal form} of the $\Tneg$-manuscript becomes the
+\emph{shift-$s$ normal form to step $e$}, $\delta_J = s \cdot e$ with
+$s \in \Z$. Numerical values of $e$ for small $\lvert a \rvert$ are
+collected in Table~\ref{tab:order}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrl}
+\toprule
+$\lvert a \rvert$ & $e = \ord_{\lvert a\rvert}(2)$ & shift step \\
+\midrule
+3 & 2 & $\delta_J \in 2\Z$ ($\Tneg$ parity) \\
+5 & 4 & $\delta_J \in 4\Z$ \\
+7 & 3 & $\delta_J \in 3\Z$ \\
+9 & 6 & $\delta_J \in 6\Z$ \\
+11 & 10 & $\delta_J \in 10\Z$ \\
+13 & 12 & $\delta_J \in 12\Z$ \\
+15 & 4 & $\delta_J \in 4\Z$ \\
+17 & 8 & $\delta_J \in 8\Z$ \\
+31 & 5 & $\delta_J \in 5\Z$ \\
+\bottomrule
+\end{tabular}
+\caption{Multiplicative order $e = \ord_{\lvert a\rvert}(2)$ and the
+induced shift-index step size, for small odd $\lvert a \rvert$.}
+\label{tab:order}
+\end{table}
+
+\subsection{Series representation of the density}
+
+The diophantine identity also produces a clean series for $\cWa$. Let
+$h_L := \lvert \Obsab \rvert$ and $a_L := \lvert \Atom_L^{(a,b),
+G_{\ne 0}} \rvert$ (atomic count of nonzero-shift obstructions at level
+$L$).
+
+\begin{corollary}[Series representation]\label{cor:series}
+By the lift theorem (Theorem~\ref{thm:lift}), $h_{L+1} = 2 h_L +
+a_{L+1} + \varepsilon_L$, where $\varepsilon_L := \lvert \Atom_{L+1}^{(a,b),
+G_0} \rvert$ tracks the $G_0$-atomic contributions. Telescoping this
+balance gives
+\[
+\cWa = \sum_{l \ge L_{\min}(a)} \frac{a_l}{2^l} + c_W^{(a), G_0},
+\]
+where $c_W^{(a), G_0} := \sum_l \varepsilon_{l-1}/2^l$ is the contribution
+of the shift-zero \emph{atoms} (not of the shift-zero obstructions, which
+are lifts already counted in the $2 h_L$ term and in fact carry the bulk
+of the density). By Theorem~\ref{thm:no-G0-atom-general} the summand
+$\varepsilon_{l-1}$ vanishes at every level (outside the negative-Mersenne
+case), so $c_W^{(a), G_0} = 0$; this recovers the $\Tneg$-manuscript's
+$c_W^{(3), G_0} = 0$
+(\cite[Theorem~6.2]{ObstructionResidues2026}) as the case $a = 3$.
+\end{corollary}
+
+The proof is a telescoping of the lift balance and is identical to the
+$\Tneg$-manuscript's (\cite[Section~6.3]{ObstructionResidues2026}); the
+$\Tneg$-specific input is only the no-$G_0$-atom statement, generalised
+to all $\lvert a \rvert \ge 3$ outside the negative-Mersenne case in
+Theorem~\ref{thm:no-G0-atom-general}.
+
+\subsection{Determinacy from valuation data}
+
+A fixed sequence of step valuations pins the seed to a single residue
+class. We isolate this as a lemma, used both by the existence criterion
+(Section~\ref{sec:adic}) and by the atom bound
+(Proposition~\ref{prop:atom-J}).
+
+\begin{lemma}[Determinacy]\label{lem:determinacy}
+Fix an integer $v \ge 1$, a termination index $J \ge 0$, and step
+valuations $\vk^{(0)}, \ldots, \vk^{(J-1)} \ge 1$ and
+$\vi^{(0)}, \ldots, \vi^{(J-1)} \ge 1$; write
+$\Vk^{(j)} := \sum_{i<j}\vk^{(i)}$ and $\Vi^{(j)} := \sum_{i<j}\vi^{(i)}$.
+The set of odd seeds $r$ whose parallel reduction realises exactly this
+valuation sequence is either empty or a single residue class. Fixing the
+K-data alone pins $r$ modulo $2^{\Vk^{(J)}+1}$; fixing $v$ together with the
+I-data pins $r$ modulo $2^{\Vi^{(J)}+v+1}$.
+\end{lemma}
+
+\begin{proof}
+By induction the K-iterate is affine in the seed $r$:
+\[
+a_K^{(j)} = \frac{a^j r + \beta_j}{2^{\Vk^{(j)}}}, \qquad
+\beta_0 = 0, \quad \beta_{j+1} = a\beta_j + b\,2^{\Vk^{(j)}},
+\]
+the recursion for $\beta_j$ following from
+$a_K^{(j+1)} = (a\,a_K^{(j)} + b)/2^{\vk^{(j)}}$. The requirement
+$\vtwo(a\,a_K^{(j)} + b) = \vk^{(j)}$ reads
+$a\,a_K^{(j)} + b \equiv 2^{\vk^{(j)}} \pmod{2^{\vk^{(j)}+1}}$; clearing the
+denominator $2^{\Vk^{(j)}}$ and substituting the affine form turns it into
+\[
+a^{j+1} r \equiv 2^{\Vk^{(j+1)}} - a\beta_j - b\,2^{\Vk^{(j)}}
+            \pmod{2^{\Vk^{(j+1)}+1}}.
+\]
+Since $a$ is odd, $a^{j+1}$ is a unit modulo $2^{\Vk^{(j+1)}+1}$, so this
+fixes $r$ modulo $2^{\Vk^{(j+1)}+1}$. The conjunction over
+$j = 0, \ldots, J-1$ has nested moduli, so the set of seeds realising the
+entire K-sequence is empty or a single residue class modulo
+$2^{\Vk^{(J)}+1}$. The identical argument on the I-track --- whose seed
+$m = (r+b)/2^v$ is affine in $r$ once $v := \vtwo(r+b)$ is fixed --- shows
+that fixing $v$ together with $\vi^{(0)}, \ldots, \vi^{(J-1)}$ confines $r$
+to a single class modulo $2^{\Vi^{(J)}+v+1}$. \qedhere
+\end{proof}
+
+% =============================================================================
+\section{Density limit and existence criterion}\label{sec:adic}
+% =============================================================================
+
+The lift theorem makes the obstruction densities converge to $\cWa$ and
+turns the existence question $\cWa > 0$ into a finite diophantine problem;
+a closing remark records the $2$-adic Haar-measure reading of $\cWa$.
+
+\begin{proposition}[Density limit]\label{prop:density-limit}
+The ratio $\lvert \Obsab \rvert / 2^L$ is non-decreasing in $L$ and bounded
+above by $\tfrac12$, so the asymptotic density
+\[
+\cWab = \lim_{L \to \infty} \frac{\lvert \Obsab \rvert}{2^L}
+\]
+exists, and every finite ratio $\lvert \Obsab \rvert / 2^L$ is a rigorous
+lower bound for it.
+\end{proposition}
+
+\begin{proof}
+By the lift theorem (Theorem~\ref{thm:lift}),
+$h_{L+1} = 2 h_L + \lvert \Atom_{L+1}^{(a,b)} \rvert \ge 2 h_L$ with
+$h_L := \lvert \Obsab \rvert$, so $h_{L+1}/2^{L+1} \ge h_L/2^L$. Only odd
+residues can be obstructions, so $h_L \le 2^{L-1}$ and the ratio stays
+$\le \tfrac12$; a bounded monotone sequence converges. \qedhere
+\end{proof}
+
+\begin{definition}[Realisable valuation datum]\label{def:realisable}
+A \emph{finite valuation datum} consists of an integer $v \ge 1$, a
+termination index $J \ge 0$, and step valuations
+$(\vk^{(j)})_{0 \le j < J}$, $(\vi^{(j)})_{0 \le j < J}$, all $\ge 1$. It
+is \emph{realisable} if the residue class it pins by the determinacy lemma
+(Lemma~\ref{lem:determinacy}) is non-empty and, for some level $L$, its odd
+representative $r$ runs the parallel reduction with precisely this valuation
+sequence and \emph{terminates at index $J$} (no stop fires before $J$, and a
+stop fires at $J$).
+\end{definition}
+
+\begin{theorem}[Existence criterion]\label{thm:existence}
+The following are equivalent:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item $\cWa > 0$;
+\item $\Obsab \ne \emptyset$ for some level $L$;
+\item there exists a realisable valuation datum
+(Definition~\ref{def:realisable}) satisfying the diophantine
+identity~\eqref{eq:diophantine}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+$(1) \Rightarrow (2)$ is immediate. $(2) \Rightarrow (1)$: if
+$r \in \Obs_{L_0}^{(a,b)}$, the lift theorem (Theorem~\ref{thm:lift})
+gives $\lvert \Obsab \rvert \ge 2^{L - L_0}$ for every $L \ge L_0$ (both
+lifts of an obstruction are obstructions), so $\cWa \ge 2^{-L_0} > 0$ by
+Proposition~\ref{prop:density-limit}.
+
+$(2) \Rightarrow (3)$: an obstruction $r \in \Obsab$ runs a finite
+reduction terminating at some index $J$ with $\Phi_J = 0$; its valuation
+datum is realisable (it is realised by $r$ itself) and
+satisfies~\eqref{eq:diophantine} by Theorem~\ref{thm:diophantine}.
+
+$(3) \Rightarrow (2)$: let a realisable datum satisfy~\eqref{eq:diophantine},
+and let $r$ be the odd representative pinned by the determinacy lemma
+(Lemma~\ref{lem:determinacy}), so that the reduction at $(r, L)$ has exactly
+the prescribed valuations and terminates at $J$. Then the recurrence~\eqref{eq:D-recurrence} holds, and the
+computation in the proof of Theorem~\ref{thm:diophantine} gives
+$D_{J+1} = b\bigl(a^{J+1} - \sum_{j=0}^{J} a^{J-j} X_j\bigr) = 0$ by
+\eqref{eq:diophantine}. Since
+$\Phi_J(r) \cdot 2^{\Vi^{(J)} + v} = a D_J - b X_J = D_{J+1} = 0$ and
+$2^{\Vi^{(J)} + v} \ne 0$, we get $\Phi_J(r) = 0$, so $r \in \Obsab$.
+\qedhere
+\end{proof}
+
+The reduction $(2) \Leftrightarrow (3)$ recasts existence of obstructions
+--- equivalently the conjecture $\cWa > 0$ (Conjecture~\ref{conj:existence})
+--- as a concrete diophantine solvability question for the integer
+identity~\eqref{eq:diophantine} over realisable valuation data, a question
+internal to the finite residue tower rather than one about $\Ztwo$ directly.
+
+\begin{remark}[A $2$-adic Haar reading]\label{rem:haar}
+The density has a clean measure-theoretic shadow, in the tradition of the
+Bernstein--Lagarias $3x+1$ conjugacy \cite{BernsteinLagarias1996}. Let
+$\Ztwo$ be the ring of $2$-adic integers, $\Ztwox$ its units, and $\mu_2$
+the normalised Haar measure ($\mu_2(\Ztwo) = 1$, $\mu_2(\Ztwox) = \tfrac12$;
+see Robert~\cite{Robert2000}). The cylinders
+$S_L := \bigsqcup_{r \in \Obsab}(r + 2^L \Ztwo) \subseteq \Ztwox$ satisfy
+$\mu_2(S_L) = \lvert \Obsab \rvert / 2^L$ and increase
+($S_L \subseteq S_{L+1}$, since both lifts of an obstruction are
+obstructions), so their union
+$\Obstad := \bigcup_L S_L = \{\xi \in \Ztwox : \xi \bmod 2^L \in \Obsab
+\text{ for all large } L\}$ is open and, by continuity of $\mu_2$ from
+below, $\cWab = \mu_2(\Obstad)$. The reduction does \emph{not} extend to a
+terminating procedure on $\Ztwox$ directly: at $(a,b) = (3,-1)$ the unit
+$\xi = 27$ is an obstruction at every level, yet its $\Qtwo$ K-iterate
+$27 \to 5 \to 7 \to \cdots$ never terminates --- so $\Obstad$ is the tail
+set above, not the zero-set of an infinite reduction.
+\end{remark}
+
+% =============================================================================
+\section{\texorpdfstring{$L_{\min}(a)$}{Lmin(a)} and the characterisation of \texorpdfstring{$J = 1$}{J=1} atoms}\label{sec:Lmin}
+% =============================================================================
+
+The smallest level at which $\Obsab$ is nonempty is denoted $L_{\min}(a)$
+(independent of $b$ by Theorem~\ref{thm:conjugation}). We give a
+lower bound and an exact characterisation of the levels at which atoms
+with $J = 1$ exist.
+
+\subsection{Lower bound from the order lemma}
+
+\begin{theorem}[Lower bound]\label{thm:Lmin-lower}
+For $a$ outside the negative-Mersenne case, $L_{\min}(a) \ge e + 1$.
+\end{theorem}
+
+\begin{proof}
+By hypothesis $a$ is outside the negative-Mersenne case (whose
+$L_{\min}$ is governed by the companion's sub-class analysis,
+Section~\ref{sec:neg-mersenne}). The smallest non-empty level is
+attained by an atomic obstruction, and
+by Theorem~\ref{thm:no-G0-atom-general} (a forward dependency, proved in
+Section~\ref{sec:structure}; no result of Section~\ref{sec:structure}
+depends on the present bound, so there is no circularity) atomic
+obstructions have $\delta_J \ne 0$. By the order lemma
+(Lemma~\ref{lem:order-lemma}), $e \mid \delta_J$, hence
+$\lvert \delta_J \rvert \ge e$. At termination both cumulative
+valuations are bounded by the available modulus,
+$\Vk^{(J)} \le L - 1$ and $\Vi^{(J)} + v \le L - 1$, and
+$\Vi^{(J)} + v \ge v \ge 1$; therefore, from
+$\delta_J = \Vk^{(J)} - (\Vi^{(J)} + v)$,
+\[
+e \le \lvert \delta_J \rvert \le L - 1.
+\]
+This gives $L \ge e + 1$, hence $L_{\min}(a) \ge e + 1$. The bound is
+not tight. For the Mersenne multipliers $a \in \{3, 7, 15, 31\}$ the
+first obstruction sits at $L_{\min}(a) = 2e + 1$ exactly (the $J = 1$
+atom of Corollary~\ref{cor:mersenne}); the non-Mersenne multipliers
+scatter around this value --- e.g.\ $L_{\min}(5) = 11$ and
+$L_{\min}(21) = 10$ against $2e + 1 = 9$ and $13$ respectively --- and the
+honest regularity is the asymptotic $L_{\min}(a)/e \to 2$ of
+Conjecture~\ref{conj:Lmin-asymptotic}. \qedhere
+\end{proof}
+
+\subsection{Characterisation of \texorpdfstring{$J = 1$}{J=1} atoms}
+
+\begin{proposition}[$J = 1$ characterisation]\label{prop:J1-character}
+For a positive odd integer $a \ge 3$, the order $e := \ord_{\lvert a \rvert}(2)$ gives
+$a \mid 2^e - 1$, so $k_a := (2^e - 1)/a \in \Z$. There exists an atomic
+obstruction at some level $L \le 2e + 1$ with termination index $J = 1$ if
+and only if the diophantine equation
+\begin{equation}\label{eq:J1-criterion}
+a - 1 + 2^{v} = 2^{w} k_a
+\end{equation}
+admits integers $v \ge 1$ and $w$ with $v + 1 \le w \le e$; the atom then
+has shift index $s = 1$ and lives at level $L = w + e + 1$, with
+$\Vi^{(1)} = w - v$. The principal valuation $v = 1$ specialises
+\eqref{eq:J1-criterion} to $a + 1 = 2^{w} k_a$, i.e.\ to
+$q_a := (a + 1)/(2 k_a) = 2^{w-1}$ being a power of $2$ with $q_a \ge 2$;
+this $v = 1$ solution is the only one for every odd $3 \le a \le 19$. It is
+\emph{not} the only one in general: the smallest exception is $a = 21$
+($e = 6$, $k_a = 3$), where \eqref{eq:J1-criterion} has no $v = 1$ solution
+($q_a = 11/3 \notin 2^{\Z}$) but the $v = 2$ solution $20 + 2^2 = 2^3 \cdot 3$
+realises a $J = 1$ atom at level $L = 10$ (the witness residue is
+$b$-dependent: $r = 317$ for $b = -1$, with $b = 1$ conjugate
+$\Psi_{-1}(317) = 707$). Negative
+multipliers are out of scope: the multiplier sign is not neutralisable by
+conjugation (cf.\ Appendix~\ref{sec:err-A3}).
+\end{proposition}
+
+\begin{proof}
+At $J = 1$, with $\Vk^{(0)} = \Vi^{(0)} = 0$ so that $X_0 = 1 - 2^v$, the
+diophantine identity~\eqref{eq:diophantine} $a^2 = a X_0 + X_1$ reads
+\begin{equation}\label{eq:J1-identity}
+a(a - 1) + a\,2^v = 2^{\Vk^{(1)}} - 2^{\Vi^{(1)} + v}.
+\end{equation}
+
+\emph{Necessity.} The left-hand side of~\eqref{eq:J1-identity} is positive
+(as $a \ge 3$), so $\Vk^{(1)} > \Vi^{(1)} + v$ and the shift
+$\delta_1 = \Vk^{(1)} - \Vi^{(1)} - v$ is strictly positive; by the order
+lemma (Lemma~\ref{lem:order-lemma}) it is a positive multiple of $e$. For
+an atom both cumulative valuations terminate at the boundary of their
+modulus, and since $\Vk^{(1)} > \Vi^{(1)} + v$ the binding one is the
+K-track, $\Vk^{(1)} = L - 1$, so the hosting level is
+$L = \Vk^{(1)} + 1 = \Vi^{(1)} + v + \delta_1 + 1$. With $\Vi^{(1)} \ge 1$
+and $v \ge 1$, the target $L \le 2e + 1$ gives
+$\delta_1 \le 2e - \Vi^{(1)} - v \le 2e - 2 < 2e$; together with
+$e \mid \delta_1$ and $\delta_1 > 0$ this forces $\delta_1 = e$. Writing
+$w := \Vi^{(1)} + v$ (so $v + 1 \le w \le e$, the upper bound from
+$L \le 2e + 1$) and $\Vk^{(1)} = w + e$, the right-hand side
+of~\eqref{eq:J1-identity} collapses to
+$2^{w + e} - 2^{w} = 2^{w}(2^e - 1) = 2^{w} k_a\,a$; dividing by $a$ yields
+exactly~\eqref{eq:J1-criterion}.
+
+\emph{Sufficiency.} Conversely, suppose $v \ge 1$ and $v + 1 \le w \le e$
+solve~\eqref{eq:J1-criterion}; we construct an atom explicitly (the
+determinacy lemma gives uniqueness of a realising seed, not its existence,
+so we exhibit one). Since $k_a$ is odd and $w > v$, comparing $2$-adic
+valuations in $a - 1 + 2^v = 2^w k_a$ forces $\vtwo(a - 1) = v$: a smaller
+or larger valuation of $a - 1$ would give $\vtwo(a - 1 + 2^v) < w$. Fix any
+odd $b$ and let $r$ be the odd residue determined modulo $2^{w+e+1}$ by
+\begin{equation}\label{eq:J1-construct}
+a\,r \equiv 2^{w+e} - b \pmod{2^{w+e+1}},
+\end{equation}
+which is well defined and odd as $a$ is a unit and $2^{w+e} - b$ is odd; by
+construction $\vtwo(a r + b) = w + e$. The two remaining valuations follow.
+From $a(r + b) = (a r + b) + b(a - 1)$ and $\vtwo(a - 1) = v < w + e$,
+\[
+\vtwo(r + b) = \vtwo\bigl(a(r + b)\bigr)
+            = \vtwo\bigl(2^{w+e} + b(a - 1)\bigr) = v,
+\]
+so the initial valuation is the prescribed $v$ and $m := (r + b)/2^v$ is
+odd. Since $a m + b = \bigl(a(r + b) + b\,2^v\bigr)/2^v$ and, by
+\eqref{eq:J1-construct},
+$a(r + b) + b\,2^v \equiv 2^{w+e} + b\,(a - 1 + 2^v)
+   = 2^{w+e} + b\,2^w k_a \pmod{2^{w+e+1}}$,
+\[
+a m + b \equiv 2^{w-v}\bigl(2^{e} + b\,k_a\bigr) \pmod{2^{w+e+1-v}},
+\qquad \vtwo(a m + b) = w - v,
+\]
+the cofactor $2^e + b k_a$ being odd. Hence the parallel reduction of $r$ at
+level $L := w + e + 1 \le 2e + 1$ takes one step with $\vk^{(0)} = w + e$
+and $\vi^{(0)} = w - v$, reaching $\Vk^{(1)} = w + e = L - 1$,
+$\Vi^{(1)} = w - v$; the residual K-modulus then has valuation
+$L - \Vk^{(1)} = 1$, so the K-track stops and $J = 1$ (the I-step is
+admissible because $w - v < w + e + 1 - v$). These valuations
+satisfy~\eqref{eq:J1-identity} ($\delta_1 = e$), so the recurrence
+\eqref{eq:D-recurrence} gives $D_{J+1} = 0$ exactly as in the proof of the
+existence criterion (Theorem~\ref{thm:existence}), i.e.\ $\Phi_1 = 0$ and
+$r \in \Obsab$. Finally $\Vk^{(1)} = L - 1$ is the atom boundary
+(Proposition~\ref{prop:atom-J}, Step~2): at level $L - 1$ the K-track stops
+already at index $0$, so $r \bmod 2^{L-1} \notin \Obs_{L-1}^{(a,b)}$ and $r$
+is atomic. The smallest non-$v{=}1$ instance is $a = 21$ ($v = 2$, $w = 3$),
+giving the $b = -1$ witness $r = 317$ at $L = 10$ ($b = 1$ conjugate $707$;
+Table~\ref{tab:J1}).
+\qedhere
+\end{proof}
+
+\begin{corollary}[Mersenne construction]\label{cor:mersenne}
+Every positive Mersenne multiplier $a = 2^e - 1$ admits $J = 1$ atoms at
+levels $L \le 2e + 1$. (The negative Mersenne multipliers $a = -(2^e - 1)$
+also carry $J = 1$ atoms, but through the distinct sub-class mechanism of
+the companion manuscript --- where they arise alongside the $J = 0$
+obstructions absent for positive $a$ --- and are not instances of this
+corollary; see Section~\ref{sec:neg-mersenne}.)
+\end{corollary}
+
+\begin{proof}
+For $a = 2^e - 1$, $k_a = 1$ and $q_a = (a + 1)/2 = 2^{e-1}$, a power of
+$2$ of value $\ge 2$ when $e \ge 2$. Apply
+Proposition~\ref{prop:J1-character}. \qedhere
+\end{proof}
+
+The solutions of the criterion~\eqref{eq:J1-criterion} and the smallest
+level realising $J = 1$ for small odd $\lvert a \rvert$ are collected in
+Table~\ref{tab:J1}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrll}
+\toprule
+$\lvert a \rvert$ & $e$ & $k_a$ & $(v, w)$ solving \eqref{eq:J1-criterion} & $L^{J=1} = w + e + 1$ \\
+\midrule
+3 & 2 & 1 & $(1, 2)$ & 5 \\
+5 & 4 & 3 & none & --- ($\ge 11$ empirical) \\
+7 & 3 & 1 & $(1, 3)$ & 7 \\
+9 & 6 & 7 & none & --- ($\ge 11$ empirical) \\
+11 & 10 & 93 & none & --- ($\ge 18$ empirical) \\
+15 & 4 & 1 & $(1, 4)$ & 9 \\
+17 & 8 & 15 & none & --- ($\ge 16$ empirical) \\
+21 & 6 & 3 & $(2, 3)$ & 10 \\
+31 & 5 & 1 & $(1, 5)$ & 11 \\
+\bottomrule
+\end{tabular}
+\caption{Solvability of the $J = 1$ criterion~\eqref{eq:J1-criterion}
+$a - 1 + 2^v = 2^w k_a$ for small odd $\lvert a \rvert$. Entries marked
+``none'' have no admissible $(v, w)$, so $J \ge 2$ throughout (their
+empirical $L_{\min}$ from direct enumeration up to $L = 18$ is shown). The
+Mersenne multipliers $3, 7, 15, 31$ realise $v = 1$; $a = 21$ is the
+smallest multiplier whose only solution has $v \ge 2$
+(\srcpath{code/python/count_obstructions_ac.py}).}
+\label{tab:J1}
+\end{table}
+
+\begin{conjecture}[Asymptotic $L_{\min}$]\label{conj:Lmin-asymptotic}
+$L_{\min}(a) \le 2e + O(1)$ as $\lvert a \rvert \to \infty$, and
+$L_{\min}(a)/e \to 2$.
+\end{conjecture}
+
+The conjecture is consistent with all tested $\lvert a \rvert \in \{3,
+\ldots, 31\}$; a rigorous proof requires either a characterisation of
+$J = j$ solvability for $j \ge 2$ or a Hensel-type lifting argument in
+$\Ztwo$.
+
+\subsection{Existence for non-Mersenne multipliers}
+
+\begin{conjecture}[Existence]\label{conj:existence}
+$\cWa > 0$ for every odd $a$ with $\lvert a \rvert \ge 3$.
+\end{conjecture}
+
+By Theorem~\ref{thm:existence}, this reduces to realisability of the
+diophantine identity~\eqref{eq:diophantine} for at least one tuple.
+Empirically, $\cWa > 0$ is confirmed for $\lvert a \rvert \in \{3, 5,
+7, 9, 15, 17, 21, 31\}$. For $\lvert a \rvert \in \{11, 13, 19, 23, 25,
+27\}$ no obstruction is detected at levels $L \le 16$, but a deeper
+enumeration locates the first obstruction at progressively higher
+levels --- $L = 18$ for $\lvert a \rvert = 11$, $L = 24$ for
+$\lvert a \rvert = 13$, and $L = 26$ for $\lvert a \rvert = 23$ ---
+while $\lvert a \rvert \in \{19, 25, 27\}$ remain undetected through
+$L = 26$; this growing ``waiting time'' is consistent with a longer
+onset rather than vacuity. The enumeration
+underlying these statements (and the tables of
+Sections~\ref{sec:Lmin}--\ref{sec:scaling}) is carried out for
+\emph{positive} $a$ together with the degenerate $a = -1$
+(Section~\ref{sec:edge}); by the conjugation theorem the cardinalities
+are $b$-independent, but the negative non-degenerate multipliers
+$a \le -3$ are not separately enumerated here --- the negative-Mersenne
+sub-family is treated in the companion manuscript
+(Section~\ref{sec:neg-mersenne}), and the structural results of
+Section~\ref{sec:structure} cover negative $a$ through their proofs (with
+the negative-Mersenne caveat noted in the proof of
+Theorem~\ref{thm:no-G0-atom-general}).
+
+% =============================================================================
+\section{Structural results over \texorpdfstring{$a$}{a}}\label{sec:structure}
+% =============================================================================
+
+\subsection{Generalised no-shift-zero-atom theorem}
+
+\begin{theorem}[No shift-zero atom, generalised]\label{thm:no-G0-atom-general}
+Let $a$ be an odd integer with $\lvert a \rvert \ge 3$ that is \emph{not}
+a negative Mersenne number $-(2^{v_M} - 1)$ ($v_M \ge 2$), let $b$ be an
+odd nonzero integer, and $e := \ord_{\lvert a \rvert}(2)$. For every level
+$L$,
+\[
+\lvert \Atom_L^{(a,b), G_0} \rvert = 0;
+\]
+equivalently, every atomic obstruction has nonzero shift index.
+\end{theorem}
+
+\begin{proof}
+The strategy, adapting \cite[Theorem~6.2]{ObstructionResidues2026}, is to
+show that \emph{every} shift-zero obstruction is a lift of a level-$(L-1)$
+obstruction, hence not atomic. The prior argument carries over under
+$3 \to a$, $-1 \to b$ with the parity step $\delta \in 2\Z$ replaced by
+$\delta \in e\Z$ (order $e := \ord_{\lvert a \rvert}(2)$). The prior argument
+already forces $J \ge 2$, but trivially --- for $a = 3$ no shift-zero
+certificate can vanish at $J \le 1$ for any $v$; what genuinely changes here
+is the \emph{content} of that step: the general equation $2^v = 1 - a$ is
+solvable precisely for the negative-Mersenne multipliers, which it thereby
+isolates and forces us to exclude.
+
+\emph{$J \ge 2$ is forced (a shift-zero obstruction needs at least two
+steps).} A shift-zero obstruction has $\delta_J = 0$. At $J = 0$ this is
+impossible: $\delta_0 = \Vk^{(0)} - \Vi^{(0)} - v = -v \le -1 \ne 0$
+(note this is the correct obstruction to $J = 0$ --- the certificate value
+$\Phi_0$ itself can vanish for some negative $a$, but never with
+$\delta_0 = 0$). At $J = 1$ with $\delta_1 = 0$ we have $c_1 = 1$, so the
+certificate $\Phi_1 = a d_1$ vanishes only if $d_1 = 0$; the $d$-update
+then forces $a d_0 + b(1 - c_0) = 0$, i.e.\ $(a - 1)\,2^{-v} = -1$, i.e.\
+$2^{v} = 1 - a$. For $a > 0$ the right-hand side is $\le -2$, impossible.
+For $a < 0$ it requires $\lvert a \rvert + 1 = 2^{v}$, that is $\lvert a
+\rvert$ a Mersenne number; the negative-Mersenne multipliers are treated
+by the finer sub-class analysis of the companion manuscript
+(Section~\ref{sec:neg-mersenne}), while for negative non-Mersenne $a$ the
+equation $2^{v} = \lvert a \rvert + 1$ has no solution. Hence, outside the
+negative-Mersenne case, no shift-zero obstruction has $J \le 1$, so
+$J \ge 2$.
+
+\emph{The projected reduction.} Let $r \in \Obs_L^{(a,b), G_0}$ and set
+$r' := r \bmod 2^{L-1}$. The parallel reductions at $(r, L)$ and
+$(r', L-1)$ start from the same residue classes with the modulus halved;
+exactly as in the lift theorem (Theorem~\ref{thm:lift}) the two
+K-tracks differ by $\Delta_K^{(j)} = 2^{L-1-\Vk^{(j)}} a^j$ (and the
+I-tracks by $\Delta_I^{(j)} = 2^{L-1-v-\Vi^{(j)}} a^j$; $a$ odd keeps the
+$2$-adic valuation). While $\Vk^{(j)} < L-1$ the ultrametric identity
+forces the per-step valuations, hence the affine data $(c_j, d_j)$, to
+agree between the two reductions. Since $J \ge 2$ the case split below is
+well defined.
+
+\emph{Case A ($\Vk^{(J)} < L-1$).} No level-$(L-1)$ stop fires before
+index $J$: a K-stop at index $J' \le J-1$ would force
+$\Vk^{(J)} \ge \Vk^{(J'+1)} \ge L-1$, and an I-stop at index $J' \le J-1$
+would force $\Vi^{(J)} \ge \Vi^{(J'+1)} \ge L-1-v$, which under
+$\delta_J = 0$ (so $\Vi^{(J)} = \Vk^{(J)} - v$) again reads
+$\Vk^{(J)} \ge L-1$ --- both contradicting the Case-A hypothesis. Hence the
+level-$(L-1)$ reduction reaches index $J$ with the same terminal data
+$(c_J, d_J)$, so $\Phi_J(r') = 0$ and $r' \in \Obs_{L-1}^{(a,b)}$ (in the
+same shift class $G_0$).
+
+\emph{Case B ($\Vk^{(J)} = L-1$).} Now the level-$(L-1)$ K-stop fires one
+step earlier, at index $J-1$ --- and not before: for any $J' \le J-2$ one
+has $\Vk^{(J'+1)} \le \Vk^{(J-1)} < \Vk^{(J)} = L-1$, and under $\delta_J = 0$
+(so $\Vi^{(J)} = \Vk^{(J)} - v$) likewise
+$\Vi^{(J'+1)} \le \Vi^{(J-1)} < L-1-v$, so no level-$(L-1)$ stop precedes
+index $J-1$. The $(r', L-1)$ reduction therefore terminates at index $J-1$
+with data $(c_{J-1}, d_{J-1})$. From the $d$-update (Lemma~\ref{lem:affine}) the
+parent's certificate value is
+$d_J = \bigl(a\,d_{J-1} + b(1 - c_{J-1})\bigr)/2^{\vi^{(J-1)}}$, and the
+$G_0$ condition $d_J = 0$ gives $a\,d_{J-1} + b(1 - c_{J-1}) = 0$, i.e.\
+\[
+\Phi_{J-1}(r') = b(1 - c_{J-1}) + a\,d_{J-1} = 0.
+\]
+Thus $r'$ terminates as an obstruction at level $L-1$, in shift class
+$\delta_{J-1}(r')/e$ (an integer by the order lemma,
+Lemma~\ref{lem:order-lemma}), so $r' \in \Obs_{L-1}^{(a,b)}$.
+
+In both cases $r' \in \Obs_{L-1}^{(a,b)}$, so $r$ --- being one of the two
+lifts of $r'$ --- is not atomic (Theorem~\ref{thm:lift}). Hence no
+shift-zero obstruction is atomic, $\lvert \Atom_L^{(a,b), G_0} \rvert = 0$.
+The $J \ge 2$ forcing above is purely algebraic and holds at \emph{every}
+level; the case split then applies at every $L$ for which the projected
+level-$(L-1)$ reduction is defined, so the conclusion holds at all such
+$L$. The finitely many smallest levels are confirmed by direct
+enumeration, which gives $\lvert \Atom_L^{(a,b), G_0} \rvert = 0$ for all
+odd $3 \le a \le 31$ (and the degenerate $a = -1$) up to $L = 16$; the
+negative non-degenerate multipliers are covered by the argument, not the
+enumeration. \qedhere
+\end{proof}
+
+\begin{corollary}[Synchronisation, generalised]\label{cor:sync-general}
+For every $r \in \Obsab$ both tracks terminate at the same index $J$, and
+the cumulative valuations are synchronised to an integer multiple of $e$:
+\[
+\Vk^{(J)} - \bigl(\Vi^{(J)} + v\bigr) = \delta_J = e \cdot s, \qquad s := \delta_J / e \in \Z.
+\]
+The $\Tneg$-manuscript's case is $a = 3$, $e = 2$.
+\end{corollary}
+
+\begin{proof}
+The common termination index and $\vi^{(J)} = \vk^{(J)} + \delta_J$ are the
+terminal synchronisation (Remark~\ref{rem:sync}); the displayed equality is
+the definition $\delta_J = \Vk^{(J)} - \Vi^{(J)} - v$, and $e \mid \delta_J$
+is the order lemma (Lemma~\ref{lem:order-lemma}). \qedhere
+\end{proof}
+
+\subsection{Polynomial atom bound at fixed \texorpdfstring{$J$}{J}}
+
+\begin{proposition}[Atom bound at fixed $J$]\label{prop:atom-J}
+For odd $a$ with $\lvert a \rvert \ge 3$, odd $b \ne 0$, and every
+$J \ge 1$, the number of atomic $G_{\ne 0}$-obstructions at level $L$ with
+termination index $J$ satisfies
+\[
+\lvert \Atom_L^{(a,b), G_{\ne 0}} \rvert_J
+   \;\le\; \binom{L-2}{J-1} + \binom{L-2}{J}
+   \;=\; \binom{L-1}{J}
+   \;=\; O_J\!\bigl(L^{J}\bigr),
+\]
+where $\lvert \cdot \rvert_J$ counts atomic $G_{\ne 0}$-obstructions with
+the given $J$. In particular every fixed-$J$ stratum is polynomially
+bounded in $L$. The bound is unconditional; no per-step factor is left open.
+\end{proposition}
+
+\begin{proof}
+The proof has three steps: a $2$-adic determinacy lemma (a fixed valuation
+sequence pins down the residue), the atom boundary condition, and a count.
+
+\emph{Step 1 (determinacy).} By the determinacy lemma
+(Lemma~\ref{lem:determinacy}), fixing the K-sequence
+$\vk^{(0)}, \ldots, \vk^{(J-1)}$ pins $r$ to at most one residue class
+modulo $2^{\Vk^{(J)}+1}$, and fixing $v$ together with
+$\vi^{(0)}, \ldots, \vi^{(J-1)}$ pins it to at most one class modulo
+$2^{\Vi^{(J)}+v+1}$.
+
+\emph{Step 2 (atom boundary).} At termination both cumulative valuations
+obey $\Vk^{(J)} \le L-1$ and $\Vi^{(J)} + v \le L-1$ (a successful step $j$
+requires $\vk^{(j)} < L - \Vk^{(j)}$, resp.\ $\vi^{(j)} < L - v - \Vi^{(j)}$,
+so $\Vk^{(j+1)} \le L-1$, resp.\ $\Vi^{(j+1)} + v \le L-1$). Suppose both
+were strict: $\Vk^{(J)} < L-1$ and $\Vi^{(J)} + v < L-1$. Then the
+discrepancy argument from the proof of the lift theorem
+(Theorem~\ref{thm:lift}) applies to $r' := r \bmod 2^{L-1}$: the two
+reductions differ by $\Delta_K^{(j)} = 2^{L-1-\Vk^{(j)}} a^j$ (and the
+I-analogue), and because $a$ is odd and $\Vk^{(j)} \le \Vk^{(J)} < L-1$
+(resp.\ $\Vi^{(j)} + v \le \Vi^{(J)} + v < L-1$) throughout, the ultrametric
+identity forces equal per-step valuations and hence equal terminal data, so
+$\Phi_J(r') = 0$ and $r' \in \Obs_{L-1}^{(a,b)}$. Then $r$, a lift of $r'$,
+is not atomic. Contrapositively, every atomic $G_{\ne 0}$-obstruction
+satisfies the boundary condition
+\[
+\Vk^{(J)} = L-1 \qquad\text{or}\qquad \Vi^{(J)} + v = L-1.
+\]
+
+\emph{Step 3 (count).} Combine Steps~1 and~2. If $\Vk^{(J)} = L-1$, the
+K-sequence pins $r$ modulo $2^{\Vk^{(J)}+1} = 2^{L}$, hence to at most one
+residue in $\{1, \ldots, 2^L\}$; the admissible K-sequences are the
+compositions of $L-1$ into $J$ positive parts, $\binom{L-2}{J-1}$ in number.
+If instead $\Vi^{(J)} + v = L-1$, the datum $(\vi^{(0)}, \ldots,
+\vi^{(J-1)}, v)$ pins $r$ modulo $2^{\Vi^{(J)}+v+1} = 2^{L}$, again to at
+most one residue; these data are the compositions of $L-1$ into $J+1$
+positive parts, $\binom{L-2}{J}$ in number. By Step~2 every atom lies in at
+least one case, and by Step~1 each datum contributes at most one residue, so
+\[
+\lvert \Atom_L^{(a,b), G_{\ne 0}} \rvert_J
+  \;\le\; \binom{L-2}{J-1} + \binom{L-2}{J} \;=\; \binom{L-1}{J}
+\]
+by Pascal's rule. Since $\binom{L-1}{J} \le (L-1)^J/J!$, this is
+$O_J(L^J)$. \qedhere
+\end{proof}
+
+\begin{remark}
+The exponent $J$ is generous: the boundary congruences couple the two
+tracks, and the order lemma (Lemma~\ref{lem:order-lemma}) and the
+realisability of each composition cut the admissible data far below
+$\binom{L-1}{J}$ (e.g.\ at $a = 3$ the $J = 5$ stratum peaks near
+$30$ rather than $\binom{L-1}{5}$). What the bound establishes
+unconditionally is that each fixed-$J$ stratum is polynomial in $L$; the
+\emph{summation} over $J$ --- where the strata overlap and $J$ itself
+ranges up to $J_{\max} = L - 4$ --- is the open content of the
+growth-exponent question of Section~\ref{sec:spectral}
+(Conjecture~\ref{conj:alpha}, and the open problem whether $\alpha(a) = 1$).
+\end{remark}
+
+Summed over all $J$, the total atom count $\lvert \Atom_L^{(a,b),
+G_{\ne 0}} \rvert$ fixes the growth exponent
+$\alpha(a) := \limsup_L \lvert \Atom_L \rvert^{1/L} \in [1, 2]$. Whether
+this total is genuinely polynomial --- the \emph{strong} reading
+$\alpha(a) = 1$ --- or only sub-$2$ exponential ($\alpha(a) \in (1, 2)$)
+we leave as an \emph{open problem} rather than a conjecture: the deeper
+empirical data of Section~\ref{sec:spectral} lean against the polynomial
+reading. What we do conjecture is the strictly weaker bound
+$\alpha(a) < 2$ (Conjecture~\ref{conj:alpha} in
+Section~\ref{sec:spectral}), which already suffices for the series
+representation of Corollary~\ref{cor:series} to converge and is the
+principal \emph{tractable} target.
+
+Proposition~\ref{prop:atom-J} controls each fixed-$J$ stratum
+polynomially, but the summation over $J$ --- where $J$ ranges up to
+$J_{\max} = L - 4$ --- would need a concentration estimate on the
+$J$-distribution that we do not have. The early hypothesis
+$J_{\max}(L) = O(\log L)$ is refuted by Theorem~\ref{thm:Lminus4-atom}
+below (Appendix~\ref{sec:err-Jmax}); the corrected picture is a bell-shaped
+$J$-distribution with mode
+$\approx \log_2 L + e$ and a heavy tail to $J_{\max} = L - 4$
+($\lvert a \rvert = 3$). For $a = 3$ the polynomial question is identical
+to the $\Tneg$-manuscript's open problem
+(\cite[Section~6.4]{ObstructionResidues2026}), here extended to all
+$\lvert a \rvert \ge 3$.
+
+\subsection{Constructive extremal family at \texorpdfstring{$J = L - 4$}{J=L-4} for \texorpdfstring{$a = 3$}{a=3}}
+
+\begin{theorem}[$L - 4$ extremal family]\label{thm:Lminus4-atom}
+For $a = 3$, $b = -1$, and every \emph{even} $L \ge 6$, the residue
+$r := 2^{L-2} + 3$ is an atomic obstruction in $\Obs_L^{(3,-1)}$ with
+termination index $J = L - 4$ and shift index $s = 1$. (For odd $L$ this
+particular residue is not an obstruction --- the trace below yields
+$\delta_J = 1$, an odd shift index forbidden by the order lemma; the
+extremal index for odd $L$ is not addressed here.)
+\end{theorem}
+
+\begin{proof}
+We exhibit the iteration trace. At $j = 0$: $r = 2^{L-2} + 3$,
+$3r - 1 = 3 \cdot 2^{L-2} + 8 = 2^3 (3 \cdot 2^{L-5} + 1)$, so
+$\vk^{(0)} = 3$; $m = (r - 1)/2 = 2^{L-3} + 1$ (with $v = 1$),
+$3m - 1 = 3 \cdot 2^{L-3} + 2 = 2(3 \cdot 2^{L-4} + 1)$, so $\vi^{(0)} =
+1$.
+
+At $j = 1, \ldots, L - 6$: $a_K^{(j)} = 3^j \cdot 2^{L-4-j} + 1$,
+$3 a_K^{(j)} - 1 = 3^{j+1} \cdot 2^{L-4-j} + 2 = 2(3^{j+1} \cdot 2^{L-5-j} + 1)$,
+so $\vk^{(j)} = 1$; analogously $\vi^{(j)} = 1$.
+
+At $j = L - 5$: $a_K^{(L-5)} = 2 \cdot 3^{L-5} + 1$, $3 \cdot
+a_K^{(L-5)} - 1 = 2 (3^{L-4} + 1)$. We take $L$ even, so $3^{L-4} \equiv
+1 \pmod 4$ and $\vk^{(L-5)} = 2$. (For odd $L$ one has $\vk^{(L-5)} = 1$
+instead; the cumulative valuation then yields $\delta_J = 1$, an odd
+shift index, so $r$ fails the order lemma and is not an obstruction ---
+hence the even-$L$ restriction in the statement.)
+
+At $j = L - 4$: $\Vk^{(L-4)} = 3 + (L - 6) \cdot 1 + 2 = L - 1$, so
+$\vtwo(b_K^{(L-4)}) = L - \Vk^{(L-4)} = 1$, and the K-track terminates
+at this step (assuming $\vk^{(L-4)} \ge 1$, which holds). On the I-track,
+$\Vi^{(L-4)} = (L - 4) \cdot 1 = L - 4$, and the residual modulus
+$\vtwo(b_I^{(L-4)}) = L - v - \Vi^{(L-4)} = L - 1 - (L-4) = 3$, so the
+I-track also terminates. Both at $J = L - 4$.
+
+Shift index: $\delta_J = \Vk^{(J)} - \Vi^{(J)} - v = (L - 1) - (L - 4) - 1
+= 2 = 1 \cdot e$, so $s = 1$. Certificate: $\Phi_J = b(1 - c_J) + a d_J$
+with $c_J = 2^2 = 4$ and $d_J$ computable from the diophantine identity
+to $(1 - c_J)/3 = -1$; $\Phi_J = (-1)(1 - 4) + 3 \cdot (-1) = 3 - 3 = 0$.
+So $r \in \Obs_L^{(3, -1)}$.
+
+Atomicity: run the reduction on $r \bmod 2^{L-1}$ at level $L - 1$. It
+agrees with the level-$L$ trace until the K-track reaches
+$\Vk^{(L-5)} = 3 + (L-6) = L - 3$, where the residual modulus is
+$(L-1) - (L-3) = 2$; since $\vk^{(L-5)} = 2 \not< 2$, the K-track stops one
+step early, at index $L - 5$. There the shift index is
+\[
+\delta_{L-5} = \Vk^{(L-5)} - \Vi^{(L-5)} - v = (L-3) - (L-5) - 1 = 1,
+\]
+an \emph{odd} value (here $\Vi^{(L-5)} = L - 5$ from $\vi^{(j)} = 1$,
+$j \le L - 6$). By the order lemma (Lemma~\ref{lem:order-lemma}, $e = 2$)
+no obstruction can have odd shift, so $\Phi_{L-5}(r \bmod 2^{L-1}) \ne 0$
+and $r \bmod 2^{L-1} \notin \Obs_{L-1}^{(3,-1)}$. Hence $r$ is atomic.
+\qedhere
+\end{proof}
+
+\begin{conjecture}[Maximality of $L - 4$ for $a = 3$]\label{conj:Jmax}
+For $a = 3$, $b = -1$, and every \emph{even} $L \ge 6$, $J = L - 4$ is
+the maximum termination index attained by any atomic obstruction in
+$\Obs_L^{(3,-1)}$.
+\end{conjecture}
+
+Empirically verified for even $L \in \{10, 12, 14, 16\}$
+(\srcpath{code/python/count_obstructions_ac.py}). A rigorous proof
+would require non-existence statements at $J = L - 3, L - 2, L - 1$,
+which appear to follow from the diophantine identity reduced modulo
+$\lvert a \rvert^{J+1}$ but we do not pursue this here.
+
+\subsection{\texorpdfstring{$J$}{J}-distribution: empirical picture}
+
+Empirical $J$-statistics at $a = 3$, $b = -1$:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+$L$ & $\lvert \Atom_L \rvert$ & $J_{\min}$ & $J_{\max}$ & $\bar J$ \\
+\midrule
+10 & 7 & 3 & 6 & 4.00 \\
+12 & 21 & 4 & 8 & 4.76 \\
+14 & 66 & 4 & 10 & 5.64 \\
+16 & 214 & 4 & 12 & 6.57 \\
+18 & 722 & 5 & 14 & --- \\
+\bottomrule
+\end{tabular}
+\caption{Termination-index statistics for atomic
+$G_{\ne 0}$-ob\-struc\-tions at $a = 3$, $b = -1$. $J_{\max} = L - 4$ matches
+Theorem~\ref{thm:Lminus4-atom}; the mean $\bar J$ grows
+slowly (logarithmically) in $L$ --- broadly consistent with a $\log_2 L +
+e$ trend, though the few available points do not pin the constant down.}
+\label{tab:J-stats}
+\end{table}
+
+Across $\lvert a \rvert \in \{3, 5, 7\}$ at $L = 16$, the gap
+$L - J_{\max}(L, a)$ between $L$ and the largest termination index of an
+\emph{atomic} $G_{\ne 0}$-obstruction (as in Table~\ref{tab:J-stats})
+depends on $a$ (Table~\ref{tab:Jmax-a}):
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+$\lvert a \rvert$ & $e$ & $L$ & $J_{\max}$ & $L - J_{\max}$ \\
+\midrule
+3 & 2 & 16 & 12 & 4 \\
+5 & 4 & 16 & 6 & 10 \\
+7 & 3 & 16 & 5 & 11 \\
+\bottomrule
+\end{tabular}
+\caption{Atomic $J_{\max}$ across $\lvert a \rvert$ at $L = 16$, taken --- as
+in Table~\ref{tab:J-stats} --- over atomic $G_{\ne 0}$-obstructions (the
+maximum over \emph{all} obstructions is larger, e.g.\ $8$ for $a = 5$ and
+$10$ for $a = 7$). The $\Tneg$-manuscript value $L - J_{\max} = 4 = 2e$ at
+$a = 3$ does not generalise as $2e$; see Conjecture~\ref{conj:Jmax-scaling}.}
+\label{tab:Jmax-a}
+\end{table}
+
+\begin{conjecture}[$L - J_{\max}$ scaling]\label{conj:Jmax-scaling}
+$L - J_{\max}(L, a) \approx \mathrm{const}(a) \cdot e + O(1)$ with
+$\mathrm{const}(3) = 2$.
+\end{conjecture}
+
+% =============================================================================
+\section{The growth exponent \texorpdfstring{$\alpha(a)$}{alpha(a)}}\label{sec:spectral}
+% =============================================================================
+
+\subsection{\texorpdfstring{$\alpha(a) < 2$}{alpha(a) < 2}}
+
+Let $\alpha(a) := \limsup_L \lvert \Atom_L^{(a), G_{\ne 0}} \rvert^{1/L}$.
+The series convergence in Corollary~\ref{cor:series} gives $\alpha(a)
+\le 2$ trivially.
+
+\begin{conjecture}[$\alpha(a) < 2$ strict]\label{conj:alpha}
+For every odd $a$ with $\lvert a \rvert \ge 3$, $\alpha(a) < 2$.
+\end{conjecture}
+
+This is the weak form of the growth-exponent question
+($\alpha(a) = 1 \Rightarrow \alpha(a) < 2$) and is equivalent to
+$\lvert \Atom_L \rvert / 2^L \to 0$. Direct enumeration constrains
+$\alpha(3)$ without determining it: over $a = 3$ (Table~\ref{tab:J-stats}
+with $\lvert \Atom_L \rvert = 7, 21, 66, 214, 722$ at
+$L = 10, 12, \ldots, 18$, extended to $\lvert \Atom_{24} \rvert = 32051$),
+the raw root $\lvert \Atom_L \rvert^{1/L}$ rises $1.44 \to 1.54$
+($L = 18, 24$) and the per-step ratio
+$\lvert \Atom_L \rvert / \lvert \Atom_{L-1} \rvert$ rises
+$1.85 \to 1.91$, with no sign of the turnover that the polynomial regime
+$\alpha(3) = 1$ would eventually require (a polynomial $L^d$ has its ratio
+\emph{decreasing} to $1$). The data are therefore more readily read as
+$\alpha(3) \in (1, 2)$ than as $\alpha(3) = 1$, though a finite
+enumeration cannot decide a $\limsup$; this is why we state only
+$\alpha(a) < 2$ as a conjecture and leave $\alpha(a) = 1$ as an open
+problem.
+
+\subsection{A possible spectral route}
+
+One natural attack on Conjecture~\ref{conj:alpha} adapts Wirsching's
+Markov operator for $\Tpos = (3n+1)/2^v$ (\cite{Wirsching1998}), an
+$L^1(\Ztwo)$-contraction with a unique invariant density. The analogue
+here would act on the parallel-reduction state $(c, d)$ through the update
+rule of Lemma~\ref{lem:affine}, weighting the transition with step
+valuations $(v_K, v_I)$ by $2^{-v_K - v_I}$; a spectral gap $\lambda_1 < 1$
+of such an operator would give $\alpha(a) = 2\lambda_1 < 2$. We record this
+only as a possible route and do not develop it: unlike Wirsching's setting,
+the state space $(c, d) \in \Qtwo \times \Qtwo$ is unbounded, and neither
+the existence of an invariant density nor a spectral gap is clear.
+
+% =============================================================================
+\section{Empirical density scaling}\label{sec:scaling}
+% =============================================================================
+
+We report the empirical scaling of $\cWa$ with $\lvert a \rvert$ via
+direct enumeration at level $L \le 16$
+(\srcpath{code/python/count_obstructions_ac.py}). The density estimates
+in Table~\ref{tab:scaling} are restricted to the multipliers
+$\lvert a \rvert \in \{3, 5, 7, 15, 31\}$ that are well resolved at
+$L = 16$. The remaining tested multipliers do carry obstructions at
+$L = 16$ ($\lvert\Obs_{16}^{(9,-1)}\rvert = 47$,
+$\lvert\Obs_{16}^{(21,-1)}\rvert = 69$,
+$\lvert\Obs_{16}^{(17,-1)}\rvert = 1$), confirming $\cWa > 0$, but with
+too few obstructions for a stable density estimate at this level
+(for $\lvert a \rvert = 17$ a single obstruction); they are therefore
+omitted from the scaling fit.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+$\lvert a \rvert$ & $e$ & $4^{-e}$ & $\cWa$ (empir.\ lower bound, $L = 16$) & $C(a) := \cWa / 4^{-e}$ \\
+\midrule
+3 & 2 & $0.0625$ & $0.1153$ & $1.84$ \\
+7 & 3 & $0.0156$ & $0.0146$ & $0.93$ \\
+15 & 4 & $0.00391$ & $0.00243$ & $0.62$ \\
+5 & 4 & $0.00391$ & $0.00172$ & $0.44$ \\
+31 & 5 & $0.000977$ & $0.00053$ & $0.55$ \\
+\bottomrule
+\end{tabular}
+\caption{Empirical density scaling over the five multipliers well
+resolved at $L = 16$. Each $\cWa$ entry is a rigorous lower bound for the
+limit (the sequence $\lvert \Obsab \rvert / 2^L$ is non-decreasing, by the
+lift theorem; see Proposition~\ref{prop:density-limit}). A log-linear least-squares fit
+gives $\log_2 \cWa \approx -2.64\,e + 1.91$ ($R^2 = 0.99$). The fitted
+slope $-2.64$ is somewhat steeper than the $-2$ that exact $4^{-e}$ scaling
+would produce: over these five points the data are consistent both with a
+bounded correction factor $C(a) := \cWa / 4^{-e}$ (which stays in $[0.44,
+1.84]$ here) and with a slowly \emph{decaying} $C(a)$, i.e.\ a decay faster
+than $4^{-e}$. We therefore report $\cWa \approx C(a)\,4^{-e}$ as an
+empirical law and leave the asymptotic boundedness of $C(a)$ --- the
+two-sided form $\cWa = \Theta(4^{-e})$ --- as Conjecture~\ref{conj:correction}.}
+\label{tab:scaling}
+\end{table}
+
+The structural mechanism behind a $4^{-e}$ \emph{lower} bound is the lift
+theorem (Theorem~\ref{thm:lift}): a single atomic obstruction at
+level $L_{\min}$ produces $2^{L - L_{\min}}$ obstructions at every level
+$L \ge L_{\min}$, so $\cWa \gtrsim 2^{-L_{\min}(a)}$. Granting the
+(conjectural) $L_{\min}(a) \approx 2e$ of
+Conjecture~\ref{conj:Lmin-asymptotic}, this gives
+\[
+\cWa \gtrsim 2^{-L_{\min}(a)} \approx 4^{-e}.
+\]
+Note that this argument bounds $\cWa$ only from below; the matching upper
+bound is the open content of Conjecture~\ref{conj:correction}.
+
+\begin{conjecture}[Bounded correction factor]\label{conj:correction}
+For \emph{positive} odd $a \ge 3$ there exist constants $C_0 > 0$,
+$C_1 < \infty$ with $C_0 \le C(a) \le C_1$.
+\end{conjecture}
+
+The restriction to positive $a$ is essential, not cosmetic. For the
+negative Mersenne multipliers $a = -(2^{v_M} - 1)$ the density scales as
+$\cWa = \Theta(2^{-e})$ (Section~\ref{sec:neg-mersenne}), the square root
+of the positive scale, so $C(a) = \cWa/4^{-e} = \Theta(2^{e}) \to \infty$;
+the bound therefore cannot hold across the sign axis. Already the smallest
+negative non-Mersenne multiplier $a = -5$ ($e = 4$) leaves the
+positive-$a$ band: the $b$-independent cardinality
+$\lvert \Obs_{14}^{(-5,b)} \rvert = 357$ gives the rigorous lower bound
+$C(-5) \ge 357/64 > 5.5$, against the $[0.44, 1.84]$ of
+Table~\ref{tab:scaling}. The empirical law $\cWa \approx C(a)\,4^{-e}$ and
+its two-sided form $\cWa = \Theta(4^{-e})$ are thus phenomena of the
+\emph{positive} multipliers; the negative multipliers are governed by the
+companion's sub-class analysis (Section~\ref{sec:neg-mersenne}) for the
+Mersenne case and are left uncharacterised otherwise.
+
+\begin{remark}[Deeper enumeration and extrapolation]\label{rem:deep-scaling}
+The $C(a)$ entries of Table~\ref{tab:scaling} are rigorous lower bounds at
+the truncation level $L = 16$; they understate the limit, and the gap is
+already visible a few levels deeper. Pushing the (unhacked) enumeration to
+$L = 24$ --- still a rigorous lower bound by
+Proposition~\ref{prop:density-limit} --- raises $C(3)$ from $1.84$ to
+$2.15$, and over the eight multipliers
+$\lvert a \rvert \in \{3, 5, 7, 9, 15, 17, 21, 31\}$ the lower-bound band
+widens to $[0.56, 4.40]$ (extremes at $a = 31$ and $a = 21$), already
+beyond the $[0.44, 1.84]$ read off at $L = 16$. Fitting the atomic series
+$\lvert \Atom_l^{(a), G_{\ne 0}} \rvert \approx K_a\,\alpha(a)^l$ on the
+deepest available window and summing the geometric tail
+$\sum_{l > 24} \lvert \Atom_l \rvert / 2^l$ yields \emph{heuristic} limit
+estimates that stay in a comparable bounded band (e.g.\ $C(3) \approx 2.6$,
+$C(21) \approx 4.4$), with fitted growth $\alpha(a) < 2$ throughout
+($\alpha(a) \in [1.46, 1.88]$ for the well-resolved $a \le 15$; the sparser
+high-order multipliers are consistent but under-resolved at $L = 24$). Only
+the finite lower bounds are rigorous; the extrapolation is heuristic. These
+deeper data leave the rigorous content untouched, but they show that the
+bounded-$C(a)$ phenomenon of Conjecture~\ref{conj:correction} is robust to
+the $L = 16$ truncation --- the band is wider but stays finite --- and they
+give direct empirical support to $\alpha(a) < 2$
+(Conjecture~\ref{conj:alpha}) across every tested multiplier.
+\end{remark}
+
+% =============================================================================
+\section{Degenerate edge case: \texorpdfstring{$\lvert a \rvert = 1$}{|a| = 1}}\label{sec:edge}
+% =============================================================================
+
+\begin{theorem}[$a = +1$ vacuous]\label{thm:edge-case}
+For $a = +1$ and every odd $b \ne 0$,
+\[
+\Obs_L^{(1,b)} = \emptyset \qquad \forall L \ge 1.
+\]
+\end{theorem}
+
+\begin{proof}
+The diophantine identity~\eqref{eq:diophantine} with $a = 1$ becomes
+$1 = \sum_{j=0}^{J} X_j$, with $X_j = 2^{\Vk^{(j)}} - 2^{\Vi^{(j)} + v}$.
+Since $\Vk^{(0)} = 0$, the $j = 0$ term contributes $2^{\Vk^{(0)}} = 1$;
+moving it across, the identity rearranges to
+\[
+\sum_{j=1}^{J} 2^{\Vk^{(j)}} \;=\; \sum_{j=0}^{J} 2^{\Vi^{(j)} + v}.
+\]
+Each step adds a positive valuation ($\vk^{(i)} = \vtwo(a_K^{(i)} + b)
+\ge 1$ because $a_K^{(i)}, b$ are odd), so the exponents
+$\Vk^{(1)} < \Vk^{(2)} < \cdots < \Vk^{(J)}$ are strictly increasing, and
+likewise $\Vi^{(0)} + v < \cdots < \Vi^{(J)} + v$. Hence the left-hand
+side is a sum of $J$ \emph{distinct} powers of $2$ and the right-hand
+side a sum of $J + 1$ distinct powers of $2$. By uniqueness of binary
+representation, two equal positive integers have the same number of
+binary ones; this forces $J = J + 1$, a contradiction. Therefore no
+odd $r$ satisfies $\Phi_J = 0$ for $a = 1$, and $\Obs_L^{(1,b)} =
+\emptyset$ for every $L$ and every odd $b$. (The conclusion is confirmed
+by direct enumeration for all tested $b$ and $L \le 16$.) \qedhere
+\end{proof}
+
+\begin{remark}[The degenerate case $a = -1$]\label{rem:a-minus-1}
+For $a = -1$ the situation is different: the map value $an + b = -n + b$
+vanishes at $n = b$, where the parallel reduction degenerates
+($\vtwo(0) = \infty$ forces immediate termination). The resulting
+``obstructions'' are an artefact of this degeneration, not of genuine
+synchronisation dynamics: direct enumeration gives
+\[
+\lvert \Obs_L^{(-1,b)} \rvert = 2^{L-2} \qquad (L \ge 2),
+\]
+exactly half the odd residues (for $b = +1$ they are the residues
+$r \equiv 1 \pmod 4$). Thus $a = -1$ is \emph{not} vacuous; it is
+degenerate. Neither value of $\lvert a \rvert = 1$ represents the
+genuine obstruction theory, which requires $\lvert a \rvert \ge 3$: at
+$a = +1$ the family is empty, and at $a = -1$ the map leaves
+$\mathbb{N}_{\mathrm{odd}}$ through the zero of $an + b$. The order
+lemma (Lemma~\ref{lem:order-lemma}) is therefore necessary but not
+sufficient for a non-degenerate non-empty family.
+\end{remark}
+
+% =============================================================================
+\section{Relation to the negative-Mersenne case}\label{sec:neg-mersenne}
+% =============================================================================
+
+For $a = -(2^{v_M} - 1)$ Mersenne with $v_M \ge 2$ (so $\lvert a \rvert
+\in \{3, 7, 15, 31, 63, \ldots\}$), the parallel reduction admits a
+finer structure than the general $(an+b)$ theory captures. The
+algebraic identity
+\[
+-q r + b = 2^v (-q m + b) + (2^{v_M} - 2^v) b, \qquad q := \lvert a \rvert,
+\]
+has a vanishing correction term $(2^{v_M} - 2^v) b$ at $v = v_M$ that
+synchronises the principal class of obstructions. Iterating produces a
+sub-class hierarchy indexed by the signed shift index $j \in \Z$ (the
+$A$-, $B$-, $C$-, $F_1$-, and $G_1$-families). The density bound
+$\cWa \ge 1/(2 \lvert a \rvert)$ becomes asymptotically sharp as
+$v_M \to \infty$; with $\lvert a \rvert = 2^{v_M} - 1$ and $e = v_M$ this
+is $1/(2 \lvert a \rvert) = \tfrac12 \cdot 4^{-e/2}(1 + o(1)) =
+\Theta(2^{-e})$. Note that this is the \emph{square root} of the
+positive-$a$ scale: the negative-Mersenne density scales as
+$\Theta(2^{-e})$, distinct from --- and much larger than --- the empirical
+$\Theta(4^{-e})$ of the positive multipliers in Table~\ref{tab:scaling},
+consistent with the cardinality ratio
+$\lvert \Obs^{(-q)} \rvert / \lvert \Obs^{(+q)} \rvert \approx 2^{e}$
+recorded in Appendix~\ref{sec:err-A3}. We treat this case in a separate
+manuscript and only note the relationship.
+
+% =============================================================================
+\section*{Funding and competing interests}
+% =============================================================================
+
+The author received no funding for this research and declares no competing
+interests.
+
+% =============================================================================
+\appendix
+\section{Refuted hypotheses}\label{sec:errata}
+% =============================================================================
+
+\subsection{Refuted hypothesis: inclusion \texorpdfstring{$\Obs^{(+q)} \subseteq \Obs^{(-q)}$}{O(+q) subset O(-q)}}\label{sec:err-A3}
+
+An early conjecture (henceforth A3) asserted an injection
+$\Obs^{(+q)} \hookrightarrow \Obs^{(-q)}$ with complement equal to a
+Mersenne principal class. Concrete counterexamples (taken at $b = 1$, with
+$\Obs^{(\pm q)} := \Obs_L^{(\pm q, 1)}$; unlike the $b$-independent
+cardinalities, the specific witness residues depend on $b$ --- at $b = -1$
+the same residues lie in $\Obs^{(-q)} \setminus \Obs^{(+q)}$ instead. The
+first two appear already at level $L = 10$, the third at $L = 12$, since
+for $\lvert a \rvert = 31$ the smallest non-vacuous level is $L = 11$):
+\[
+r = 29 \in \Obs^{(+3)} \setminus \Obs^{(-3)},
+\quad
+r = 9 \in \Obs^{(+7)} \setminus \Obs^{(-7)},
+\quad
+r = 33 \in \Obs^{(+31)} \setminus \Obs^{(-31)}.
+\]
+The empirical cardinality ratio is $\lvert \Obs^{(-q)} \rvert /
+\lvert \Obs^{(+q)} \rvert \approx 2^e$ for small $e$ and approaches $2$
+as $L \to \infty$, but with positive and negative obstructions
+structurally distinct. The lesson: the sign of the multiplier is not
+neutralisable via residue conjugation. A multiplicative conjugation
+across the sign axis exists only as a partial bijection (revised
+hypothesis A3$'$); concrete candidates such as $r \mapsto -r \bmod 2^L$
+or $r \mapsto b r^{-1} \bmod 2^L$ remain empirically open.
+
+\subsection{Refuted hypothesis: \texorpdfstring{$J_{\max}(L) = O(\log L)$}{Jmax(L) = O(log L)} for atoms}\label{sec:err-Jmax}
+
+An earlier hypothesis based on the empirical mean $\bar J \sim \log_2 L
++ e$ asserted that $J_{\max}(L) = O(\log L)$ as well. This is refuted by
+Theorem~\ref{thm:Lminus4-atom}: $J_{\max}(L, 3) = L - 4$ grows linearly.
+The corrected picture is a bell-shaped distribution with logarithmic mode
+and linear maximum --- a long-tail distribution. For the open problem
+whether $\alpha(a) = 1$, it is the \emph{concentration} of the
+distribution around its mode that matters, not a hard bound on $J_{\max}$.
+
+% =============================================================================
+\bibliographystyle{amsplain}
+\bibliography{references}
+
+\end{document}
