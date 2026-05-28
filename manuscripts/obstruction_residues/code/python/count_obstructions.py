@@ -117,35 +117,41 @@ def count_at(L, atoms=True):
     return total, g_0, g_ne0, atoms_ne0, obs_list, atom_list
 
 
-L = int(sys.argv[1]) if len(sys.argv) > 1 else 8
-
-total, g_0, g_ne0, atoms_ne0, obs_list, atom_list = count_at(L)
-
-print(f"L={L}")
-print(f"|Obs_L| = {total}")
-print(f"|Obs_L^{{G_0}}| = {g_0}")
-print(f"|Obs_L^{{G_{{ne0}}}}| = {g_ne0}")
-print(f"|Atom_L^{{G_{{ne0}}}}| = {atoms_ne0}")
-
-# Element-level listings (truncated for readability at large L).
 def fmt(name, lst, cap=30):
+    """Element-level listing, truncated for readability at large L."""
     if len(lst) <= cap:
         return f"{name} = {{{', '.join(str(x) for x in lst)}}}"
     head = ', '.join(str(x) for x in lst[:cap])
     return f"{name} (first {cap} of {len(lst)}) = {{{head}, ...}}"
 
-print(fmt(f"Obs_{L}", obs_list))
-print(fmt(f"Atom_{L}^{{G_ne0}}", atom_list))
 
-# Verify the strict lift balance |Obs_L| = 2|Obs_{L-1}| + |Atom_L^{G_ne0}|
-# (Corollary 6.4) against the level L-1 count.
-if L >= 7:
-    total_prev, _, _, _, _, _ = count_at(L - 1, atoms=False)
-    expected = 2 * total_prev + atoms_ne0
-    assert total == expected, (
-        f"Lift balance VIOLATED at L={L}: "
-        f"|Obs_L|={total}, 2|Obs_{{L-1}}|+|Atom_L^{{G_ne0}}|=2*{total_prev}+{atoms_ne0}={expected}"
-    )
-    print(
-        f"Lift balance (Corollary 6.4): {total} = 2*{total_prev} + {atoms_ne0} ✓"
-    )
+def main():
+    L = int(sys.argv[1]) if len(sys.argv) > 1 else 8
+
+    total, g_0, g_ne0, atoms_ne0, obs_list, atom_list = count_at(L)
+
+    print(f"L={L}")
+    print(f"|Obs_L| = {total}")
+    print(f"|Obs_L^{{G_0}}| = {g_0}")
+    print(f"|Obs_L^{{G_{{ne0}}}}| = {g_ne0}")
+    print(f"|Atom_L^{{G_{{ne0}}}}| = {atoms_ne0}")
+
+    print(fmt(f"Obs_{L}", obs_list))
+    print(fmt(f"Atom_{L}^{{G_ne0}}", atom_list))
+
+    # Verify the strict lift balance |Obs_L| = 2|Obs_{L-1}| + |Atom_L^{G_ne0}|
+    # (Corollary 6.4) against the level L-1 count.
+    if L >= 7:
+        total_prev, _, _, _, _, _ = count_at(L - 1, atoms=False)
+        expected = 2 * total_prev + atoms_ne0
+        assert total == expected, (
+            f"Lift balance VIOLATED at L={L}: "
+            f"|Obs_L|={total}, 2|Obs_{{L-1}}|+|Atom_L^{{G_ne0}}|=2*{total_prev}+{atoms_ne0}={expected}"
+        )
+        print(
+            f"Lift balance (Corollary 6.4): {total} = 2*{total_prev} + {atoms_ne0} ✓"
+        )
+
+
+if __name__ == "__main__":
+    main()

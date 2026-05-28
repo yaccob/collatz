@@ -50,6 +50,7 @@ RIGOROUS_SCRIPTS = [
     "atomic_g0_early_stop_check.py",
     "count_obstructions.py",
     "factor_complexity_construction.py",
+    "independent_enumeration.py",
     "iso_synchronisation_verification.py",
     "lift_lemma_test.py",
     "lift_symmetry_verification.py",
