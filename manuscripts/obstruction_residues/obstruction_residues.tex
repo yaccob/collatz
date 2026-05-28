@@ -253,7 +253,9 @@ bound $c_W \ge 3/64 \approx 0.047$ obtained from $L_0 = 6$.
 The bound at $L_0 = 16$, using only the algorithmic
 $\Xend$-criterion of Section~\ref{sec:setup}, gives the explicit value
 $7556/65536 \approx 0.115$ stated above. Raising $L_0$ further admits
-substantial additional improvement, but the exact value of $c_W$ remains
+substantial additional improvement --- direct enumeration at $L_0 = 32$
+already yields $c_W \ge \rho_{32} \approx 0.147$
+(Table~\ref{tab:density-bounds}) --- but the exact value of $c_W$ remains
 an open problem. We give in
 Section~\ref{sec:Gs} a refined decomposition that exhibits $c_W$ as a
 rigorously convergent series and isolates the remaining open question to a
@@ -780,6 +782,8 @@ $6$  & $3$    & $\approx 0.047$ & $3/64$ \\
 $10$ & $91$   & $\approx 0.089$ & $91/1024$ \\
 $14$ & $1776$ & $\approx 0.108$ & $1776/16384$ \\
 $16$ & $7556$ & $\approx 0.115$ & $7556/65536$ \\
+$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
+$32$ & $631538769$ & $\approx 0.147$ & $631538769/2^{32}$ \\
 \bottomrule
 \end{tabular}
 \caption{Rigorous lower bounds for $c_W$ obtained from finite-level enumeration of $\Obs_{L_0}$. The ratio $\rho_{L_0} := |\Obs_{L_0}|/2^{L_0}$ is non-decreasing in $L_0$ (Theorem~\ref{thm:density-intro}).}
@@ -1452,8 +1456,11 @@ residues $r$ with $\vtwo(r-1) \ge 1$, runs the parallel reduction, and
 records the terminal data. The set $\Obs_L$ is read off as the preimage of
 $\{(c, d) : 3d + c = 1\}$.
 
-We have run this enumeration through $L = 16$, producing the counts of
-Table~\ref{tab:appendix-counts}.
+We have run this enumeration through $L = 16$ in Python, producing the counts
+of Table~\ref{tab:appendix-counts}. A second, independent Rust implementation
+(\texttt{code/rust/}) reproduces these counts for $L = 5, \dots, 16$ and
+extends the rigorous density bounds of Table~\ref{tab:density-bounds} to
+$L = 32$.
 
 \begin{table}[ht]
 \centering
