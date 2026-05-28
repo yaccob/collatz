@@ -32,6 +32,7 @@ PY_FILES := $(shell git ls-files '*.py')
 check:
 	@python3 -c "import sys; [compile(open(f).read(), f, 'exec') for f in sys.argv[1:]]" $(PY_FILES)
 	@echo "All tracked .py files parse cleanly."
+	@python3 scripts/check_licenses.py
 
 help:
 	@echo "Available targets:"
