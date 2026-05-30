@@ -1,0 +1,983 @@
+\documentclass[11pt,reqno]{amsart}
+
+% --- Packages -----------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{xurl}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+}
+
+\raggedbottom
+
+% --- Theorem environments -----------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% --- Macros -------------------------------------------------------------------
+\newcommand{\Tab}{T_{a,b}}
+\newcommand{\Tnegq}{T_{-q,b}}
+\newcommand{\Tneg}{T_{-}}
+\newcommand{\Tpos}{T_{+}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Qtwo}{\mathbb{Q}_{2}}
+\newcommand{\Ztwo}{\mathbb{Z}_{2}}
+\newcommand{\Nodd}{\N_{\mathrm{odd}}}
+\newcommand{\Obs}{\mathcal{O}}
+\newcommand{\Atom}{\mathcal{A}}
+\newcommand{\Vk}{V_{K}}
+\newcommand{\Vi}{V_{I}}
+\newcommand{\vk}{v_{K}}
+\newcommand{\vi}{v_{I}}
+\newcommand{\aK}{a_{K}}
+\newcommand{\aI}{a_{I}}
+\newcommand{\vtwo}{v_{2}}
+\newcommand{\vM}{v_{M}}
+\newcommand{\ord}{\mathrm{ord}}
+\newcommand{\cWq}{c_{W}^{(-q)}}
+\newcommand{\Obsq}{\Obs_{L}^{(-q,b)}}
+\newcommand{\Atomq}{\Atom_{L}^{(-q,b)}}
+\newcommand{\srcpath}[1]{\nolinkurl{#1}}
+\emergencystretch=3em
+
+% --- Document -----------------------------------------------------------------
+\title[Obstruction residues at negative-Mersenne multipliers]{Obstruction
+  residues at negative-Mersenne multipliers:\\
+  a synchronisation hierarchy and density bounds}
+
+\author{Jakob Stemberger}
+\address{Independent researcher, Vienna, Austria}
+\email{jakob.stemberger@yaccob.net}
+\urladdr{https://orcid.org/0009-0001-2746-6877}
+\date{\today}
+
+\subjclass[2020]{11B83, 11S05, 37P05, 37B10, 37B40}
+
+\keywords{Collatz conjecture, $3n\pm1$ map, $(an+b)$ family, Mersenne
+  multiplier, residue dynamics, parallel reduction, 2-adic density}
+
+\begin{document}
+
+\begin{abstract}
+For a Mersenne multiplier $q = 2^{\vM} - 1$ with $\vM \ge 2$ and an odd
+bias $b \ne 0$, the accelerated map $\Tnegq(n) := (-qn + b)/2^{\vtwo(-qn+b)}$
+acts on the odd integers, and the companion $(an+b)$-family manuscript
+singles it out as the one case admitting a finer structure than the general
+theory captures. We develop that structure. The starting point is an exact
+algebraic identity, $-q r + b = 2^v(-q m + b) + (2^{\vM} - 2^v) b$ whenever
+$r + b = 2^v m$, whose correction term $(2^{\vM} - 2^v) b$ vanishes precisely
+at $v = \vM$; the vanishing is exclusive to Mersenne multipliers and
+synchronises a \emph{principal class} of obstructions. Iterating the
+two-track parallel reduction is governed by a linear recursion on an affine
+certificate $\aK^{(k)} = \lambda_k \aI^{(k)} + D_k b$, whose synchronising
+states are parametrised by a signed index $j \in \Z$ as
+$(\lambda_k, D_k) = (2^{j\vM}, -(2^{j\vM}-1)/q)$. This yields a sub-class
+hierarchy indexed by the synchronisation level $k$ and the signed index $j$:
+we classify the level-$3$ sub-classes (three universal families for
+$\vM \ge 3$, four at $\vM = 2$) with explicit substitution chains, exhibit
+the level-$4$ families (including a genuinely signed $j = -1$ family with
+a rational synchronisation), and prove a node-lift theorem showing that
+inserting a fixed-point step at the unique fixed point
+$(\lambda^*, D^*) = (2^{\vM+1}, -1)$ of the recursion lifts each sub-class to
+the next level, generating four iterated families. Summing the resulting
+disjoint residue cylinders gives the density lower bound
+$\cWq \ge 1/(2q)$, which we refine; the same families yield a matching upper
+bound, making $1/(2q)$ asymptotically sharp as $\vM \to \infty$ ---
+$\cWq = (1/(2q))(1 + O(2^{-\vM}))$ --- conditional on a
+classification-completeness hypothesis. A companion
+observability bound $\lvert j \rvert \le (L - k)/\vM$ controls the level at
+which a sub-class first becomes visible. Each finitely-checkable claim is
+backed by an executable falsifier --- a check that surfaces a counterexample
+if the claim is false; the limit and asymptotic statements are
+recorded as such.
+\end{abstract}
+
+\maketitle
+
+% =============================================================================
+\section{Introduction}\label{sec:intro}
+% =============================================================================
+
+\subsection{Setting}
+
+For odd integers $a, b$ with $\lvert a \rvert \ge 3$ and $b \ne 0$, the
+\emph{affine accelerated map} $\Tab$ acts on the odd integers by
+\[
+\Tab(n) := \frac{an + b}{2^{\vtwo(an + b)}}.
+\]
+For $a > 0$ this restricts to a self-map of the positive odd integers
+$\Nodd$; for $a < 0$ --- the case of this paper --- an orbit may leave the
+positives, but the obstruction analysis is purely residue-theoretic (the
+obstruction sets live in $\{1, \ldots, 2^L\}$, and Section~\ref{sec:density}
+reads their density as a Haar measure on the $2$-adic integers
+$\Ztwo$), so the sign of intermediate values is immaterial.
+Two specialisations are classical: $(a,b) = (3,1)$ is the Collatz map
+$\Tpos$ \cite{Lagarias2010,Lagarias2010bib}, and $(a,b) = (3,-1)$ is the
+$3n-1$ map $\Tneg$ \cite{Lagarias2010bib}. Generalised $(an+b)$ maps go back
+to Hasse's generalised Syracuse algorithm, whose theory is developed by
+Matthews and Watts \cite{MatthewsWatts1984} and M\"oller \cite{Moeller1978};
+the broader class of piecewise-defined generalised Collatz iterations is
+computationally universal \cite{Conway1972}, which is part of what makes an
+exact, level-by-level algebraic characterisation of a structured subfamily
+worthwhile. The strongest unconditional progress towards the Collatz
+conjecture is Tao's theorem that almost all orbits attain almost bounded
+values \cite{Tao2022}.
+
+This paper studies the \emph{negative-Mersenne multipliers}
+\[
+a = -q, \qquad q := 2^{\vM} - 1 \ \text{Mersenne}, \quad \vM \ge 2,
+\]
+so $\lvert a \rvert \in \{3, 7, 15, 31, 63, \ldots\}$. The companion
+manuscript on the $(an+b)$ family \cite{ObstructionResiduesFamily2026}
+develops a uniform theory of obstruction residues across all odd multipliers
+with $\lvert a \rvert \ge 3$ --- a bias-axis conjugation that makes
+cardinality and density depend only on $a$, a multiplier-order lemma, the
+existence of the asymptotic density, and a no-shift-zero-atom theorem --- and
+explicitly flags the negative-Mersenne case as admitting a \emph{finer}
+sub-class hierarchy, treated ``in a separate manuscript.'' The present paper
+is that manuscript. The base case $(a,b) = (3,-1)$, i.e.\ $\vM = 2$, is the
+$\Tneg$-manuscript \cite{ObstructionResidues2026}, which proves a constructive
+lift, positive density, and full factor complexity; here we explain what is
+special about the whole Mersenne ladder $\vM = 2, 3, 4, \ldots$.
+
+\subsection{Obstruction residues}
+
+We recall the obstruction-residue framework of
+\cite{ObstructionResiduesFamily2026} in the specialisation $a = -q$; a
+self-contained account is given in Section~\ref{sec:setup}. For an odd
+residue $r$ and a level $L$, a two-track parallel reduction runs the map
+$\Tnegq$ simultaneously on $r$ and on its first reduced value $m$, carrying
+an affine certificate between the tracks; $r$ is an \emph{obstruction
+residue} at level $L$ when the certificate vanishes at termination, i.e.\
+when the two tracks synchronise. The set of such residues in
+$\{1, \ldots, 2^L\}$ is denoted $\Obsq$, the \emph{atomic} obstructions
+(those not lifted from level $L-1$) are denoted $\Atomq$, and the asymptotic
+density is
+\[
+\cWq := \lim_{L \to \infty} \frac{\lvert \Obsq \rvert}{2^L},
+\]
+which exists by \cite{ObstructionResiduesFamily2026}. The fine invariant of
+an obstruction is its \emph{synchronisation level} $k$ --- the index at which
+the two tracks first agree --- together with a \emph{signed synchronisation
+index} $j \in \Z$ recording the cumulative valuation gap between the tracks.
+
+\subsection{Main results}
+
+The Mersenne condition enters through a single exact identity
+(Theorem~\ref{thm:main-identity}): for $r + b = 2^v m$,
+\[
+-q r + b = 2^v(-q m + b) + (2^{\vM} - 2^v)\, b,
+\]
+whose correction term $(2^{\vM} - 2^v) b$ vanishes \emph{exactly} at
+$v = \vM$, and only for Mersenne $q$ does such a $v$ exist for arbitrary $b$
+(Corollaries~\ref{cor:mersenne-sync} and~\ref{cor:nonmersenne}). The
+vanishing produces the \emph{principal synchronising class} --- the residues
+with $\vtwo(r + b) = \vM$, which synchronise in a single step; iterating it is
+governed by a linear recursion on the affine certificate
+(Theorem~\ref{thm:recursion}), whose synchronising states are exactly
+$(\lambda_k, D_k) = (2^{j\vM}, -(2^{j\vM}-1)/q)$, $j \in \Z$.
+
+This recursion structures the obstructions into a sub-class hierarchy:
+\begin{itemize}[leftmargin=1.4em]
+\item a level-$3$ structure theorem (Theorem~\ref{thm:stage3}): for
+  $\vM \ge 3$ exactly three universal families $A$, $B$, $C$, with explicit
+  substitution chains, and a fourth family at $\vM = 2$;
+\item the level-$4$ families (Theorem~\ref{thm:stage4}), including a
+  genuinely signed family $G_1$ with $j = -1$ that synchronises rationally;
+\item a node-lift theorem (Theorem~\ref{thm:node-lift}): the recursion has a
+  unique fixed point $(\lambda^*, D^*) = (2^{\vM+1}, -1)$, and inserting the
+  fixed-point step at a node lifts a sub-class to the next level, generating
+  four iterated families $A_k, B_k, C_k, F_{1,k}$;
+\item a density lower bound $\cWq \ge 1/(2q)$
+  (Theorem~\ref{thm:atom-density}), obtained by summing disjoint residue
+  cylinders, refined in Corollary~\ref{cor:atom-density-extended} and shown
+  asymptotically sharp under a classification-completeness hypothesis
+  (Theorem~\ref{thm:asymptotics}): $\cWq = (1/(2q))(1 + O(2^{-\vM}))$;
+\item an observability bound $\lvert j \rvert \le (L - k)/\vM$
+  (Theorem~\ref{thm:j-bound}) controlling the level at which a level-$k$,
+  index-$j$ sub-class first becomes visible.
+\end{itemize}
+
+The density scale deserves emphasis. With $\lvert a \rvert = 2^{\vM} - 1$ the
+multiplicative order $e := \ord_{\lvert a \rvert}(2)$ equals $\vM$, so the
+bound $1/(2q) = \Theta(2^{-\vM}) = \Theta(2^{-e})$ is the \emph{square root}
+of the empirical $\Theta(4^{-e})$ density observed at generic positive
+multipliers in \cite{ObstructionResiduesFamily2026}: negative-Mersenne
+multipliers are anomalously obstruction-rich, by an exponential factor, and
+the present hierarchy is the structural reason.
+
+\subsection{Relation to the family manuscript}
+
+We use the obstruction-residue framework, the parallel reduction, and the
+existence of the asymptotic density from
+\cite{ObstructionResiduesFamily2026} as a black box (recalled in
+Section~\ref{sec:setup}); everything specific to the Mersenne ladder ---
+the main identity, the recursion, the sub-class families, the node lift, and
+the density bounds --- is proved here. The family manuscript's
+no-shift-zero-atom theorem holds ``outside the negative-Mersenne case'': its
+proof forces a shift-zero obstruction to take $J \ge 2$ steps unless
+$2^v = \lvert a \rvert + 1$ is solvable, which happens exactly for Mersenne
+$\lvert a \rvert$ (at $v = \vM$). That one-step exception is the principal
+class of the present paper, so the family theorem excludes precisely the
+negative-Mersenne ladder and the two accounts are complementary rather than
+overlapping.
+
+\subsection{Outline}
+
+Section~\ref{sec:setup} fixes the parallel reduction and the affine
+certificate. Section~\ref{sec:identity} proves the main identity and its
+Mersenne/non-Mersenne corollaries. Section~\ref{sec:recursion} derives the
+recursion theorem and identifies its synchronising states.
+Sections~\ref{sec:stage3} and~\ref{sec:stage4} classify the level-$3$ and
+level-$4$ sub-classes. Section~\ref{sec:nodelift} proves the node-lift
+theorem. Section~\ref{sec:density} establishes the density lower bound and
+its refinement, Section~\ref{sec:jbound} the observability bound, and
+Section~\ref{sec:asymptotics} the asymptotic sharpness.
+Section~\ref{sec:open} collects open problems.
+
+% =============================================================================
+\section{Setup: parallel reduction and the affine certificate}\label{sec:setup}
+% =============================================================================
+
+Fix throughout a Mersenne multiplier $q = 2^{\vM} - 1$ with $\vM \ge 2$ and an
+odd bias $b \ne 0$; we write $a = -q$ and study $\Tnegq$. The
+family-existence results and the density lower bounds below hold for any such
+$b$; the \emph{converse} classification of synchronising states
+(Theorem~\ref{thm:recursion}) and the exact sub-class counts it yields
+(Theorem~\ref{thm:stage3}) assume in addition that $b$ is coprime to $q$ ---
+satisfied by the classical biases $b = \pm 1$ and by every bias used in the
+verification.
+
+\subsection{Nesting and the two-track reduction}
+
+Let $r$ be a positive odd integer. Since $b$ is odd, $r + b$ is even; write
+\[
+v_0 := \vtwo(r + b) \ge 1, \qquad m_0 := (r + b)/2^{v_0} \ \text{(odd)}.
+\]
+The \emph{parallel reduction} at level $L > v_0$ runs two tracks. The
+\emph{K-track} carries the value $\aK^{(0)} := r$ and modulus exponent $L$;
+the \emph{I-track} carries $\aI^{(0)} := m_0$ and modulus exponent
+$L - v_0$. At each step $k \ge 0$ set
+\[
+\vk^{(k)} := \vtwo\!\big(-q\,\aK^{(k)} + b\big), \qquad
+\vi^{(k)} := \vtwo\!\big(-q\,\aI^{(k)} + b\big),
+\]
+and update
+\[
+\aK^{(k+1)} := \frac{-q\,\aK^{(k)} + b}{2^{\vk^{(k)}}}, \qquad
+\aI^{(k+1)} := \frac{-q\,\aI^{(k)} + b}{2^{\vi^{(k)}}},
+\]
+each step being admissible while the corresponding modulus exponent stays
+positive. The cumulative valuations are
+$\Vk^{(k)} := \sum_{i < k} \vk^{(i)}$ and
+$\Vi^{(k)} := \sum_{i < k} \vi^{(i)}$, so the residual modulus exponents are
+$L - \Vk^{(k)}$ and $L - v_0 - \Vi^{(k)}$.
+
+\subsection{The affine certificate}
+
+\begin{lemma}[Affine certificate]\label{lem:certificate}
+For every step $k \ge 0$ there are $\lambda_k \in \Q^{\times}$ and
+$D_k \in \Q$ with
+\[
+\aK^{(k)} = \lambda_k\, \aI^{(k)} + D_k\, b \qquad \text{in } \Q,
+\]
+and $\lambda_0 = 2^{v_0}$, $D_0 = -1$.
+\end{lemma}
+
+\begin{proof}
+From $r + b = 2^{v_0} m_0$ we get $r = 2^{v_0} m_0 - b$, i.e.\
+$\aK^{(0)} = 2^{v_0}\aI^{(0)} - b$, the claim at $k = 0$ with
+$(\lambda_0, D_0) = (2^{v_0}, -1)$. For the inductive step, substitute the
+affine form $\aK^{(k)} = \lambda_k \aI^{(k)} + D_k b$ into
+$-q\,\aK^{(k)} + b$ and divide by $2^{\vk^{(k)}}$: this rewrites
+$\aK^{(k+1)}$ once more as a $\Q$-affine function of $\aI^{(k+1)}$ and $b$,
+so the form persists with some $(\lambda_{k+1}, D_{k+1}) \in
+\Q^{\times} \times \Q$. The explicit update for $(\lambda_{k+1}, D_{k+1})$
+is computed in Theorem~\ref{thm:recursion}.
+\end{proof}
+
+\begin{definition}[Synchronisation level and signed index]\label{def:sync}
+The reduction \emph{synchronises} at the least index $k$ with
+$\aK^{(k)} = \aI^{(k)}$, equivalently $(\lambda_k, D_k) = (1, 0)$; this $k$ is
+the \emph{synchronisation level}. The \emph{signed synchronisation index} is
+the unique integer $j$ for which the state one step before synchronisation
+has $\lambda_{k-1} = 2^{j\vM}$; this is well-defined because
+Theorem~\ref{thm:recursion} shows every pre-synchronisation $\lambda$ is the
+integral power $2^{j\vM}$, $j \in \Z$. A residue $r$ is an
+\emph{obstruction residue} at level $L$, $r \in \Obsq$, when the two tracks
+synchronise before either modulus exponent is exhausted; $\Atomq \subseteq
+\Obsq$ are those not arising as a lift of a level-$(L-1)$ obstruction, and
+\[
+\cWq := \lim_{L \to \infty} \lvert \Obsq \rvert / 2^L .
+\]
+\end{definition}
+
+\begin{remark}
+Definition~\ref{def:sync} specialises the obstruction residues of
+\cite{ObstructionResiduesFamily2026} to $a = -q$: there the certificate is
+written $\aI = c\,\aK + d$ and the vanishing condition $\Phi_J = 0$ is the
+synchronisation $\aK = \aI$ here. The family's shift index $\delta$ (the
+valuation gap at termination) and the signed synchronisation index $j$ used
+here (read off one step before synchronisation) are different invariants.
+What the family's no-shift-zero-atom theorem excludes \emph{outside} the
+negative-Mersenne case is a one-step ($J = 1$) shift-zero obstruction: its
+proof forces $J \ge 2$ unless $2^v = \lvert a \rvert + 1$ is solvable, which
+holds exactly for Mersenne $\lvert a \rvert$ at $v = \vM$. That solvable case
+is the principal Mersenne-synchronising class here --- which carries
+$j = 1$, not $j = 0$. The Mersenne ladder populates $j \in \Z$ (the level-3 families have
+$j \in \{1, 2\}$, the level-4 family $G_1$ has $j = -1$), so the signedness
+of $j$ is essential. Existence of the limit $\cWq$ is the family's
+density-limit proposition, used as a black box.
+\end{remark}
+
+\begin{definition}[Universal vs.\ $q$-specific sub-classes]\label{def:universal}
+A \emph{sub-class} is a set of obstruction residues sharing one initial
+nesting exponent $v_0$ and one driving sequence of valuation pairs
+$(\vk^{(i)}, \vi^{(i)})$. The sub-class is \emph{universal} when this
+valuation data is \emph{affine in $\vM$} --- each of $v_0, \vk^{(i)},
+\vi^{(i)}$ is an integer-affine function $\alpha\vM + \beta$ with fixed
+integers $\alpha \ge 0$ and $\beta$ independent of $\vM$ (so a constant
+$\beta$, the offset form $\vM + \beta$, or e.g.\ $2\vM$ are all admitted)
+--- so that a single closed form describes it for all $\vM$ in its range;
+otherwise it is \emph{$q$-specific}. The exhaustiveness statements below
+(``exactly three families'', etc.) are understood \emph{within the universal
+sub-classes}: they enumerate the affine-in-$\vM$ valuation patterns and do
+not assert an a-priori bound ruling out non-affine families. The number of
+$q$-specific sub-classes is itself $\vM$-dependent
+(Theorem~\ref{thm:stage4}, Conjecture~\ref{conj:qspecific}).
+\end{definition}
+
+% =============================================================================
+\section{The main identity}\label{sec:identity}
+% =============================================================================
+
+\begin{theorem}[Main identity]\label{thm:main-identity}
+Let $q = 2^{\vM} - 1$. For all integers $r, m, b$ and all $v \ge 1$ with
+$r + b = 2^v m$,
+\[
+-q r + b = 2^v\,(-q m + b) + \big(2^{\vM} - 2^v\big)\, b .
+\]
+\end{theorem}
+
+\begin{proof}
+From $r = 2^v m - b$,
+\[
+-q r + b = -q\big(2^v m - b\big) + b = -q\,2^v m + (q + 1)\, b .
+\]
+Since $q + 1 = 2^{\vM}$,
+\[
+-q\,2^v m + 2^{\vM} b = 2^v(-q m) + 2^v b + \big(2^{\vM} - 2^v\big) b
+= 2^v(-q m + b) + \big(2^{\vM} - 2^v\big) b . \qedhere
+\]
+\end{proof}
+
+\begin{corollary}[Mersenne synchronisation]\label{cor:mersenne-sync}
+At $v = \vM$ the correction term vanishes and
+$-q r + b = 2^{\vM}(-q m + b)$. Moreover, among all $q \ge 2$, a level $v$
+with $(q + 1 - 2^v)\, b = 0$ for arbitrary $b$ exists if and only if
+$q = 2^{\vM} - 1$ is Mersenne, in which case $v = \vM$ is the unique such
+level.
+\end{corollary}
+
+\begin{proof}
+Setting $v = \vM$ gives $2^{\vM} - 2^v = 0$, hence the displayed identity.
+For the characterisation: $(q + 1 - 2^v) b = 0$ for $b \ne 0$ forces
+$q + 1 = 2^v$, i.e.\ $q + 1$ is a power of two; this holds for some $v$ iff
+$q$ is Mersenne, and then, by uniqueness of the binary representation,
+$v = \vM = \vtwo(q+1)$ is the only such level.
+\end{proof}
+
+\begin{corollary}[Non-Mersenne asymmetry]\label{cor:nonmersenne}
+For an arbitrary integer $q \ge 2$ and $r + b = 2^v m$,
+\[
+-q r + b = 2^v(-q m + b) + (q + 1 - 2^v)\, b .
+\]
+If $q$ is not Mersenne, then $q + 1 - 2^v \ne 0$ for every $v \ge 1$, so for
+every odd $b \ne 0$ the correction term is nonzero at all levels and no
+principal synchronising class exists.
+\end{corollary}
+
+\begin{proof}
+The displayed identity is the computation in the proof of
+Theorem~\ref{thm:main-identity} with $q + 1$ in place of $2^{\vM}$. If $q$ is
+not Mersenne then $q + 1$ is not a power of two, so $q + 1 \ne 2^v$ for all
+$v$; thus $(q + 1 - 2^v) b \ne 0$ for odd $b \ne 0$.
+\end{proof}
+
+The finite arithmetic of Theorem~\ref{thm:main-identity} and
+Corollaries~\ref{cor:mersenne-sync}--\ref{cor:nonmersenne} is exercised over
+many samples by \srcpath{code/python/identity.py}.
+
+% =============================================================================
+\section{The recursion theorem}\label{sec:recursion}
+% =============================================================================
+
+\begin{theorem}[Recursion theorem]\label{thm:recursion}
+Let $q = 2^{\vM} - 1$, and suppose $\aK^{(k)} = \lambda_k \aI^{(k)} + D_k b$.
+(The converse classification of synchronising states below assumes in
+addition $\gcd(b, q) = 1$; cf.\ Section~\ref{sec:setup}.) Then
+\[
+\lambda_{k+1} = \lambda_k \cdot 2^{\,\vi^{(k)} - \vk^{(k)}}, \qquad
+D_{k+1} = \frac{1 - \lambda_k - q\,D_k}{2^{\vk^{(k)}}} ,
+\]
+with initial data $(\lambda_0, D_0) = (2^{v_0}, -1)$. Integrality of
+$D_{k+1}$ is the consistency condition
+$2^{\vk^{(k)}} \mid E_k$ with $E_k := 1 - \lambda_k - q D_k$. The reduction
+synchronises ($\aK^{(k)} = \aI^{(k)}$) iff $(\lambda_k, D_k) = (1, 0)$, and
+the states one step before synchronisation are, assuming $\gcd(b, q) = 1$,
+exactly
+\[
+(\lambda_k, D_k) = \Big(2^{\,j\vM},\ -\tfrac{2^{\,j\vM} - 1}{q}\Big),
+\qquad j \in \Z,
+\]
+each of which is integral because $q = 2^{\vM} - 1 \mid 2^{j\vM} - 1$.
+\end{theorem}
+
+\begin{proof}
+Substituting $\aK^{(k)} = \lambda_k \aI^{(k)} + D_k b$ into $-q\aK^{(k)} + b$
+and using $q + 1 = 2^{\vM}$ only at the end,
+\[
+-q\,\aK^{(k)} + b
+= \lambda_k\big(-q\,\aI^{(k)} + b\big) + \big(1 - \lambda_k - q D_k\big) b
+= \lambda_k\big(-q\,\aI^{(k)} + b\big) + E_k\, b .
+\]
+By definition of the step, $-q\,\aK^{(k)} + b = 2^{\vk^{(k)}} \aK^{(k+1)}$
+and $-q\,\aI^{(k)} + b = 2^{\vi^{(k)}} \aI^{(k+1)}$; hence
+\[
+2^{\vk^{(k)}} \aK^{(k+1)}
+= \lambda_k\, 2^{\vi^{(k)}} \aI^{(k+1)} + E_k\, b ,
+\]
+and dividing by $2^{\vk^{(k)}}$ gives the stated updates with
+$\lambda_{k+1} = \lambda_k 2^{\vi^{(k)} - \vk^{(k)}}$ and
+$D_{k+1} = E_k / 2^{\vk^{(k)}}$. Since $\aK^{(k+1)}, \aI^{(k+1)} \in \Z$, the
+quantity $D_{k+1}$ is an integer iff $2^{\vk^{(k)}} \mid E_k$. The initial
+data are Lemma~\ref{lem:certificate}.
+
+Synchronisation $\aK^{(k)} = \aI^{(k)}$ for all admissible $\aI^{(k)}$ is
+$\lambda_k = 1$, $D_k = 0$. Now take a state $(\lambda_k, D_k) =
+(2^{j\vM}, -(2^{j\vM} - 1)/q)$. Then
+\[
+E_k = 1 - 2^{j\vM} - q\Big(\!-\tfrac{2^{j\vM} - 1}{q}\Big)
+   = 1 - 2^{j\vM} + (2^{j\vM} - 1) = 0 ,
+\]
+so $D_{k+1} = 0$; choosing the step with $\vi^{(k)} - \vk^{(k)} = -j\vM$
+gives $\lambda_{k+1} = 2^{j\vM} \cdot 2^{-j\vM} = 1$, i.e.\ the next step
+synchronises.
+
+Conversely --- here we use $\gcd(b, q) = 1$ (the standing coprimality
+assumption of Section~\ref{sec:setup}) --- suppose the next step
+synchronises: $\lambda_{k+1} = 1$ and $D_{k+1} = 0$, with common synchronised
+value $w := \aK^{(k+1)} = \aI^{(k+1)}$. From $\lambda_{k+1} = \lambda_k 2^{\vi^{(k)} - \vk^{(k)}} = 1$ we
+get $\lambda_k = 2^{s}$ with $s := \vk^{(k)} - \vi^{(k)} \in \Z$, and
+$E_k = 0$ gives $D_k = (1 - 2^{s})/q$. We show $\vM \mid s$ \emph{for either
+sign of $s$}, so that $j := s/\vM \in \Z$. Inverting the synchronising step,
+\[
+\aK^{(k)} = \frac{b - 2^{\vk^{(k)}} w}{q}, \qquad
+\aI^{(k)} = \frac{b - 2^{\vi^{(k)}} w}{q},
+\]
+are both integers, so $q$ divides their difference
+$(2^{\vi^{(k)}} - 2^{\vk^{(k)}})\, w$. Writing $m := \min(\vk^{(k)},
+\vi^{(k)})$, this difference equals $\pm\, 2^{m}(2^{\lvert s\rvert} - 1)\, w$,
+and $w$ is itself coprime to $q$ --- a common prime factor of $w$ and $q$
+would divide $q\,\aK^{(k)} = b - 2^{\vk^{(k)}} w$, hence $b$, contradicting
+$\gcd(b, q) = 1$. Since $q$ is odd, it follows that $q \mid 2^{\lvert
+s\rvert} - 1$. Now $2$ is a unit of multiplicative order exactly $\vM$
+modulo $q$: indeed $2^{\vM} = q + 1 \equiv 1 \pmod q$, while
+$0 < 2^t - 1 < 2^{\vM} - 1 = q$ for $0 < t < \vM$, so that
+$2^t \equiv 1 \pmod q$ holds if and only if $\vM \mid t$, for every integer
+$t \ge 0$. Applying this with $t = \lvert s\rvert$ gives $\vM \mid s$, whence
+$\lambda_k = 2^{j\vM}$ and $D_k = -(2^{j\vM} - 1)/q$ with $j \in \Z$ --- the
+negative-$j$ states being the rational ones ($\lambda_k = 2^{j\vM} < 1$)
+realised by the $G_1$ family of Section~\ref{sec:stage4}.
+\end{proof}
+
+The recursion and its consistency arithmetic are checked over many step
+sequences by \srcpath{code/python/recursion.py}.
+
+% =============================================================================
+\section{The level-3 structure theorem}\label{sec:stage3}
+% =============================================================================
+
+\begin{theorem}[Level-3 structure]\label{thm:stage3}
+Let $q = 2^{\vM} - 1$ with $\gcd(b, q) = 1$ (Section~\ref{sec:setup}), so
+that the converse of Theorem~\ref{thm:recursion} applies. For $\vM \ge 3$ the
+obstruction residues that
+synchronise at level $k = 3$ fall into exactly three universal families,
+with the data
+\[
+\renewcommand{\arraystretch}{1.2}
+\begin{array}{c|c|c|c|c}
+\text{family} & v_0 & \big(\vk^{(0)},\vi^{(0)}\big),\,\big(\vk^{(1)},\vi^{(1)}\big)
+ & j & (\lambda_2, D_2) \\ \hline
+A & \vM + 1 & (\vM, \vM),\,(\vM, \vM - 1) & 1 & (2^{\vM}, -1) \\
+B & \vM - 1 & (\vM - 1, 1),\,(\vM, 2\vM - 1) & 1 & (2^{\vM}, -1) \\
+C & 1       & (1, \vM + 1),\,(\vM - 1, 2\vM - 2) & 2 & (2^{2\vM}, -(2^{\vM}+1))
+\end{array}
+\]
+and synchronisation identity
+$\aK^{(2)} - 2^{j\vM}\aI^{(2)} = -\frac{2^{j\vM} - 1}{q}\, b$
+(equal to $-b$ for $A, B$ and $-(2^{\vM} + 1)\, b$ for $C$). The residues of
+families $A$ and $B$ are the arithmetic progressions
+\[
+\begin{aligned}
+A:\ &\ r = 2^{3\vM}\nu - K_A\, b, & K_A &= 2^{2\vM + 2} + 2^{\vM + 1} + 1, & \nu &\ \text{odd};\\
+B:\ &\ r = 2^{3\vM}\tau - K_B\, b, & K_B &= 5\cdot 2^{2\vM - 1} + 3\cdot 2^{\vM - 1} + 1, & \tau &\in \Z.
+\end{aligned}
+\] The constraint $\nu$ odd in family $A$ selects its atomic residues --- those
+whose leading nesting coefficient is odd, halving the cylinder and giving the
+per-level density $2^{-(k\vM + 1)}$ --- whereas family $B$'s cylinder is full
+($\tau \in \Z$, per-level density $2^{-k\vM}$); this asymmetry is the source of
+the differing family contributions to the density bound of
+Section~\ref{sec:density}. For $\vM = 2$ there is a fourth family
+$D$ with $v_0 = \vM + 3 = 5$ and $j = 3$.
+\end{theorem}
+
+\begin{proof}
+A level-$3$ sub-class (Definition~\ref{def:universal}) is a choice of initial
+nesting exponent $v_0$ and a sequence of valuation pairs
+$(\vk^{(0)}, \vi^{(0)}), (\vk^{(1)}, \vi^{(1)})$
+driving the recursion of Theorem~\ref{thm:recursion} from $(\lambda_0, D_0) =
+(2^{v_0}, -1)$ to a state $(\lambda_2, D_2)$ one step before
+synchronisation, hence of the form $(2^{j\vM}, -(2^{j\vM} - 1)/q)$. Running
+the recursion symbolically in $\vM$ for each of the three displayed
+$(v_0, \text{pair-sequence})$ data yields exactly the listed $(\lambda_2,
+D_2)$, and back-substituting through the nesting recovers the stated
+arithmetic progressions; the synchronisation identity is the relation
+$\aK^{(2)} = \lambda_2 \aI^{(2)} + D_2 b$ read off from $(\lambda_2, D_2)$.
+
+For completeness we enumerate the admissible \emph{universal} valuation data
+(Definition~\ref{def:universal}, affine in $\vM$; the families above realise
+the offsets $0, \pm 1, \pm 2$). By
+Theorem~\ref{thm:recursion} the two steps must drive $(2^{v_0}, -1)$ to a
+pre-synchronisation state $(2^{j\vM}, -(2^{j\vM}-1)/q)$, and by the
+observability bound (Theorem~\ref{thm:j-bound}) a level-$3$ sub-class visible
+at any level has $\lvert j\rvert$ bounded; the consistency relations
+$2^{\vk^{(i)}} \mid E_i$ then leave finitely many affine offset patterns to
+test, each a polynomial identity in $\vM$. Enumerating them --- symbolically
+in $\vM$ (which yields exactly $A, B, C$ for $\vM \ge 3$) and concretely for
+$q = 3, 7$ via \srcpath{code/python/stage3.py} --- shows there are no others. At
+$\vM = 2$ the families $B$ ($v_0 = \vM - 1 = 1$) and $C$ ($v_0 = 1$) share the
+same initial nesting exponent --- the offset $\vM - 2$ separating their
+nesting depths collapses to $0$ --- and an additional valuation pattern with
+$v_0 = 5$ becomes admissible, giving the extra family $D$ ($j = 3$);
+the concrete counts confirm this --- four sub-classes summing to $132$
+obstruction residues at $L = 12$ for $q = 3$, three summing to $64$ at
+$L = 14$ for $q = 7$.
+The general-$\vM$ exhaustiveness rests on this affine-shape enumeration
+rather than on an a-priori bound ruling out non-affine families.
+\end{proof}
+
+% =============================================================================
+\section{The level-4 families}\label{sec:stage4}
+% =============================================================================
+
+\begin{theorem}[Level-4 families]\label{thm:stage4}
+Let $q = 2^{\vM} - 1$ with $\vM \ge 3$. There are at least five universal
+families synchronising at level $k = 4$:
+\[
+\renewcommand{\arraystretch}{1.2}
+\begin{array}{c|c|c|c}
+\text{family} & v_0 & \big(\vk^{(0)},\vi^{(0)}\big),\,\big(\vk^{(1)},\vi^{(1)}\big),\,\big(\vk^{(2)},\vi^{(2)}\big) & j \\ \hline
+A_{\mathrm{lift}} & \vM + 1 & (\vM, \vM),\,(\vM, \vM),\,(\vM, \vM - 1) & 1 \\
+B_{\mathrm{lift}} & \vM - 1 & (\vM - 1, 1),\,(\vM, 2\vM),\,(\vM, \vM - 1) & 1 \\
+C_{\mathrm{lift}} & 1       & (1, \vM + 1),\,(\vM - 1, 2\vM - 1),\,(2\vM, \vM - 1) & 1 \\
+F_1               & \vM + 1 & (\vM, \vM - 2),\,(\vM - 1, 1),\,(\vM, 2\vM - 1) & 1 \\
+G_1               & \vM - 1 & (\vM - 1, 1),\,(\vM + 1, \vM - 1),\,(2\vM - 1, \vM) & -1
+\end{array}
+\]
+The four $j = 1$ families satisfy
+$\aK^{(3)} - 2^{\vM}\aI^{(3)} = -b$, while $G_1$ ($j = -1$) satisfies the
+rational synchronisation $\aK^{(3)} - 2^{-\vM}\aI^{(3)} = 2^{-\vM} b$. In
+addition there is a $\vM$-dependent number of further $q$-specific level-$4$
+sub-classes --- six at $\vM = 3$, four at $\vM = 4$ --- which are not universal
+in $\vM$; their count is not uniform in $\vM$.
+\end{theorem}
+
+\begin{proof}
+For each of the five displayed exponent sequences, running the recursion of
+Theorem~\ref{thm:recursion} symbolically in $\vM$ from $(\lambda_0, D_0) =
+(2^{v_0}, -1)$ produces a pre-synchronisation state $(\lambda_3, D_3) =
+(2^{j\vM}, -(2^{j\vM} - 1)/q)$ with the listed $j$; for $j = 1$ this is
+$(2^{\vM}, -1)$, giving $\aK^{(3)} - 2^{\vM}\aI^{(3)} = -b$, and for $G_1$
+the value $j = -1$ gives $\lambda_3 = 2^{-\vM}$ and $D_3 = -(2^{-\vM} - 1)/q
+= 2^{-\vM}$, the displayed rational synchronisation --- the first sub-class
+requiring a negative signed index, which is why the index must be taken in
+$\Z$ rather than $\N$. The $q$-specific families are found by the same
+recursion for fixed small $\vM$ but do not admit a closed form uniform in
+$\vM$, and their number varies with $\vM$ (six at $\vM = 3$, four at
+$\vM = 4$). The exact count of $q$-specific families is not used in any later
+bound --- the density results of Section~\ref{sec:density} only require the
+listed families to be present and pairwise disjoint, so the lower bounds hold
+regardless of how many further families exist. The symbolic sync identities of
+the five universal families are verified by \srcpath{code/python/recursion.py}; the
+exhaustive level-$4$ sub-class count --- $11$ at $\vM = 3$ and $9$ at
+$\vM = 4$, whence six and four $q$-specific families respectively --- is
+verified by \srcpath{code/python/stage4\_enum.py}.
+\end{proof}
+
+% =============================================================================
+\section{The node-lift theorem}\label{sec:nodelift}
+% =============================================================================
+
+\begin{theorem}[Node lift]\label{thm:node-lift}
+Let $q = 2^{\vM} - 1$. The recursion of Theorem~\ref{thm:recursion} has a
+unique fixed point carrying the synchronisation constant $-b$ (i.e.\ with
+$D = -1$),
+\[
+(\lambda^*, D^*) = (2^{\vM + 1}, -1),
+\]
+attained by the step $(\vk, \vi) = (\vM, \vM)$. If a level-$k$ sub-class
+passes through this $A$-node at some position $\ell$, then inserting one
+further fixed-point step $(\vM, \vM)$ at position $\ell$ produces a level-$(k+1)$
+sub-class with the same synchronisation constant $-b$. Consequently there are
+four iterated families
+\[
+A_k\ (k \ge 2), \quad B_k\ (k \ge 4), \quad C_k\ (k \ge 5), \quad F_{1,k}\ (k \ge 4),
+\]
+each satisfying $\aK^{(k-1)} - 2^{\vM}\aI^{(k-1)} = -b$, generated by
+iterating the $A$-node from the universal families of
+Sections~\ref{sec:stage3}--\ref{sec:stage4} that thread it.
+\end{theorem}
+
+\begin{proof}
+At the state $(\lambda, D) = (2^{\vM + 1}, -1)$ a step with
+$(\vk, \vi) = (\vM, \vM)$ has $\vi - \vk = 0$, so $\lambda' = \lambda$, and
+\[
+E = 1 - \lambda - q D = 1 - 2^{\vM + 1} + q
+  = 1 - 2^{\vM + 1} + (2^{\vM} - 1) = -2^{\vM},
+\]
+whence $D' = E/2^{\vk} = -2^{\vM}/2^{\vM} = -1$. Thus
+$(\lambda', D') = (2^{\vM + 1}, -1) = (\lambda, D)$: the $A$-node is fixed.
+It is moreover the unique fixed point carrying the synchronisation constant
+$-b$, i.e.\ with $D = -1$. Indeed, solving $\lambda' = \lambda$, $D' = D$ for
+such a state: $\lambda' = \lambda$ forces $\vi = \vk$ (as $\lambda' =
+\lambda 2^{\vi - \vk}$ with $\lambda \ne 0$), and then $D' = D = -1$ reads
+$E = 1 - \lambda + q = -2^{\vk}$, i.e.\
+\[
+\lambda = 1 + q + 2^{\vk} = 2^{\vM} + 2^{\vk}
+\]
+(using $1 + q = 2^{\vM}$). A sum of two powers of two is itself a power of
+two if and only if the two exponents are equal, so $\vk = \vM$ and
+$\lambda = 2^{\vM + 1}$; the $A$-node is the only such state, with no
+restriction on the valuation range required.
+
+Because the inserted step neither changes $(\lambda, D)$ nor the eventual
+synchronising value $(2^{\vM}, -1)$ reached one step later, a level-$k$
+sub-class threading the node at position $\ell$ lifts to a level-$(k+1)$
+sub-class with synchronisation constant $-b$ unchanged. Four universal
+families thread the $A$-node: $A_2$ and $F_{1,4}$ start \emph{at} it (their
+$v_0 = \vM + 1$ gives $(\lambda_0, D_0) = (2^{\vM + 1}, -1)$), while $B_4$ and
+$C_5$ reach it after some steps. Iterating the fixed-point insertion from each
+generates the towers $A_k\ (k \ge 2)$, $F_{1,k}\ (k \ge 4)$, $B_k\ (k \ge 4)$,
+$C_k\ (k \ge 5)$ at the stated minimal levels, all with synchronisation
+constant $-b$. We do not claim these are the only node-threading sub-classes
+at every level: the lower bounds of Section~\ref{sec:density} use only their
+presence and pairwise disjointness, and the asymptotic upper bound is
+conditional on the completeness hypothesis of Theorem~\ref{thm:asymptotics}.
+The fixed-point computation and the iterated synchronisation identities are
+verified symbolically in $\vM$ up to $k = 8$ by \srcpath{code/python/recursion.py}.
+\end{proof}
+
+\begin{remark}
+The level-$4$ family $C_{\mathrm{lift}}$ of Theorem~\ref{thm:stage4} (valuation
+sequence ending $(\vk^{(2)}, \vi^{(2)}) = (2\vM, \vM - 1)$) and the base $C_5$
+of the C-tower (ending $(2\vM, \vM)$, synchronising at level $5$) are distinct
+families that happen to share the letter $C$; only $C_5$ threads the $A$-node.
+\end{remark}
+
+% =============================================================================
+\section{Density lower bound}\label{sec:density}
+% =============================================================================
+
+\begin{remark}[2-adic reading of the density]\label{rem:haar}
+By the lift theorem of \cite{ObstructionResiduesFamily2026} the obstruction
+sets are lift-stable, so they define an open subset of the $2$-adic integers
+$\Ztwo$ (an increasing union of residue cylinders, the density being a
+non-decreasing limit), and $\cWq$ is its normalised Haar measure --- the negative-Mersenne
+instance of the $2$-adic density placed in the Bernstein--Lagarias tradition
+\cite{BernsteinLagarias1996} (for the $2$-adic background see
+\cite{Robert2000}). The bounds below are therefore measure lower bounds on a
+fixed subset of $\Ztwo$.
+\end{remark}
+
+\begin{theorem}[Density lower bound]\label{thm:atom-density}
+Let $q = 2^{\vM} - 1$ with $\vM \ge 2$. Then
+\[
+\cWq \ge \frac{1}{2q}.
+\]
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:mersenne-sync} the principal Mersenne-synchronising
+class is exactly the residues with $\vtwo(r + b) = \vM$ (those synchronise in a
+single step), a cylinder of density $2^{-\vM} - 2^{-\vM - 1} = 2^{-\vM - 1}$,
+and by
+Theorem~\ref{thm:node-lift} the iterated family $A_k$ ($k \ge 2$) occupies,
+for each $k$, a residue cylinder of density $2^{-k\vM - 1}$; identifying the
+principal class as the $k = 1$ term of the same geometric pattern, these
+cylinders are pairwise disjoint, because the synchronisation level is by
+definition the \emph{least} index at which the two tracks agree and is thus a
+well-defined function of $r$, so each obstruction lies in the cylinder of
+exactly one $k$. Summing,
+\[
+\cWq \ge \sum_{k = 1}^{\infty} 2^{-k\vM - 1}
+      = \frac{2^{-\vM - 1}}{1 - 2^{-\vM}}
+      = \frac{2^{-\vM - 1}\, 2^{\vM}}{2^{\vM} - 1}
+      = \frac{1}{2(2^{\vM} - 1)}
+      = \frac{1}{2q}. \qedhere
+\]
+\end{proof}
+
+\begin{corollary}[Refined lower bound]\label{cor:atom-density-extended}
+Let $\vM \ge 3$. Counting, beyond the principal class and the $A$-family,
+the full $B$-, $C$-
+and $F$-families (each the geometric tower of its members across
+synchronisation levels) and the family $G_1$,
+\[
+\cWq \ge \frac{1}{2q}
+       + \frac{2^{-2\vM}}{q}
+       + \frac{2^{-2\vM - 1}}{q}
+       + \frac{2^{-3\vM}}{q}
+       + 2^{-4\vM},
+\]
+the four correction terms being the totals of the $B$-, $C$-, $F$- and
+$G_1$-families respectively.
+\end{corollary}
+
+\begin{proof}
+Each universal family is a tower of residue cylinders, one per synchronisation
+level $k$ at and above its minimal level, and each cylinder's density is read
+off from its modulus $2^{\max(\Vk^{(k-1)},\, v_0 + \Vi^{(k-1)}) + 1}$. By
+synchronisation level the towers are pairwise disjoint, and within a level
+distinct families have distinct valuation data (the nesting $v_0$ \emph{together
+with} the valuation sequence --- $v_0$ alone does not separate them, e.g.\
+$A_{\mathrm{lift}}$ and $F_1$ share $v_0 = \vM + 1$), so all the cylinders below
+are disjoint. The members of each family letter have a fixed per-level density,
+giving a geometric series with ratio $2^{-\vM}$ and
+$\sum_{k \ge k_0} 2^{-k\vM} = 2^{-k_0\vM}\,2^{\vM}/q$:
+\[
+\renewcommand{\arraystretch}{1.3}
+\begin{array}{l|l|l|l}
+\text{family} & \text{min.\ level } k_0 & \text{per-level density} & \text{total} \\ \hline
+B & 3 & 2^{-k\vM} & \sum_{k\ge3} 2^{-k\vM} = 2^{-2\vM}/q \\
+C & 3 & 2^{-(k\vM + 1)} & \sum_{k\ge3} 2^{-(k\vM+1)} = 2^{-2\vM - 1}/q \\
+F & 4 & 2^{-k\vM} & \sum_{k\ge4} 2^{-k\vM} = 2^{-3\vM}/q \\
+G_1 & 4 & 2^{-4\vM} & 2^{-4\vM}
+\end{array}
+\]
+(the $A$-family, levels $k \ge 1$ with per-level density $2^{-(k\vM+1)}$, already
+sums to $1/(2q)$ in Theorem~\ref{thm:atom-density}). Adding the four totals to
+$1/(2q)$ gives the stated bound. The level-$3$ members of the $B$- and
+$C$-families are the families $B$, $C$ of Theorem~\ref{thm:stage3}; the
+level-$4$ members include $B_{\mathrm{lift}}$, $C_{\mathrm{lift}}$, $F_1$, $G_1$
+of Theorem~\ref{thm:stage4}; the higher members are the node-lift towers of
+Theorem~\ref{thm:node-lift}. The per-family densities and the identity of the
+total with the displayed bound are checked by
+\srcpath{code/python/refined\_decomposition.py}, and the table values by
+\srcpath{code/python/atom\_density.py}. (At $\vM = 2$ the tower decomposition
+degenerates --- families $B$ and $C$ then share $v_0 = 1$ --- so the bound is
+stated for $\vM \ge 3$; the $\vM = 2$ entry of Table~\ref{tab:density} is the
+formula evaluated at $\vM = 2$, which remains a lower bound on $\cWq$ because
+the monotone finite density of Theorem~\ref{thm:atom-density} already exceeds
+it.)
+\end{proof}
+
+\begin{table}[t]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{ccccc}
+\toprule
+$\vM$ & $q$ & $1/(2q)$ & refined bound & $\lvert\Obsq\rvert/2^L$, $L = 16$ \\
+\midrule
+$2$ & $3$  & $0.1667$ & $0.2070$ & $0.2498$ \\
+$3$ & $7$  & $0.0714$ & $0.0753$ & $0.0770$ \\
+$4$ & $15$ & $0.0333$ & $0.0338$ & $0.0338$ \\
+$5$ & $31$ & $0.0161$ & $0.0162$ & $0.0162$ \\
+\bottomrule
+\end{tabular}
+\caption{The simple bound $1/(2q)$, the refined bound of
+Corollary~\ref{cor:atom-density-extended}, and the finite density
+$\lvert\Obsq\rvert/2^L$ at $L = 16$ (with $b = 1$). Both bounds are lower
+bounds on the limit $\cWq$; the finite density is itself a monotone lower
+bound (Theorem~\ref{thm:atom-density}), still increasing for small $\vM$ and
+essentially converged for $\vM \ge 4$, where it agrees with the refined bound
+to the displayed precision. (For large $\vM$ the finite density at a fixed
+level can sit just below the refined bound, since both approach $\cWq$ from
+below.)}
+\label{tab:density}
+\end{table}
+
+Table~\ref{tab:density} compares both bounds with the finite density; the
+values are recomputed and checked against the table by
+\srcpath{code/python/atom\_density.py}.
+
+% =============================================================================
+\section{The observability bound}\label{sec:jbound}
+% =============================================================================
+
+\begin{theorem}[Observability bound]\label{thm:j-bound}
+Let $r$ be a residue in a level-$k$ sub-class with signed synchronisation
+index $j$. Then $r$ has modulus at least
+$2^{\,k + \lvert j \rvert\, \vM}$, so it contributes to $\Obsq$ only for
+\[
+L \ge k + \lvert j \rvert\, \vM, \qquad \text{equivalently} \qquad
+\lvert j \rvert \le \frac{L - k}{\vM} .
+\]
+\end{theorem}
+
+\begin{proof}
+Write $A := \Vk^{(k-1)}$ and $B := v_0 + \Vi^{(k-1)}$ for the cumulative
+modulus consumption of the two tracks up to synchronisation. The signed index
+satisfies $j\vM = B - A$, so $\lvert A - B \rvert = \lvert j \rvert\, \vM$;
+since synchronisation at level $k$ takes $k - 1$ steps and each consumes at
+least one unit of valuation on each track --- the iterates $\aK^{(i)},
+\aI^{(i)}$ are odd and $b$ is odd, so $-q\,\aK^{(i)} + b$ and
+$-q\,\aI^{(i)} + b$ are even, forcing $\vk^{(i)}, \vi^{(i)} \ge 1$ --- both
+$A$ and $B$ are sums of at
+least $k - 1$ positive terms, so $\min(A, B) \ge k - 1$, hence
+\[
+\max(A, B) = \min(A, B) + \lvert A - B \rvert \ge (k - 1) + \lvert j \rvert\, \vM .
+\]
+The residue carrying this sub-class has modulus $2^{\max(A,B) + 1}$, so it is
+visible at level $L$ only when $L \ge \max(A, B) + 1 \ge k + \lvert j \rvert\,
+\vM$, which is the claim. The bound is exercised against the enumerated
+sub-classes by \srcpath{code/python/j\_bound.py}.
+\end{proof}
+
+% =============================================================================
+\section{Asymptotic sharpness}\label{sec:asymptotics}
+% =============================================================================
+
+\begin{theorem}[Asymptotics of the density]\label{thm:asymptotics}
+Let $q = 2^{\vM} - 1$. The refined bound of
+Corollary~\ref{cor:atom-density-extended} gives the lower bound
+\[
+\cWq \ge \frac{1}{2q} + \frac{3}{2}\,\frac{2^{-2\vM}}{q}
+\]
+(its further terms, of order $2^{-3\vM}/q$, being positive).
+Suppose moreover the \emph{completeness hypothesis} that, as
+$\vM \to \infty$, the universal families of
+Sections~\ref{sec:stage3}--\ref{sec:nodelift} exhaust the obstruction density
+up to order $2^{-3\vM}/q$:
+\[
+\cWq - (\text{universal-family total})
+   = O\!\left(\frac{2^{-3\vM}}{q}\right),
+\]
+equivalently, the aggregate contribution of the $q$-specific and
+level-$(\ge 5)$ families is $O(2^{-3\vM}/q)$ (related to the sub-class growth
+of Conjecture~\ref{conj:subclass-count}). Then the
+matching upper bound holds and
+\[
+\cWq = \frac{1}{2q} + \frac{3}{2}\,\frac{2^{-2\vM}}{q}
+     + O\!\left(\frac{2^{-3\vM}}{q}\right)
+     = \frac{1}{2q}\big(1 + O(2^{-\vM})\big),
+\]
+so the simple lower bound $1/(2q)$ of Theorem~\ref{thm:atom-density} is
+asymptotically sharp. The hypothesis is corroborated by the density table
+(Table~\ref{tab:density}) but is not proved here; the sub-class growth it
+relies on is open (Conjecture~\ref{conj:subclass-count}).
+\end{theorem}
+
+\begin{proof}
+The lower bound is Corollary~\ref{cor:atom-density-extended}: the principal
+class and the $A$-family sum exactly to $1/(2q)$
+(Theorem~\ref{thm:atom-density}), and the next-order families contribute its
+four correction terms --- the $B$-family gives $2^{-2\vM}/q$, the $C$-family
+$2^{-2\vM - 1}/q$, the $F$-family $2^{-3\vM}/q$, and $G_1$ gives $2^{-4\vM}$.
+The two leading ones (the $B$- and $C$-families) sum to
+\[
+\frac{2^{-2\vM}}{q} + \frac{2^{-2\vM - 1}}{q}
+  = \Big(1 + \tfrac12\Big)\frac{2^{-2\vM}}{q}
+  = \frac{3}{2}\,\frac{2^{-2\vM}}{q},
+\]
+while the $F$-family ($2^{-3\vM}/q$) and $G_1$ ($2^{-4\vM} =
+\Theta(2^{-3\vM}/q)$, since $q = 2^{\vM} - 1$) are of the next order. For the matching upper bound, the
+order-$2^{-2\vM}/q$ mass is carried by the $B$- and $C$-families (their full
+towers), each level-$4$ $q$-specific family contributing only at the next order
+$2^{-4\vM} = O(2^{-3\vM}/q)$ and their number being bounded
+(Conjecture~\ref{conj:qspecific}). Under the stated hypothesis the level-$(\ge 5)$ and any
+remaining $q$-specific families add at most $O(2^{-3\vM}/q)$ in aggregate, so
+no further term arises at order $2^{-2\vM}/q$ and the upper bound matches the
+lower one; the relative correction to $1/(2q)$ is then $O(2^{-\vM})$. We stress
+that this aggregate-tail hypothesis is not established: the number of level-$k$
+sub-classes grows (Conjecture~\ref{conj:subclass-count}), and we have no
+a-priori bound forcing the tail below $O(2^{-3\vM}/q)$; the conclusion is
+therefore conditional. This is an asymptotic ($\vM \to \infty$) statement, not
+a finite enumeration; the finite lower bound it sharpens, and the table values
+feeding the constant $\tfrac32$, are checked by
+\srcpath{code/python/atom\_density.py}.
+\end{proof}
+
+% =============================================================================
+\section{Open problems}\label{sec:open}
+% =============================================================================
+
+\begin{conjecture}[No uniform $q$-specific form]\label{conj:qspecific}
+At each $\vM$ the level-$k$ hierarchy contains finitely many $q$-specific
+sub-classes (e.g.\ four at $\vM = 4$, level $4$) beyond the universal
+families, but there is no closed form for them uniform in $\vM$.
+\end{conjecture}
+
+\begin{conjecture}[Sub-class growth]\label{conj:subclass-count}
+The number $\#\Sigma_k(\vM)$ of level-$k$ sub-classes grows exponentially in
+$k$ with ratio between $3$ and $4$; no second-order linear recurrence fits
+beyond three data points.
+\end{conjecture}
+
+\begin{conjecture}[Spectral exponent]\label{conj:alpha}
+The growth exponent $\alpha(\vM)$ governing $\lvert \Atomq \rvert$, the
+spectral radius of the transfer matrix of the recursion, has no closed form;
+the empirical estimates remain $L$-dependent within the tested range. An
+operator-theoretic route in the spirit of the Wirsching operator for the
+$3n+1$ map \cite{Wirsching1998} is the natural setting for this question.
+\end{conjecture}
+
+\begin{conjecture}[Non-Mersenne density]\label{conj:nonmersenne}
+For non-Mersenne $q$ the principal class is absent
+(Corollary~\ref{cor:nonmersenne}) and, empirically,
+$\cWq = \Theta\big(4^{-\ord_q(2)}\big)$, matching the generic positive-multiplier
+scale of \cite{ObstructionResiduesFamily2026} rather than the
+$\Theta(2^{-\vM})$ scale of the Mersenne ladder.
+\end{conjecture}
+
+\begin{conjecture}[Sign conjugation]\label{conj:conjugation}
+The positive-multiplier obstructions are not contained in the
+negative-multiplier ones, $\Obs^{(+q)} \not\subseteq \Obs^{(-q)}$; whether an
+arithmetic bijection (rather than the failed identity inclusion) relates the
+obstructions of the two signs is open.
+\end{conjecture}
+
+% =============================================================================
+\section*{Funding and competing interests}
+% =============================================================================
+
+The author received no funding for this research and declares no competing
+interests.
+
+% =============================================================================
+\bibliographystyle{amsplain}
+\bibliography{references}
+
+\end{document}
