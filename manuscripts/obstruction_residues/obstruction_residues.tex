@@ -28,6 +28,11 @@
   linkcolor=blue!50!black,
   citecolor=blue!50!black,
   urlcolor=blue!50!black,
+  % All theorem-like environments share the `theorem` counter (sibling=)
+  % with numberwithin=section, so hyperref's default name-based anchors
+  % (theorem.1, lemma.1, ...) collide across sections; let hyperref assign
+  % its own unique anchor names to silence the duplicate-destination warnings.
+  hypertexnames=false,
 }
 % cleveref must load after hyperref; with thmtools it derives the printed
 % reference type word (Lemma/Theorem/...) from the actual environment.
@@ -47,6 +52,10 @@
 \declaretheorem[style=definition, name=Definition, sibling=theorem]{definition}
 \declaretheorem[style=definition, name=Example, sibling=theorem]{example}
 \declaretheorem[style=remark, name=Remark, sibling=theorem]{remark}
+% Unnumbered variant, used to re-state an already-numbered theorem verbatim
+% (e.g. the full-factor-complexity theorem in its own section) without
+% consuming a second counter value or a duplicate hyperref anchor.
+\declaretheorem[style=plain, name=Theorem, numbered=no]{theorem*}
 
 % Force always-capitalised cleveref type names, matching the manuscript style,
 % so `\cref` alone (no hand-typed word) prints e.g. "Lemma 2.5".
@@ -278,7 +287,7 @@ For $r \in \Obs_L$, write $w_r \in \{0,1\}^L$ for the binary representation
 of $r$ as an $L$-bit word, least significant bit first. The
 \emph{factor language} of the obstruction family is
 \[
-\Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ is a factor of some } w_r,\; r \in \Obs_L \text{ for some } L \,\},
+\Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ is a factor of } w_r \text{ for some } r \in \Obs_L,\, L \ge 5 \,\},
 \]
 and the \emph{factor complexity function} is
 $p_W(\ell) := |\Fac(\Obs) \cap \{0,1\}^\ell|$.
@@ -896,9 +905,9 @@ $p_W(\ell) := |\Fac(\Obs) \cap \{0,1\}^\ell|$. Trivially $p_W(\ell) \le 2^\ell$.
 
 \subsection{The main theorem}
 
-\begin{theorem}[restating \cref{thm:fc-intro}]
+\begin{theorem*}[restating \cref{thm:fc-intro}]
 For every $\ell \ge 0$, $p_W(\ell) = 2^\ell$.
-\end{theorem}
+\end{theorem*}
 
 \begin{proof}
 The case $\ell = 0$ is the empty word, which is trivially a factor of every
