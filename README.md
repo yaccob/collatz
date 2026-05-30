@@ -9,12 +9,13 @@ Publication-ready manuscripts and supporting code on the $3x+1$ problem.
 ├── Makefile                       build orchestration
 ├── README.md                      this file
 ├── .githooks/                     versioned git hooks (pre-commit PDF rebuild)
-└── manuscripts/
-    └── obstruction_residues/      obstruction-residue theory for the 3x-1 map
-        ├── obstruction_residues.tex   LaTeX source (amsart)
-        ├── obstruction_residues.pdf   built PDF (kept in sync via pre-commit hook)
-        ├── references.bib             BibTeX bibliography
-        └── code/                      verification scripts (pure Python stdlib)
+└── manuscripts/                      one directory per manuscript (<slug>/),
+                                      each with <slug>.tex, <slug>.pdf (kept in
+                                      sync via pre-commit hook), references.bib,
+                                      and code/ (verification scripts)
+    ├── obstruction_residues/         obstruction-residue theory for the 3x-1 map
+    ├── obstruction_residues_family/  the (an+b) family: uniform theory across multipliers
+    └── negative_mersenne/            negative-Mersenne multipliers a = -(2^k - 1)
 ```
 
 ## Build
@@ -49,6 +50,28 @@ associated binary language, and structural-rigidity corollaries
 a primitive substitution shift). See `manuscripts/obstruction_residues/obstruction_residues.tex`
 for the full text and `manuscripts/obstruction_residues/code/README.md` for the
 mapping between scripts and verified results.
+
+### obstruction_residues_family
+
+*Obstruction residues for the $(an+b)$ family: a uniform theory across
+multipliers.* Develops a bias-axis conjugation making cardinality and density
+depend only on the multiplier $a$, a multiplier-order lemma, the existence of
+the asymptotic density, and a no-shift-zero-atom theorem; it flags the
+negative-Mersenne case as admitting a finer structure, treated in the next
+manuscript. See `manuscripts/obstruction_residues_family/` for the text and its
+`code/README.md` for the script-to-result mapping.
+
+### negative_mersenne
+
+*Obstruction residues at negative-Mersenne multipliers: a synchronisation
+hierarchy and density bounds.* Isolates the multipliers $a = -q$,
+$q = 2^{v_M}-1$, and develops the finer structure the family theory flags as
+case-specific: an exact Mersenne-only identity, a recursion on an affine
+certificate, level-3 and level-4 sub-class classifications, a node-lift
+theorem, a density lower bound $c_W^{(-q)} \ge 1/(2q)$ (asymptotically sharp as
+$v_M \to \infty$ under a stated completeness hypothesis), and an observability
+bound. See `manuscripts/negative_mersenne/` for the text and its
+`code/README.md` for the script-to-result mapping.
 
 ## License
 
