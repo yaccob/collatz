@@ -469,13 +469,13 @@ We call such $r$ \emph{obstruction residues} because $\Xend(r, L) = 1$ is
 exactly the rigidity that forces the two parallel reductions to terminate in
 lockstep (\cref{cor:sync}) and collapses their terminal affine
 relation to the shift-$s$ normal form developed below; a generic residue
-exhibits no such coupling. The name also has a dynamical reading: $\Xend = 1$
-implies a synchronization of stopping times --- starting from $r$ and from any
-$n \equiv r \pmod{2^L}$, the stopping-time difference between the
-$\Tminus$ and $\Tminus^{(3)}$ iterates, where $\Tminus^{(3)}$ denotes the
-$3$-applications-of-$\Tminus$ variant, remains constant. The present
-paper develops only the algebraic side; the dynamical interpretation
-motivates the definition but is logically independent of the proofs below.
+exhibits no such coupling. The name also has a dynamical reading: $\Xend = 1$ is precisely the
+condition under which the two parallel reductions stop simultaneously
+(\cref{cor:sync}), a rigidity uniform over the residue class
+$n \equiv r \pmod{2^L}$. The present paper develops only this algebraic
+side; the dynamical interpretation in terms of $\Tminus$-trajectory
+stopping times motivates the definition but is logically independent of
+the proofs below.
 
 \subsection{A worked instance}
 
@@ -904,7 +904,7 @@ For every $\ell \ge 0$, $p_W(\ell) = 2^\ell$.
 \end{theorem}
 
 \begin{proof}
-The case $n = 0$ is the empty word, which is trivially a factor of every
+The case $\ell = 0$ is the empty word, which is trivially a factor of every
 $w_r$, so $p_W(0) = 1 = 2^0$. Fix $\ell \ge 1$ and
 $u = (u_0, u_1, \ldots, u_{\ell-1}) \in \{0,1\}^\ell$. Choose
 any anchor $r_0 \in \Obs_6 = \{19, 27, 59\}$ (verified by direct enumeration;
@@ -913,7 +913,7 @@ individually realises every pattern, as direct enumeration via the
 lift-symmetry table confirms; for the proof one anchor suffices.
 Define inductively
 \[
-r_k := r_{k-1} + u_{k-1} \cdot 2^{5 + k}, \qquad k = 1, 2, \ldots, n.
+r_k := r_{k-1} + u_{k-1} \cdot 2^{5 + k}, \qquad k = 1, 2, \ldots, \ell.
 \]
 We claim $r_k \in \Obs_{6+k}$ for each $k$. The base $k = 0$ is by choice of
 $r_0$. For the inductive step from $k-1$ to $k$: if $u_{k-1} = 0$ then
@@ -921,8 +921,8 @@ $r_k = r_{k-1}$, so $r_k$ is the $r_+$ lift and lies in $\Obs_{6+k}$ by
 \cref{thm:lift-plus}; if $u_{k-1} = 1$ then $r_k = r_{k-1} + 2^{5+k}$
 is the $r_-$ lift and lies in $\Obs_{6+k}$ by \cref{thm:lift-minus}.
 
-By construction, $w_{r_n}[5+k] = u_{k-1}$ for $k = 1, \ldots, n$, so $u$
-appears as a factor of $w_{r_n}$ at positions $6, \ldots, 5+n$. Thus
+By construction, $w_{r_\ell}[5+k] = u_{k-1}$ for $k = 1, \ldots, \ell$, so $u$
+appears as a factor of $w_{r_\ell}$ at positions $6, \ldots, 5+\ell$. Thus
 $u \in \Fac(\Obs)$ for every $u \in \{0,1\}^\ell$, hence $p_W(\ell) \ge 2^\ell$.
 Combined with the trivial upper bound, $p_W(\ell) = 2^\ell$. \qedhere
 \end{proof}
