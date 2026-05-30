@@ -19,6 +19,7 @@
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{placeins}
+\usepackage{tikz}
 \usepackage{hyperref}
 \usepackage{xurl}
 \hypersetup{
@@ -41,6 +42,10 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+% Examples carry their own counter (like figures/tables) so that adding one
+% never renumbers the theorem-counter results referenced by the supporting
+% code and knowledge-graph instance.
+\newtheorem{example}{Example}
 
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
@@ -295,7 +300,7 @@ normal form} of the terminal data. We prove in Section~\ref{sec:setup}
 (Lemma~\ref{lem:parity}) that whenever the parallel reduction terminates
 with $\Xend = 1$, the terminal pair has the form
 \[
-(\cend, \dend) = \left(4^s, \frac{1 - 4^s}{3}\right) \qquad \text{for some } a \in \Z.
+(\cend, \dend) = \left(4^s, \frac{1 - 4^s}{3}\right) \qquad \text{for some } s \in \Z.
 \]
 The integer $s$, which we call the \emph{shift index}, measures the
 difference between the $2$-adic valuations of the two parallel trajectories.
@@ -452,14 +457,50 @@ $\Obs_6 = \{19, 27, 59\}$, comprising the new atomic residue $19$
 and the two lifts $\{27, 59\}$ of $27 \in \Obs_5$.
 \end{remark}
 
-The connection between this algebraic definition and the dynamics of
-$\Tminus$ trajectories is, briefly, that $\Xend = 1$ implies a
-synchronization of stopping times: starting from $r$ and from any
+We call such $r$ \emph{obstruction residues} because $\Xend(r, L) = 1$ is
+exactly the rigidity that forces the two parallel reductions to terminate in
+lockstep (Corollary~\ref{cor:sync}) and collapses their terminal affine
+relation to the shift-$s$ normal form developed below; a generic residue
+exhibits no such coupling. The name also has a dynamical reading: $\Xend = 1$
+implies a synchronization of stopping times --- starting from $r$ and from any
 $n \equiv r \pmod{2^L}$, the stopping-time difference between the
-$\Tminus$ and $\Tminus^{(3)}$ iterates --- where $\Tminus^{(3)}$ denotes the
-$3$-applications-of-$\Tminus$ variant --- remains constant. The present
-paper develops only the algebraic side; the dynamical interpretation is
-not used in any proof below.
+$\Tminus$ and $\Tminus^{(3)}$ iterates, where $\Tminus^{(3)}$ denotes the
+$3$-applications-of-$\Tminus$ variant, remains constant. The present
+paper develops only the algebraic side; the dynamical interpretation
+motivates the definition but is logically independent of the proofs below.
+
+\subsection{A worked instance}
+
+\begin{example}[The reduction at $r = 27$, and a non-obstruction]
+\label{ex:r27}
+Take $r = 27$ at level $L = 5$, so $v = \vtwo(26) = 1$ and $m = 13$. Running
+the two tracks (with $\vk^{(j)} := \vtwo(3 a_K^{(j)} - 1)$ and
+$\vi^{(j)} := \vtwo(3 a_I^{(j)} - 1)$, and recording the affine data of
+Lemma~\ref{lem:affine}):
+\[
+\begin{array}{c|cc|cc|cc}
+j & a_K^{(j)} & a_I^{(j)} & \vk^{(j)} & \vi^{(j)} & c_j & d_j \\
+\hline
+0 & 27 & 13 & 4 & 1 & \tfrac12 & -\tfrac12 \\
+1 & 5  & 19 & 1 & 3 & 4         & -1
+\end{array}
+\]
+Both tracks stop at $j = 1$: on the K-track
+$\vk^{(1)} = 1 \ge L - \Vk^{(1)} = 5 - 4 = 1$, and on the I-track
+$\vi^{(1)} = 3 \ge (L - v) - \Vi^{(1)} = 4 - 1 = 3$. The terminal pair is
+$(c_J, d_J) = (4, -1)$, so $\Xend(27, 5) = 3 \cdot (-1) + 4 = 1$ and
+$27 \in \Obs_5$.
+
+By contrast, $r = 7$ at $L = 5$ (here $v = 1$, $m = 3$) stops at $J = 1$ with
+terminal pair $(c_J, d_J) = (\tfrac14, -\tfrac14)$, giving
+$\Xend(7, 5) = 3 \cdot (-\tfrac14) + \tfrac14 = -\tfrac12 \ne 1$, so
+$7 \notin \Obs_5$. The pair pinpoints what the criterion tests: $r = 7$ shares
+with every obstruction an \emph{even} terminal valuation difference --- here
+$\Vk^{(J)} - \Vi^{(J)} - v = 2 - 3 - 1 = -2$ --- yet fails $\Xend = 1$ because
+its terminal $d_J$ comes out wrong. The parity lemma below shows this even
+difference is necessary for every obstruction; $r = 7$ shows it is not
+sufficient.
+\end{example}
 
 \subsection{The parity lemma}
 
@@ -743,9 +784,38 @@ shift index. \qedhere
 
 So lifting an obstruction with shift index $s \ne 0$ always produces one
 shift-$s$ obstruction and one shift-zero obstruction at the next level;
-lifting a shift-zero obstruction produces two shift-zero obstructions.
-This is the symmetry that drives the recurrence developed in
-Section~\ref{sec:Gs}.
+lifting a shift-zero obstruction produces two shift-zero obstructions
+(Figure~\ref{fig:lift-tree}). This is the symmetry that drives the recurrence
+developed in Section~\ref{sec:Gs}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  level distance=12mm,
+  level 1/.style={sibling distance=44mm},
+  level 2/.style={sibling distance=22mm},
+  every node/.style={draw, rounded corners, inner sep=3.5pt, font=\small},
+  edge from parent/.style={draw, thick}
+]
+\node[fill=blue!12] {$G_s,\ s \ne 0$}
+  child {node[fill=blue!12] {$G_s$}
+    child {node[fill=blue!12] {$G_s$}}
+    child {node[fill=black!8] {$G_0$}}
+  }
+  child {node[fill=black!8] {$G_0$}
+    child {node[fill=black!8] {$G_0$}}
+    child {node[fill=black!8] {$G_0$}}
+  };
+\end{tikzpicture}
+\caption{Two generations of lifts (Proposition~\ref{prop:lift-symmetry}). A
+shift-nonzero obstruction (blue) splits into one shift-nonzero and one
+shift-zero child; a shift-zero obstruction (grey) splits into two shift-zero
+children. Shift-zero is therefore \emph{absorbing} under lifting: it never
+produces a shift-nonzero residue. The single persisting shift-nonzero line,
+shedding one shift-zero child per level, is the combinatorial engine behind
+the strict lift balance of Corollary~\ref{cor:lift-balance}.}
+\label{fig:lift-tree}
+\end{figure}
 
 % =============================================================================
 \section{Positive density}
