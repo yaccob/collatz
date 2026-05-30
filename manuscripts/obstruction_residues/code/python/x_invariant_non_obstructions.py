@@ -66,7 +66,7 @@ def trace_X(r, L):
 def classify_obstr_at_level(L):
     """obstructions in t_{-1} ∩ t_{-3} mod 2^L (rigorously known)."""
     # Atomic obstructions per level (post-fb9a4da: Atom_5 = {27}, Atom_6 = {19}).
-    # Used to enumerate Obs_L via the atom decomposition (Lemma 6.1).
+    # Used to enumerate Obs_L via the atom decomposition (`lem:atom-decomp`).
     atoms = {
         5: {27},
         6: {19},
@@ -98,7 +98,7 @@ def classify_obstr_mod64():
 def main():
     print(
         "X-invariant characterisation check, restricted to classes with v_2(r-1) = 1\n"
-        "(Definition 2.2 of the manuscript): r is an obstruction iff X_end(r, L) = 1.\n"
+        "(`def:obstruction`): r is an obstruction iff X_end(r, L) = 1.\n"
     )
 
     any_violation = False
