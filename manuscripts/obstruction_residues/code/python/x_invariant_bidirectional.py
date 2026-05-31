@@ -1,4 +1,4 @@
-"""Bidirectional verification of the X-invariant criterion (Definition 2.2 of the manuscript).
+"""Bidirectional verification of the X-invariant criterion (`def:obstruction`).
 
 For r odd with v = v_2(r-1) >= 1, the I-track of the parallel reduction
 starts at (m, 2^(L-v)) where m = (r-1)/2^v. Initial coefficients:
@@ -68,7 +68,7 @@ def trace_X_proper(r, L):
 
 
 # Atomic obstructions per level (post-fb9a4da: Atom_5 = {27}, Atom_6 = {19}).
-# Used to enumerate Obs_L via the atom decomposition (Lemma 6.1): every
+# Used to enumerate Obs_L via the atom decomposition (`lem:atom-decomp`): every
 # r in Obs_L has a unique anchor a in ATOMS[L_a] and lift bits j*2^{L_a}
 # producing r mod 2^L.
 ATOMS = {
@@ -98,7 +98,7 @@ def obstructions_mod(L):
 
 
 def main():
-    print("Bidirectional X-invariant check (Definition 2.2 of the manuscript):\n")
+    print("Bidirectional X-invariant check (`def:obstruction`):\n")
 
     any_violation = False
     for L in [5, 6, 7, 8, 9, 10, 11, 12]:

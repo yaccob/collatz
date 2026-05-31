@@ -1,5 +1,5 @@
-"""Empirical verification of simultaneous stop and parity (Corollary 2.5 and
-Lemma 2.4 of the manuscript).
+"""Empirical verification of simultaneous stop and parity (`cor:sync` and
+`lem:parity`).
 
 For each G_0-obstruction r at level L (i.e. r ∈ Ω_L with shift index a = 0):
 - compute the synchronization step j* at which the K- and I-tracks meet;
@@ -96,7 +96,7 @@ def trace_with_sync(r, L):
 def main():
     L = int(sys.argv[1]) if len(sys.argv) > 1 else 12
     print(f"Step A + B verification at L = {L}\n")
-    print("Lemma 2.4 (parity lemma) at the synchronization step j*:")
+    print("Parity lemma (`lem:parity`) at the synchronization step j*:")
     print("  V_K^(j*) - V_I^(j*) = v")
     print("Synchronisation check: V_K - V_I = v at j* (parity lemma at sync index)\n")
 
@@ -146,9 +146,9 @@ def main():
             f"  → Parity-at-sync holds for ALL {len(g0_obstructions)} G_0 obstructions. ✓"
         )
 
-    # Endpoint check (Corollary 2.5 + Lemma 2.4 at termination):
+    # Endpoint check (`cor:sync` + `lem:parity` at termination):
     # V_K^(J) - V_I^(J) = v (parity lemma applied at termination index).
-    print("\nEndpoint parity: V_K^(J) - V_I^(J) = v (Lemma 2.4 / Corollary 2.5).")
+    print("\nEndpoint parity: V_K^(J) - V_I^(J) = v (`lem:parity` / `cor:sync`).")
     iso_violations = sum(
         1 for w in g0_obstructions if w["V_K_total"] - w["V_I_total"] != w["v"]
     )

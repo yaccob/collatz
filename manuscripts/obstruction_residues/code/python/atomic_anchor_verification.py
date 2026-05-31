@@ -1,4 +1,4 @@
-"""Empirical verification of the atom decomposition (Lemma 6.1 of the manuscript):
+"""Empirical verification of the atom decomposition (`lem:atom-decomp`):
 every obstruction r ∈ Ω_L has a unique atomic anchor r_0 ∈ A_{L_0} (L_0 ≤ L)
 and bit-choice u such that r = r_0 + Σ u_k · 2^{L_0 + k}.
 

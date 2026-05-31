@@ -173,7 +173,7 @@ def main():
 
     if classification.get("NOT_obstr_at_L-1", 0) > 0:
         print(
-            "\n*** Theorem 6.2 (no shift-zero atoms) VIOLATED: there exist "
+            "\n*** No shift-zero atoms (`thm:no-G0-atom`) VIOLATED: there exist "
             "G_0-obstructions r at L whose mod-2^{L-1} reduction is NOT an "
             "obstruction at L-1!"
         )
@@ -184,7 +184,7 @@ def main():
         sys.exit(1)
     else:
         print(
-            "\n*** Theorem 6.2 (no shift-zero atoms) holds empirically "
+            "\n*** No shift-zero atoms (`thm:no-G0-atom`) holds empirically "
             "at L = {} ***".format(L)
         )
 

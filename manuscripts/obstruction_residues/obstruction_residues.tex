@@ -5,6 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{thmtools}
 \usepackage{microtype}
 % Pre-trigger microtype's expansion setup for the OT1-encoded cmr sizes that
 % are first used inside math (5pt scriptscriptstyle) and inside the .bbl
@@ -19,6 +20,7 @@
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{placeins}
+\usepackage{tikz}
 \usepackage{hyperref}
 \usepackage{xurl}
 \hypersetup{
@@ -26,24 +28,44 @@
   linkcolor=blue!50!black,
   citecolor=blue!50!black,
   urlcolor=blue!50!black,
+  % All theorem-like environments share the `theorem` counter (sibling=)
+  % with numberwithin=section, so hyperref's default name-based anchors
+  % (theorem.1, lemma.1, ...) collide across sections; let hyperref assign
+  % its own unique anchor names to silence the duplicate-destination warnings.
+  hypertexnames=false,
 }
+% cleveref must load after hyperref; with thmtools it derives the printed
+% reference type word (Lemma/Theorem/...) from the actual environment.
+\usepackage{cleveref}
 
 % Allow short final pages: avoids the cosmetic "Underfull \vbox" warning
 % from amsart's default \flushbottom on the section-boundary page.
 \raggedbottom
 
 % --- Theorem environments -----------------------------------------------------
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{proposition}[theorem]{Proposition}
+% Declared via thmtools so cleveref derives each reference's type word from the
+% environment, even though all share the `theorem` counter (sibling=theorem).
+\declaretheorem[style=plain, name=Theorem, numberwithin=section]{theorem}
+\declaretheorem[style=plain, name=Lemma, sibling=theorem]{lemma}
+\declaretheorem[style=plain, name=Corollary, sibling=theorem]{corollary}
+\declaretheorem[style=plain, name=Proposition, sibling=theorem]{proposition}
+\declaretheorem[style=definition, name=Definition, sibling=theorem]{definition}
+\declaretheorem[style=definition, name=Example, sibling=theorem]{example}
+\declaretheorem[style=remark, name=Remark, sibling=theorem]{remark}
+% Unnumbered variant, used to re-state an already-numbered theorem verbatim
+% (e.g. the full-factor-complexity theorem in its own section) without
+% consuming a second counter value or a duplicate hyperref anchor.
+\declaretheorem[style=plain, name=Theorem, numbered=no]{theorem*}
 
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-
-\theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
+% Force always-capitalised cleveref type names, matching the manuscript style,
+% so `\cref` alone (no hand-typed word) prints e.g. "Lemma 2.5".
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{definition}{Definition}{Definitions}
+\crefname{example}{Example}{Examples}
+\crefname{remark}{Remark}{Remarks}
 
 % --- Macros -------------------------------------------------------------------
 \newcommand{\Tplus}{T_{+}}
@@ -151,7 +173,7 @@ counterpart; the explicit transfer we use in
 Section~\ref{sec:tplus}, however, is different --- a residue-level
 involution $r \mapsto 2^L - r$ that conjugates the $\Tminus$ parallel
 reduction into the $\Tplus$ parallel reduction step-by-step
-(Lemma~\ref{lem:involution-step}).
+(\cref{lem:involution-step}).
 
 The present paper is concerned with a family of residue classes modulo
 $2^L$ that arises naturally in the dynamics of $\Tminus$. We show that this
@@ -190,7 +212,7 @@ terminal pair $(\cend, \dend)$ and define the scalar invariant
 For an odd integer $r$ with $\vtwo(r-1) \ge 1$ and a level $L > \vtwo(r-1)$,
 we call $r$ an \emph{obstruction residue at level $L$} when
 $\Xend(r, L) = 1$, and write $\Obs_L \subseteq \{1, \ldots, 2^L\}$ for
-the set of all such residues. Definition~\ref{def:obstruction} in
+the set of all such residues. \cref{def:obstruction} in
 Section~\ref{sec:setup} restates this with the parallel reduction made
 explicit; the typical case is $v = 1$, i.e.\ $r \equiv 3 \pmod 4$.
 
@@ -220,7 +242,7 @@ arbitrary bit patterns under lift, gives (Q3). All three are answered in
 the affirmative by the main results; in particular the factor language
 $\Fac(\Obs)$ defined below turns out to be all of $\{0,1\}^*$.
 
-\subsection{Main results}
+\subsection{Main results}\label{sec:main-results}
 
 \begin{theorem}[Constructive lift]
 \label{thm:lift-intro}
@@ -231,10 +253,10 @@ $r_- := r_0 + 2^{L_0}$ are obstruction residues at level $L_0 + 1$.
 The proof, given in Section~\ref{sec:lift}, proceeds by case analysis on a
 finite invariant of the parallel reduction. (No explicit lower bound on
 $L_0$ is needed: for $L_0 \le 4$ the family $\Obs_{L_0}$ is empty
-(Remark~\ref{rem:smallest-level}) and the statement is vacuous; the
+(\cref{rem:smallest-level}) and the statement is vacuous; the
 smallest non-vacuous level is $L_0 = 5$ with $\Obs_5 = \{27\}$. The
 proof in Section~\ref{sec:lift} only uses $L_0 > v$, which is automatic
-from $r_0 \in \Obs_{L_0}$ by Definition~\ref{def:obstruction}.) The lift is explicit: for each $r_0$,
+from $r_0 \in \Obs_{L_0}$ by \cref{def:obstruction}.) The lift is explicit: for each $r_0$,
 the terminal data of the reduction at $r_+$ or $r_-$ is determined by a
 closed-form algebraic identity.
 
@@ -265,7 +287,7 @@ For $r \in \Obs_L$, write $w_r \in \{0,1\}^L$ for the binary representation
 of $r$ as an $L$-bit word, least significant bit first. The
 \emph{factor language} of the obstruction family is
 \[
-\Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ is a factor of some } w_r,\; r \in \Obs_L \text{ for some } L \,\},
+\Fac(\Obs) := \{\, u \in \{0,1\}^* : u \text{ is a factor of } w_r \text{ for some } r \in \Obs_L,\, L \ge 5 \,\},
 \]
 and the \emph{factor complexity function} is
 $p_W(\ell) := |\Fac(\Obs) \cap \{0,1\}^\ell|$.
@@ -282,8 +304,8 @@ The proof, in Section~\ref{sec:fc}, is constructive: for each binary word
 $u$, we exhibit an explicit residue $r(u)$ in some $\Obs_L$ having $u$ as a
 factor. The construction is a direct iteration of the lift theorem.
 
-A consequence of Theorem~\ref{thm:fc-intro} is a sharp structural rigidity
-(Corollary~\ref{cor:no-substitution}): the obstruction family cannot be
+A consequence of \cref{thm:fc-intro} is a sharp structural rigidity
+(\cref{cor:no-substitution}): the obstruction family cannot be
 described as a proper subshift of finite type, a proper sofic shift, or a
 primitive substitution shift in the sense of Pansiot~\cite{Pansiot1984} or
 Devyatov~\cite{Devyatov2015}.
@@ -292,16 +314,16 @@ Devyatov~\cite{Devyatov2015}.
 
 All three theorems rest on a single algebraic structure: the \emph{shift-$s$
 normal form} of the terminal data. We prove in Section~\ref{sec:setup}
-(Lemma~\ref{lem:parity}) that whenever the parallel reduction terminates
+(\cref{lem:parity}) that whenever the parallel reduction terminates
 with $\Xend = 1$, the terminal pair has the form
 \[
-(\cend, \dend) = \left(4^s, \frac{1 - 4^s}{3}\right) \qquad \text{for some } a \in \Z.
+(\cend, \dend) = \left(4^s, \frac{1 - 4^s}{3}\right) \qquad \text{for some } s \in \Z.
 \]
 The integer $s$, which we call the \emph{shift index}, measures the
 difference between the $2$-adic valuations of the two parallel trajectories.
-Theorem~\ref{thm:lift-intro} is proved by case analysis on how the shift
-index evolves under lift; Theorem~\ref{thm:fc-intro} is the iterative
-consequence; Theorem~\ref{thm:density-intro} follows by monotonicity
+\cref{thm:lift-intro} is proved by case analysis on how the shift
+index evolves under lift; \cref{thm:fc-intro} is the iterative
+consequence; \cref{thm:density-intro} follows by monotonicity
 from the lift. A refined classification by shift index
 (Section~\ref{sec:Gs}) then re-expresses $c_W$ as a convergent series and
 isolates the remaining open question.
@@ -318,10 +340,10 @@ beyond the Lagarias intertwining.
 
 Section~\ref{sec:setup} introduces the parallel reduction, defines the
 $X$-invariant rigorously, and proves the parity lemma. Section~\ref{sec:lift}
-contains the proof of Theorem~\ref{thm:lift-intro}, split into the two
+contains the proof of \cref{thm:lift-intro}, split into the two
 stop-type cases. Section~\ref{sec:density} derives
-Theorem~\ref{thm:density-intro} as a direct corollary. Section~\ref{sec:fc}
-proves Theorem~\ref{thm:fc-intro} and derives the structural rigidity
+\cref{thm:density-intro} as a direct corollary. Section~\ref{sec:fc}
+proves \cref{thm:fc-intro} and derives the structural rigidity
 corollary. Section~\ref{sec:Gs} develops the classification by shift index,
 proves the strict lift balance and series representation, and isolates the
 remaining open problem. Section~\ref{sec:tplus} transfers the results to the
@@ -419,7 +441,7 @@ We define the \emph{$X$-invariant} of the parallel reduction at $(r, L)$ as
 \Xend(r, L) := X_J = 3 d_J + c_J.
 \]
 This is not invariant under the update step; the name reflects its role
-as the obstruction certificate (Definition~\ref{def:obstruction}).
+as the obstruction certificate (\cref{def:obstruction}).
 
 \subsection{Definition of obstruction residues}
 
@@ -452,14 +474,47 @@ $\Obs_6 = \{19, 27, 59\}$, comprising the new atomic residue $19$
 and the two lifts $\{27, 59\}$ of $27 \in \Obs_5$.
 \end{remark}
 
-The connection between this algebraic definition and the dynamics of
-$\Tminus$ trajectories is, briefly, that $\Xend = 1$ implies a
-synchronization of stopping times: starting from $r$ and from any
-$n \equiv r \pmod{2^L}$, the stopping-time difference between the
-$\Tminus$ and $\Tminus^{(3)}$ iterates --- where $\Tminus^{(3)}$ denotes the
-$3$-applications-of-$\Tminus$ variant --- remains constant. The present
-paper develops only the algebraic side; the dynamical interpretation is
-not used in any proof below.
+We call such $r$ \emph{obstruction residues} because $\Xend(r, L) = 1$ is
+exactly the rigidity that forces the two parallel reductions to terminate in
+lockstep (\cref{cor:sync}) and collapses their terminal affine
+relation to the shift-$s$ normal form developed below; a generic residue
+exhibits no such coupling. The name also has a dynamical reading at the
+level of $\Tminus$-trajectories rather than the parallel reduction; this
+reading motivates the definition but is developed elsewhere, and the
+present paper uses only the algebraic side established above.
+
+\subsection{A worked instance}
+
+\begin{example}[The reduction at $r = 27$, and a non-obstruction]
+\label{ex:r27}
+Take $r = 27$ at level $L = 5$, so $v = \vtwo(26) = 1$ and $m = 13$. Running
+the two tracks (with $\vk^{(j)} := \vtwo(3 a_K^{(j)} - 1)$ and
+$\vi^{(j)} := \vtwo(3 a_I^{(j)} - 1)$, and recording the affine data of
+\cref{lem:affine}):
+\[
+\begin{array}{c|cc|cc|cc}
+j & a_K^{(j)} & a_I^{(j)} & \vk^{(j)} & \vi^{(j)} & c_j & d_j \\
+\hline
+0 & 27 & 13 & 4 & 1 & \tfrac12 & -\tfrac12 \\
+1 & 5  & 19 & 1 & 3 & 4         & -1
+\end{array}
+\]
+Both tracks stop at $j = 1$: on the K-track
+$\vk^{(1)} = 1 \ge L - \Vk^{(1)} = 5 - 4 = 1$, and on the I-track
+$\vi^{(1)} = 3 \ge (L - v) - \Vi^{(1)} = 4 - 1 = 3$. The terminal pair is
+$(c_J, d_J) = (4, -1)$, so $\Xend(27, 5) = 3 \cdot (-1) + 4 = 1$ and
+$27 \in \Obs_5$.
+
+By contrast, $r = 7$ at $L = 5$ (here $v = 1$, $m = 3$) stops at $J = 1$ with
+terminal pair $(c_J, d_J) = (\tfrac14, -\tfrac14)$, giving
+$\Xend(7, 5) = 3 \cdot (-\tfrac14) + \tfrac14 = -\tfrac12 \ne 1$, so
+$7 \notin \Obs_5$. The pair pinpoints what the criterion tests: $r = 7$ shares
+with every obstruction an \emph{even} terminal valuation difference --- here
+$\Vk^{(J)} - \Vi^{(J)} - v = 2 - 3 - 1 = -2$ --- yet fails $\Xend = 1$ because
+its terminal $d_J$ comes out wrong. The parity lemma below shows this even
+difference is necessary for every obstruction; $r = 7$ shows it is not
+sufficient.
+\end{example}
 
 \subsection{The parity lemma}
 
@@ -477,7 +532,7 @@ $\delta_J \in [-(L-1),\, L - 1 - v]$.
 \end{lemma}
 
 \begin{proof}
-Iterating the update rule from Lemma~\ref{lem:affine} with $c_0 = 2^{-v}$:
+Iterating the update rule from \cref{lem:affine} with $c_0 = 2^{-v}$:
 \[
 c_j = 2^{-v} \cdot \prod_{i < j} 2^{\vk^{(i)} - \vi^{(i)}} = 2^{\Vk^{(j)} - \Vi^{(j)} - v} = 2^{\delta_j}.
 \]
@@ -526,7 +581,7 @@ $\Vk^{(J)} - \Vi^{(J)} = 2s + v$. The obstruction family partitions:
 \Obs_L = \bigsqcup_{s \in \Z} \Obs_L^{G_s}, \qquad \Obs_L^{G_s} := \{\, r \in \Obs_L : s(r, L) = s \,\}.
 \]
 For $s = 0$ we have $(c_J, d_J) = (1, 0)$, meaning $a_I^{(J)} = a_K^{(J)}$.
-By the bound $\delta_J \in [-(L-1), L - 1 - v]$ from Lemma~\ref{lem:parity},
+By the bound $\delta_J \in [-(L-1), L - 1 - v]$ from \cref{lem:parity},
 $s = \delta_J/2 \in [-(L-1)/2,\, (L - 1 - v)/2]$; in particular
 $|s| \le \lfloor (L-1)/2 \rfloor$ (using that $s$ is an integer).
 
@@ -557,7 +612,7 @@ $\vtwo(b_K^{(J)}) = L - \Vk^{(J)}$, and using $\Vk - \Vi = 2s + v$:
 The \emph{stop type} at $(r, L)$ is \emph{EE} (equality) if
 $\vk^{(J)} = \vtwo(b_K^{(J)})$ and $\vi^{(J)} = \vtwo(b_I^{(J)})$, and
 \emph{SS} (strict) if $\vk^{(J)} > \vtwo(b_K^{(J)})$ and
-$\vi^{(J)} > \vtwo(b_I^{(J)})$. By Corollary~\ref{cor:sync} these two
+$\vi^{(J)} > \vtwo(b_I^{(J)})$. By \cref{cor:sync} these two
 cases are exhaustive: a K-track equality forces an I-track equality,
 and a K-track strict inequality forces an I-track strict inequality.
 \end{definition}
@@ -583,13 +638,13 @@ $19\%$) have $v \ge 2$. The numbers in the appendix table count all $v$.
 \label{sec:lift}
 % =============================================================================
 
-We now prove Theorem~\ref{thm:lift-intro}: for every $r_0 \in \Obs_{L_0}$,
+We now prove \cref{thm:lift-intro}: for every $r_0 \in \Obs_{L_0}$,
 both lifts $r_+ := r_0$ and $r_- := r_0 + 2^{L_0}$ are obstructions at level
 $L_0 + 1$. The two halves are stated and proved separately as
-Theorems~\ref{thm:lift-plus} and~\ref{thm:lift-minus}; together they
-constitute Theorem~\ref{thm:lift-intro}. Throughout, $s \in \Z$ is the
+\cref{thm:lift-plus,thm:lift-minus}; together they
+constitute \cref{thm:lift-intro}. Throughout, $s \in \Z$ is the
 shift index of $r_0$ at level $L_0$, and we use the synchronization
-$\vi^{(J)} = \vk^{(J)} + 2s$ (Corollary~\ref{cor:sync}) freely.
+$\vi^{(J)} = \vk^{(J)} + 2s$ (\cref{cor:sync}) freely.
 
 \subsection{The \texorpdfstring{$r_+$}{r+} lift}
 
@@ -640,7 +695,7 @@ Let $r_0 \in \Obs_{L_0}^{G_s}$. Then $r_- := r_0 + 2^{L_0} \in \Obs_{L_0+1}$.
 
 \begin{proof}
 Write $a_{K,+}^{(j)}, a_{I,+}^{(j)}$ for the values at $(r_+, L_0+1)$
-(from Theorem~\ref{thm:lift-plus}) and $a_{K,-}^{(j)}, a_{I,-}^{(j)}$ for
+(from \cref{thm:lift-plus}) and $a_{K,-}^{(j)}, a_{I,-}^{(j)}$ for
 those at $(r_-, L_0+1)$. The discrepancies
 \[
 \Delta_K^{(j)} := a_{K,-}^{(j)} - a_{K,+}^{(j)}, \qquad \Delta_I^{(j)} := a_{I,-}^{(j)} - a_{I,+}^{(j)}
@@ -687,7 +742,7 @@ $\vi^{(J),-} := L_0 - v - \Vi^{(J)}$, also permitted, and one more step
 follows. The required strict inequality
 $\vtwo(\Delta_I^{(J)}) = L_0 - v - \Vi^{(J)} < \vi^{(J)}$ is the
 I-track version of SS: by the synchronisation
-$\vi^{(J)} = \vk^{(J)} + 2s$ of Corollary~\ref{cor:sync} together with
+$\vi^{(J)} = \vk^{(J)} + 2s$ of \cref{cor:sync} together with
 $\Vk^{(J)} - \Vi^{(J)} = 2s + v$, the K-track strict inequality
 $\vk^{(J)} > L_0 - \Vk^{(J)}$ is equivalent to
 $\vi^{(J)} > L_0 - v - \Vi^{(J)}$. Using $\Vk - \Vi = 2s + v$, the new exponent in the update rule
@@ -719,7 +774,7 @@ terminal data unchanged, so $r_- \in \Obs_{L_0+1}^{G_s}$. \qedhere
 \begin{proposition}[Lift symmetry]\label{prop:lift-symmetry}
 Let $r_0 \in \Obs_{L_0}^{G_s}$. The shift indices of the two level-$(L_0+1)$
 lifts $r_+ := r_0$ and $r_- := r_0 + 2^{L_0}$ depend only on the stop type
-of $r_0$ at $L_0$ (Definition~\ref{def:stop-type}) as follows (both lifts
+of $r_0$ at $L_0$ (\cref{def:stop-type}) as follows (both lifts
 at level $L_0+1$):
 
 \begin{center}
@@ -736,24 +791,53 @@ SS & $s$ & $0$ \\
 
 \begin{proof}
 The four entries are read off directly from the case-analysis proofs of
-Theorems~\ref{thm:lift-plus} and~\ref{thm:lift-minus}: each case
+\cref{thm:lift-plus,thm:lift-minus}: each case
 computes the terminal data of the lift and identifies the resulting
 shift index. \qedhere
 \end{proof}
 
 So lifting an obstruction with shift index $s \ne 0$ always produces one
 shift-$s$ obstruction and one shift-zero obstruction at the next level;
-lifting a shift-zero obstruction produces two shift-zero obstructions.
-This is the symmetry that drives the recurrence developed in
-Section~\ref{sec:Gs}.
+lifting a shift-zero obstruction produces two shift-zero obstructions
+(Figure~\ref{fig:lift-tree}). This is the symmetry that drives the recurrence
+developed in Section~\ref{sec:Gs}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  level distance=12mm,
+  level 1/.style={sibling distance=44mm},
+  level 2/.style={sibling distance=22mm},
+  every node/.style={draw, rounded corners, inner sep=3.5pt, font=\small},
+  edge from parent/.style={draw, thick}
+]
+\node[fill=blue!12] {$G_s,\ s \ne 0$}
+  child {node[fill=blue!12] {$G_s$}
+    child {node[fill=blue!12] {$G_s$}}
+    child {node[fill=black!8] {$G_0$}}
+  }
+  child {node[fill=black!8] {$G_0$}
+    child {node[fill=black!8] {$G_0$}}
+    child {node[fill=black!8] {$G_0$}}
+  };
+\end{tikzpicture}
+\caption{Two generations of lifts (\cref{prop:lift-symmetry}). A
+shift-nonzero obstruction (blue) splits into one shift-nonzero and one
+shift-zero child; a shift-zero obstruction (grey) splits into two shift-zero
+children. Shift-zero is therefore \emph{absorbing} under lifting: it never
+produces a shift-nonzero residue. The single persisting shift-nonzero line,
+shedding one shift-zero child per level, is the combinatorial engine behind
+the strict lift balance of \cref{cor:lift-balance}.}
+\label{fig:lift-tree}
+\end{figure}
 
 % =============================================================================
 \section{Positive density}
 \label{sec:density}
 % =============================================================================
 
-\begin{proof}[Proof of Theorem~\ref{thm:density-intro}]
-By Theorem~\ref{thm:lift-intro}, every $r_0 \in \Obs_{L_0}$ contributes two
+\begin{proof}[Proof of \cref{thm:density-intro}]
+By \cref{thm:lift-intro}, every $r_0 \in \Obs_{L_0}$ contributes two
 distinct elements $r_0$ and $r_0 + 2^{L_0}$ to $\Obs_{L_0+1}$. Hence
 $|\Obs_{L_0+1}| \ge 2 |\Obs_{L_0}|$, equivalently
 $|\Obs_{L_0+1}|/2^{L_0+1} \ge |\Obs_{L_0}|/2^{L_0}$: the density ratio is
@@ -786,7 +870,7 @@ $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
 $32$ & $631538769$ & $\approx 0.147$ & $631538769/2^{32}$ \\
 \bottomrule
 \end{tabular}
-\caption{Rigorous lower bounds for $c_W$ obtained from finite-level enumeration of $\Obs_{L_0}$. The ratio $\rho_{L_0} := |\Obs_{L_0}|/2^{L_0}$ is non-decreasing in $L_0$ (Theorem~\ref{thm:density-intro}).}
+\caption{Rigorous lower bounds for $c_W$ obtained from finite-level enumeration of $\Obs_{L_0}$. The ratio $\rho_{L_0} := |\Obs_{L_0}|/2^{L_0}$ is non-decreasing in $L_0$ (\cref{thm:density-intro}).}
 \label{tab:density-bounds}
 \end{table}
 
@@ -821,12 +905,12 @@ $p_W(\ell) := |\Fac(\Obs) \cap \{0,1\}^\ell|$. Trivially $p_W(\ell) \le 2^\ell$.
 
 \subsection{The main theorem}
 
-\begin{theorem}[restating Theorem~\ref{thm:fc-intro}]
+\begin{theorem*}[restating \cref{thm:fc-intro}]
 For every $\ell \ge 0$, $p_W(\ell) = 2^\ell$.
-\end{theorem}
+\end{theorem*}
 
 \begin{proof}
-The case $n = 0$ is the empty word, which is trivially a factor of every
+The case $\ell = 0$ is the empty word, which is trivially a factor of every
 $w_r$, so $p_W(0) = 1 = 2^0$. Fix $\ell \ge 1$ and
 $u = (u_0, u_1, \ldots, u_{\ell-1}) \in \{0,1\}^\ell$. Choose
 any anchor $r_0 \in \Obs_6 = \{19, 27, 59\}$ (verified by direct enumeration;
@@ -835,16 +919,16 @@ individually realises every pattern, as direct enumeration via the
 lift-symmetry table confirms; for the proof one anchor suffices.
 Define inductively
 \[
-r_k := r_{k-1} + u_{k-1} \cdot 2^{5 + k}, \qquad k = 1, 2, \ldots, n.
+r_k := r_{k-1} + u_{k-1} \cdot 2^{5 + k}, \qquad k = 1, 2, \ldots, \ell.
 \]
 We claim $r_k \in \Obs_{6+k}$ for each $k$. The base $k = 0$ is by choice of
 $r_0$. For the inductive step from $k-1$ to $k$: if $u_{k-1} = 0$ then
 $r_k = r_{k-1}$, so $r_k$ is the $r_+$ lift and lies in $\Obs_{6+k}$ by
-Theorem~\ref{thm:lift-plus}; if $u_{k-1} = 1$ then $r_k = r_{k-1} + 2^{5+k}$
-is the $r_-$ lift and lies in $\Obs_{6+k}$ by Theorem~\ref{thm:lift-minus}.
+\cref{thm:lift-plus}; if $u_{k-1} = 1$ then $r_k = r_{k-1} + 2^{5+k}$
+is the $r_-$ lift and lies in $\Obs_{6+k}$ by \cref{thm:lift-minus}.
 
-By construction, $w_{r_n}[5+k] = u_{k-1}$ for $k = 1, \ldots, n$, so $u$
-appears as a factor of $w_{r_n}$ at positions $6, \ldots, 5+n$. Thus
+By construction, $w_{r_\ell}[5+k] = u_{k-1}$ for $k = 1, \ldots, \ell$, so $u$
+appears as a factor of $w_{r_\ell}$ at positions $6, \ldots, 5+\ell$. Thus
 $u \in \Fac(\Obs)$ for every $u \in \{0,1\}^\ell$, hence $p_W(\ell) \ge 2^\ell$.
 Combined with the trivial upper bound, $p_W(\ell) = 2^\ell$. \qedhere
 \end{proof}
@@ -890,7 +974,7 @@ finite languages over $\{0,1\}$, is
 \begin{proof}
 A non-trivial SFT defined by a non-empty finite list of forbidden subwords
 has entropy strictly less than $\log 2$ (Lind--Marcus~\cite{LindMarcus1995}),
-contradicting Corollary~\ref{cor:entropy}. A non-trivial sofic shift is the image of an
+contradicting \cref{cor:entropy}. A non-trivial sofic shift is the image of an
 SFT under a one-block factor map and inherits the entropy constraint.
 Primitive substitution shifts have factor complexity in one of the polynomial
 classes $\Theta(1)$, $\Theta(n)$, $\Theta(n \log \log n)$, $\Theta(n \log n)$,
@@ -903,9 +987,9 @@ substitution shift. \qedhere
 
 \begin{remark}\label{rem:non-primitive}
 The restriction to \emph{primitive} substitution shifts in
-Corollary~\ref{cor:no-substitution}(iii) is the scope of the
+\cref{cor:no-substitution}(iii) is the scope of the
 Pansiot--Devyatov classification we invoke. The entropy obstruction of
-Corollary~\ref{cor:entropy} in fact excludes the entire zero-entropy
+\cref{cor:entropy} in fact excludes the entire zero-entropy
 regime, including all linearly recurrent subshifts, which contain the
 primitive substitution shifts~\cite{DurandHostSkau1999}; the substitutive
 candidates it does \emph{not} reach are therefore the non-primitive shifts
@@ -939,19 +1023,19 @@ For every $L \ge 5$,
 We show that every $r \in \Obs_L$ has a unique smallest $L_0 \ge 5$ with
 $r \bmod 2^{L_0} \in \Atom_{L_0}$. \emph{Existence:} starting from $r$ at
 level $L$, consider the descending sequence $r_k := r \bmod 2^{L-k}$ for
-$k = 0, 1, \ldots, L - 5$. By the lift theorem (Theorem~\ref{thm:lift-intro}),
+$k = 0, 1, \ldots, L - 5$. By the lift theorem (\cref{thm:lift-intro}),
 whenever $r_{k+1} \in \Obs_{L-k-1}$, the level-$(L-k)$ residue
 $r_k = r \bmod 2^{L-k}$ --- being one of the two lifts of $r_{k+1}$ at
 level $L - k$ --- lies in $\Obs_{L-k}$; the converse need not hold. Let
 $L_0$ be the smallest level $\ge 5$ for which
 $r \bmod 2^{L_0} \in \Obs_{L_0}$. Then
 $r \bmod 2^{L_0 - 1} \notin \Obs_{L_0 - 1}$ (either because $L_0 = 5$
-and $\Obs_4 = \emptyset$ by Remark~\ref{rem:smallest-level}, or by
+and $\Obs_4 = \emptyset$ by \cref{rem:smallest-level}, or by
 minimality), so $r \bmod 2^{L_0} \in \Atom_{L_0}$.
 \emph{Uniqueness:} the level $L_0$ is the smallest such by definition, hence
 unique. Given the atomic anchor $r_0 := r \bmod 2^{L_0}$, the residue $r$ is
 determined by $r_0$ together with the bits $\{u_{L_0}, \ldots, u_{L-1}\}$
-encoding the lift choices (Theorems~\ref{thm:lift-plus},~\ref{thm:lift-minus}).
+encoding the lift choices (\cref{thm:lift-plus,thm:lift-minus}).
 Each atomic anchor at level $L_0$ thus generates $2^{L - L_0}$ obstructions
 at level $L$. \qedhere
 \end{proof}
@@ -962,11 +1046,13 @@ at level $L$. \qedhere
 For every $L \ge 7$, $|\Atom_L^{G_0}| = 0$.
 \end{theorem}
 
-The conclusion also holds at $L = 5, 6$ by direct enumeration (see
-Corollary~\ref{cor:no-G0-atom-all}); the bound $L \ge 7$ in the statement
-is conservative. The case analysis below applies verbatim at $L = 6$
-and is vacuous at $L = 5$, where $|\Obs_5^{G_0}| = 0$; we defer both
-base cases to Corollary~\ref{cor:no-G0-atom-all} for clarity.
+The conclusion also holds at the base levels $L = 5, 6$ (see
+\cref{cor:no-G0-atom-all}); the bound $L \ge 7$ in the statement
+is conservative. At $L = 5$ it is vacuous, since $|\Obs_5^{G_0}| = 0$;
+at $L = 6$ the unique shift-zero obstruction is $r = 27$, whose
+reduction terminates at $J = 2$ with $\Vk^{(J)} = 5 = L - 1$, so it
+would fall in Case~B below. We discharge both base cases formally by
+direct enumeration in \cref{cor:no-G0-atom-all}.
 
 \begin{proof}
 Fix $L \ge 7$ and suppose $r \in \Obs_L^{G_0}$, so $\Xend(r, L) = 1$ with
@@ -983,7 +1069,7 @@ $a_K \bmod 2^{L-1}, a_I \bmod 2^{L-1-v}$ as at $(r, L)$, with the modulus
 reduced by one power of two; the two K-tracks (resp.\ I-tracks) differ as
 integers by $\Delta_K^{(j)} = 2^{L-1-\Vk^{(j)}} \cdot 3^j$ (resp.\
 $\Delta_I^{(j)} = 2^{L-1-v-\Vi^{(j)}} \cdot 3^j$), in direct analogy with
-the lift-minus calculation of Theorem~\ref{thm:lift-minus}. Whenever
+the lift-minus calculation of \cref{thm:lift-minus}. Whenever
 $\vk^{(j)} < L - 1 - \Vk^{(j)}$, the ultrametric identity forces
 $v_2(3 a_K^{(j)} - 1)$ to agree at $(r, L)$ and $(r', L-1)$, so the
 per-step valuations $\vk^{(j)}, \vi^{(j)}$ and hence the affine data
@@ -991,10 +1077,10 @@ $(c_j, d_j)$ coincide between the two reductions until the level-$(L-1)$
 stop fires.
 
 Termination of the reduction at $(r, L)$ at index $J$ means at least one
-track satisfies its stop condition there; by Corollary~\ref{cor:sync}, both
+track satisfies its stop condition there; by \cref{cor:sync}, both
 do. Since $s = 0$, at the terminal index $J$ the synchronisation
 $\vi^{(J)} = \vk^{(J)} + 2s = \vk^{(J)}$ and
-$\Vk^{(J)} - \Vi^{(J)} = v$ holds (Lemma~\ref{lem:parity}), so the
+$\Vk^{(J)} - \Vi^{(J)} = v$ holds (\cref{lem:parity}), so the
 K-track stop condition $\vk^{(J)} \ge L - \Vk^{(J)}$ and the I-track stop
 condition $\vi^{(J)} \ge (L - v) - \Vi^{(J)}$ at $j = J$ are equivalent:
 substituting $\Vi^{(J)} = \Vk^{(J)} - v$ and $\vi^{(J)} = \vk^{(J)}$ into
@@ -1049,15 +1135,15 @@ K-track stop at level $L - 1$ fires at $J - 1$ and the $(r', L-1)$
 reduction terminates one step earlier, at index $J - 1$, with terminal
 data $(c_{J-1}, d_{J-1})$ (whether the I-track stop at level $L - 1$
 also fires at $J - 1$ is immaterial for termination). From the update
-rule (Lemma~\ref{lem:affine}) at index $J - 1$,
+rule (\cref{lem:affine}) at index $J - 1$,
 \[
 c_J = c_{J-1} \cdot 2^{\vk^{(J-1)} - \vi^{(J-1)}}, \qquad d_J = \frac{3 d_{J-1} + c_{J-1} - 1}{2^{\vi^{(J-1)}}}.
 \]
 Setting $c_J = 1$, $d_J = 0$ and reading off the numerator of $d_J$:
 $3 d_{J-1} + c_{J-1} - 1 = 0$, i.e.\ $X_{J-1} = 1$. By the parity lemma
 applied at the terminal index $J - 1$ of the reduction at $(r', L-1)$,
-the terminal pair is in shift-$a'$ normal form for some $a' \in \Z$, so
-$r' \in \Obs_{L-1}^{G_{a'}}$.
+the terminal pair is in shift-$s'$ normal form for some $s' \in \Z$, so
+$r' \in \Obs_{L-1}^{G_{s'}}$.
 
 In either case, $r' \in \Obs_{L-1}$, so $r$ is not atomic. \qedhere
 \end{proof}
@@ -1067,7 +1153,7 @@ For every $L \ge 5$, $|\Atom_L^{G_0}| = 0$.
 \end{corollary}
 
 \begin{proof}
-For $L \ge 7$, this is Theorem~\ref{thm:no-G0-atom}. At the two base
+For $L \ge 7$, this is \cref{thm:no-G0-atom}. At the two base
 levels direct enumeration (verified by \texttt{count\_obstructions.py})
 gives $\Atom_5 = \{27\}$ and $\Atom_6 = \{19\}$, each with shift index
 $s = 1 \ne 0$, so $|\Atom_5^{G_0}| = |\Atom_6^{G_0}| = 0$ as well.
@@ -1077,7 +1163,7 @@ $s = 1 \ne 0$, so $|\Atom_5^{G_0}| = |\Atom_6^{G_0}| = 0$ as well.
 \subsection{Strict lift balance and series representation}
 
 Write $g_L := |\Obs_L^{G_0}|$ and $h_L := |\Obs_L^{G_{\ne 0}}|$. The lift
-symmetry of Proposition~\ref{prop:lift-symmetry} gives, per parent at
+symmetry of \cref{prop:lift-symmetry} gives, per parent at
 $L - 1$ (Table~\ref{tab:lift-balance}):
 
 \begin{table}[ht]
@@ -1095,7 +1181,7 @@ $G_s$, $s \ne 0$ & $1$ & $1$ \\
 \end{table}
 
 Summing and adding the atomic contributions, which by
-Corollary~\ref{cor:no-G0-atom-all} occur only in $h_L$:
+\cref{cor:no-G0-atom-all} occur only in $h_L$:
 
 \begin{corollary}[Strict lift balance]
 \label{cor:lift-balance}
@@ -1116,9 +1202,9 @@ $L \to \infty$.
 \end{theorem}
 
 \begin{proof}
-By Lemma~\ref{lem:atom-decomp} every $r \in \Obs_L$ has a unique atomic
+By \cref{lem:atom-decomp} every $r \in \Obs_L$ has a unique atomic
 anchor at some level $L_0 \in \{5, 6, \ldots, L\}$. By
-Corollary~\ref{cor:no-G0-atom-all}, $|\Atom_{L_0}^{G_0}| = 0$ for every
+\cref{cor:no-G0-atom-all}, $|\Atom_{L_0}^{G_0}| = 0$ for every
 $L_0 \ge 5$, so each atom contributes to $\Atom_{L_0}^{G_{\ne 0}}$.
 Direct enumeration at the two base levels (verified by
 \texttt{count\_obstructions.py}) gives $\Atom_5 = \{27\}$ and
@@ -1132,7 +1218,7 @@ Dividing both sides by $2^L$,
 \[
 \rho_L = \frac{|\Obs_L|}{2^L} = \frac{3}{64} + \sum_{L_0 = 7}^{L} \frac{|\Atom_{L_0}^{G_{\ne 0}}|}{2^{L_0}}.
 \]
-By Theorem~\ref{thm:density-intro}, $\rho_L$ is non-decreasing in $L$ and
+By \cref{thm:density-intro}, $\rho_L$ is non-decreasing in $L$ and
 bounded above by $1$, so its limit $c_W$ exists in $(0, 1]$. The
 right-hand side is the $L$-th partial sum of a non-negative series with
 fixed first term $3/64$; since the partial sums converge to $c_W$, the
@@ -1142,7 +1228,7 @@ as $L \to \infty$. \qedhere
 
 \subsection{The remaining open question}
 
-Theorem~\ref{thm:series} reduces the question of $c_W$'s exact value to
+\cref{thm:series} reduces the question of $c_W$'s exact value to
 controlling the growth of $|\Atom_L^{G_{\ne 0}}|$. A bound of the form
 $|\Atom_L^{G_{\ne 0}}| \le C \cdot \alpha^L$ with $\alpha < 2$ would give a
 geometrically convergent series with explicit error bounds. We do not
@@ -1176,7 +1262,7 @@ The initial relation $m = (r+1)/2^v$ writes as
 $a_I^{(0)} = 2^{-v} a_K^{(0)} + 2^{-v}$, so the affine relation
 $a_I^{(j)} = c_j a_K^{(j)} + d_j$ holds at index~$0$ with
 $c_0 = 2^{-v}$, $d_0 = +2^{-v}$. The derivation of
-Lemma~\ref{lem:affine}, applied with $\Tplus$ in place of $\Tminus$ and
+\cref{lem:affine}, applied with $\Tplus$ in place of $\Tminus$ and
 using $3 a_I + 1 = c_j (3 a_K + 1) + (3 d_j - c_j + 1)$, yields the
 update rule
 \[
@@ -1196,9 +1282,9 @@ for the set of such residues.
 \begin{remark}\label{rem:Xplus-sign}
 The sign convention $\Xend^{+} := c - 3d$ (rather than $3d + c$) is the
 one forced by the affine algebra: with this combination the analogue of
-the parity lemma (Lemma~\ref{lem:parity}) yields the shift-$s$ normal
+the parity lemma (\cref{lem:parity}) yields the shift-$s$ normal
 form $(c_J, d_J) = (4^s, (4^s - 1)/3)$, and the residue-level bijection
-of Theorem~\ref{thm:tplus-bijection} below is exact.
+of \cref{thm:tplus-bijection} below is exact.
 \end{remark}
 
 \subsection{The residue involution}
@@ -1314,16 +1400,16 @@ d_{j+1}^{+} &= \frac{3 d_j^{+} - c_j^{+} + 1}{2^{\vi^{(j)}}}
 For every level $L$, the involution $r \mapsto \overline{r} := 2^L - r$
 restricts to a bijection $\Obs_L \leftrightarrow \Obs_L^{+}$.
 Consequently $|\Obs_L^{+}| = |\Obs_L|$, and
-Theorems~\ref{thm:lift-intro}, \ref{thm:density-intro}, and~\ref{thm:fc-intro}
+\cref{thm:lift-intro,thm:density-intro,thm:fc-intro}
 hold verbatim for $\Obs^{+}$, with the same density constant $c_W$ and
 factor complexity function $p_W^{+}(\ell) = 2^\ell$.
 \end{theorem}
 
 \begin{proof}
 For $r$ odd with $\vtwo(r-1) \ge 1$ and $L > \vtwo(r-1)$, equation
-\eqref{eq:invol-affine} of Lemma~\ref{lem:involution-step}(iv) at the
+\eqref{eq:invol-affine} of \cref{lem:involution-step}(iv) at the
 terminal index $J$ together with the sign convention
-$\Xend^{+} := c - 3d$ of Remark~\ref{rem:Xplus-sign} gives
+$\Xend^{+} := c - 3d$ of \cref{rem:Xplus-sign} gives
 \[
 \Xend^{+}(\overline{r}, L) = c_J^{+} - 3 d_J^{+}
   = c_J^{-} - 3 \cdot (-d_J^{-})
@@ -1340,12 +1426,12 @@ parallel to $\Obs_6$ in the $\Tplus$ analogue of the
 factor-complexity construction below.
 
 For the remaining claims, observe that
-Lemma~\ref{lem:involution-step} conjugates each $\Tminus$ basic step
+\cref{lem:involution-step} conjugates each $\Tminus$ basic step
 into the corresponding $\Tplus$ basic step. The $\Tplus$ lift theorem
-(the analogue of Theorem~\ref{thm:lift-intro}) follows by composing the
+(the analogue of \cref{thm:lift-intro}) follows by composing the
 involution with the $\Tminus$ lift: given
 $\overline{r_0} \in \Obs_{L_0}^{+}$, set $r_0 := 2^{L_0} - \overline{r_0} \in \Obs_{L_0}$;
-by Theorem~\ref{thm:lift-intro}, both $r_0$ and $r_0 + 2^{L_0}$ lie in
+by \cref{thm:lift-intro}, both $r_0$ and $r_0 + 2^{L_0}$ lie in
 $\Obs_{L_0+1}$, and their level-$(L_0+1)$ involution images
 $2^{L_0+1} - r_0 = \overline{r_0} + 2^{L_0}$ and
 $2^{L_0+1} - (r_0 + 2^{L_0}) = \overline{r_0}$ lie in $\Obs_{L_0+1}^{+}$
@@ -1362,7 +1448,7 @@ argument. \qedhere
 \label{sec:open}
 % =============================================================================
 
-\subsection{The exact value of \texorpdfstring{$c_W$}{cW}}
+\subsection{The exact value of \texorpdfstring{$c_W$}{cW}}\label{sec:cW-open}
 
 The principal open question is to determine $c_W$ exactly, or equivalently
 to give a quantitative bound on the growth of $|\Atom_L^{G_{\ne 0}}|$. Three
@@ -1375,8 +1461,8 @@ Pansiot's classification~\cite{Pansiot1984} (refined by
 Devyatov~\cite{Devyatov2015}), would determine the asymptotic growth
 class of $\Atom_L^{G_{\ne 0}}$. The relevant question concerns
 \emph{non-primitive} substitution shifts: the primitive case is ruled out
-by Corollary~\ref{cor:no-substitution}, so any realisation must lie
-outside that classification (Remark~\ref{rem:non-primitive}). The natural
+by \cref{cor:no-substitution}, so any realisation must lie
+outside that classification (\cref{rem:non-primitive}). The natural
 setting for such a realisation is the $S$-adic framework~\cite{BertheDelecroix2014}.
 
 \textbf{(ii) Markov-operator-spectral.} Wirsching~\cite{Wirsching1998}
@@ -1400,7 +1486,7 @@ parallel stopping times remain rigidly tied. Whether the existence (or
 absence) of additional nontrivial $\Tminus$-cycles is reflected in the
 structure of $\Obs_L^{G_0}$ for large $L$ --- in particular, whether one
 can extract a Diophantine obstruction from the strict lift balance of
-Corollary~\ref{cor:lift-balance} --- is a natural and apparently open
+\cref{cor:lift-balance} --- is a natural and apparently open
 question. Classical lower bounds on the length of nontrivial
 $\Tplus$-cycles, due to Eliahou~\cite{Eliahou1993} and extended by
 Belaga and Mignotte~\cite{BelagaMignotte2006}, indicate how rigidly the
@@ -1448,7 +1534,7 @@ A permanent archival snapshot is deposited on Zenodo under the concept DOI
 which resolves to the most recent archived version.
 The directory contains the verification
 scripts for each rigorous result (lift theorem, atom decomposition,
-the no-shift-zero-atom theorem (Theorem~\ref{thm:no-G0-atom}), full factor
+the no-shift-zero-atom theorem (\cref{thm:no-G0-atom}), full factor
 complexity, simultaneous stop) together with a
 \texttt{README.md} mapping each script to the result it certifies. For
 each level $L \le L_{\max}$, the relevant script enumerates all odd
@@ -1482,19 +1568,19 @@ $15$ & $3671$ & $3398$ & $273$ & $119$ \\
 $16$ & $7556$ & $7069$ & $487$ & $214$ \\
 \bottomrule
 \end{tabular}
-\caption{Direct enumeration counts at levels $L=5,\dots,16$: total obstructions, shift-zero and shift-nonzero subclasses, and atomic shift-nonzero obstructions. The decomposition $|\Obs_L| = |\Obs_L^{G_0}| + |\Obs_L^{G_{\ne 0}}|$ is read off each row, and the strict lift balance $|\Obs_L| = 2|\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$ (Corollary~\ref{cor:lift-balance}) holds row-by-row against the previous one for $L \ge 6$.}
+\caption{Direct enumeration counts at levels $L=5,\dots,16$: total obstructions, shift-zero and shift-nonzero subclasses, and atomic shift-nonzero obstructions. The decomposition $|\Obs_L| = |\Obs_L^{G_0}| + |\Obs_L^{G_{\ne 0}}|$ is read off each row, and the strict lift balance $|\Obs_L| = 2|\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$ (\cref{cor:lift-balance}) holds row-by-row against the previous one for $L \ge 6$.}
 \label{tab:appendix-counts}
 \end{table}
 
 The data satisfies the strict lift balance $|\Obs_L| = 2 |\Obs_{L-1}| + |\Atom_L^{G_{\ne 0}}|$
-of Corollary~\ref{cor:lift-balance} at every level, and is consistent with
-Theorems~\ref{thm:lift-intro},~\ref{thm:no-G0-atom}, and~\ref{thm:series}
+of \cref{cor:lift-balance} at every level, and is consistent with
+\cref{thm:lift-intro,thm:no-G0-atom,thm:series}
 (series convergence).
 
 The rigorous bound $c_W \ge 7556/65536 \approx 0.115$ of
-Theorem~\ref{thm:density-intro} is conditional on the correctness of this
+\cref{thm:density-intro} is conditional on the correctness of this
 enumeration. The check is self-validating in a useful sense: the
-strict lift balance of Corollary~\ref{cor:lift-balance} is asserted
+strict lift balance of \cref{cor:lift-balance} is asserted
 row-by-row by the script \texttt{count\_obstructions.py} against the
 previous-level count, so any drift in the enumeration would manifest as
 an immediate hard failure rather than silently shifting the bound.

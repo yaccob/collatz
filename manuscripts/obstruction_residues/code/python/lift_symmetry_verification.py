@@ -1,4 +1,4 @@
-"""Verify prediction from Theorems 3.1 + 3.2 / Proposition 3.3 case analysis:
+"""Verify prediction from the lift theorems (`thm:lift-plus` + `thm:lift-minus`) / lift symmetry (`prop:lift-symmetry`) case analysis:
 
   Stop type at r_+, L_0  |  r_+, L_0+1 endpoint  |  r_-, L_0+1 endpoint
   ----------------------|----------------------|----------------------
