@@ -6,8 +6,8 @@ authors:
   - family-names: Stemberger
     given-names: Jakob
     orcid: "https://orcid.org/0009-0001-2746-6877"
-version: v0.2.1
-date-released: "2026-05-31"
+version: v0.2.2
+date-released: "2026-06-04"
 url: "https://github.com/yaccob/collatz"
 license: CC-BY-4.0
 doi: 10.5281/zenodo.20356496  # concept DOI (resolves to latest version)
