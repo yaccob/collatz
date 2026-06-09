@@ -140,8 +140,10 @@ def main():
     print(fmt(f"Atom_{L}^{{G_ne0}}", atom_list))
 
     # Verify the strict lift balance |Obs_L| = 2|Obs_{L-1}| + |Atom_L^{G_ne0}|
-    # (`cor:lift-balance`) against the level L-1 count.
-    if L >= 7:
+    # (`cor:lift-balance`) against the level L-1 count. The corollary holds for
+    # every L >= 6 (L = 6 is the first level with a level-(L-1) parent), so the
+    # assertion starts there, matching the appendix's row-by-row claim.
+    if L >= 6:
         total_prev, _, _, _, _, _ = count_at(L - 1, atoms=False)
         expected = 2 * total_prev + atoms_ne0
         assert total == expected, (
