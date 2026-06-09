@@ -21,6 +21,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{placeins}
 \usepackage{tikz}
+\usetikzlibrary{positioning}
 \usepackage{hyperref}
 \usepackage{xurl}
 \hypersetup{
@@ -1226,6 +1227,288 @@ series converges, with sum $c_W$ and tail $|\Atom_L^{G_{\ne 0}}|/2^L \to 0$
 as $L \to \infty$. \qedhere
 \end{proof}
 
+\subsection{The shift-index window}
+\label{sec:shift-window}
+
+The $G_s$ classification raises the question of which shift classes can be
+nonempty at a given level. We show that the \emph{nontrivial} classes
+($|s| \ge 2$) occupy only a window of shift indices of width $O(L)$. The engine
+is a lower bound on the termination index $J$ in terms of $|s|$: an obstruction
+of large shift index reduces slowly. The bound is sharp --- for instance
+$r = 15877 \in \Obs_{15}^{G_2}$ terminates at $J = 7 = 2\cdot 2 + 3$ with terminal
+data $(c_J, d_J) = (16, -5) = \bigl(4^2, (1-4^2)/3\bigr)$, and
+$r = 1015979 \in \Obs_{21}^{G_{-2}}$ likewise has $J = 7$. We emphasise at the
+outset what the resulting window does \emph{not} give: it bounds the
+\emph{number} of nonempty shift classes per level, not their populations, and so
+does not by itself resolve the growth question of Section~\ref{sec:cW-open}
+(\cref{rem:window-scope}).
+
+Throughout this subsection $s = s(r, L)$ is the (signed) shift index of an
+obstruction $r \in \Obs_L$, $J = J(r, L)$ its termination index, $v = \vtwo(r-1)$,
+and we set $q := \Vi^{(J)} - J$. Since the I-track fires $J$ steps each of
+valuation $\ge 1$ (\cref{cor:sync}), $\Vi^{(J)} \ge J$, so $q \ge 0$.
+
+\begin{lemma}[K-track prefix]\label{lem:k-prefix}
+For every odd $r > 1$ with $v = \vtwo(r-1)$, the K-track of the parallel reduction
+satisfies $\vk^{(j)} = 1$ for $0 \le j \le v-2$ and $\vk^{(v-1)} \ge 2$. Hence
+$\Vk^{(j)} = j$ for $0 \le j \le \min(v-1, J)$.
+\end{lemma}
+
+\begin{proof}
+Write $r = 1 + 2^v m$ with $m$ odd. We claim $a_K^{(j)} = 1 + 3^{\,j} 2^{\,v-j} m$
+for $0 \le j \le v-1$. The base case $j = 0$ is the definition. If it holds at
+$j \le v-2$, then
+$3 a_K^{(j)} - 1 = 2 + 3^{\,j+1} 2^{\,v-j} m = 2\bigl(1 + 3^{\,j+1} 2^{\,v-j-1} m\bigr)$,
+and $1 + 3^{\,j+1} 2^{\,v-j-1} m$ is odd because $v-j-1 \ge 1$; thus
+$\vk^{(j)} = 1$ and $a_K^{(j+1)} = 1 + 3^{\,j+1} 2^{\,v-(j+1)} m$, completing the
+induction. At $j = v-1$,
+$3 a_K^{(v-1)} - 1 = 2 + 3^{\,v} 2 m = 2\bigl(1 + 3^{\,v} m\bigr)$ with
+$1 + 3^{\,v} m$ even (both $3^v$ and $m$ are odd), so $\vk^{(v-1)} \ge 2$. The
+cumulative statement follows by summing the unit valuations. (For $v = 1$ the
+first claim is vacuous and the second reads $\vk^{(0)} \ge 2$.)
+\qedhere
+\end{proof}
+
+\begin{lemma}[Minimal depth]\label{lem:depth-min}
+Every obstruction with shift index $s \ge 0$ has $J \ge v$.
+\end{lemma}
+
+\begin{proof}
+If $J \le v-1$, then $\Vk^{(J)} = J$ by \cref{lem:k-prefix}. But
+$\Vk^{(J)} = \Vi^{(J)} + 2s + v \ge J + 2s + v \ge J + v$, forcing $v \le 0$, a
+contradiction.
+\qedhere
+\end{proof}
+
+\begin{lemma}[Sign-free obstruction identity]\label{lem:signfree}
+For every $r \in \Obs_L$, with cumulative valuations along the two tracks and
+termination index $J$,
+\begin{equation}\label{eq:signfree}
+\sum_{j=0}^{J} 3^{\,J-j} 2^{\Vk^{(j)}}
+   \;=\; 3^{\,J+1} \;+\; 2^{v} \sum_{j=0}^{J} 3^{\,J-j} 2^{\Vi^{(j)}}.
+\end{equation}
+The sign of $s$ does not enter; equivalently, with the terminal terms removed,
+\begin{equation}\label{eq:oform}
+\sum_{j=0}^{J-1} 3^{\,J-j}\bigl(2^{\Vk^{(j)}} - 2^{\Vi^{(j)}+v}\bigr)
+   \;=\; 3^{\,J+1} + 2^{\Vi^{(J)}+v}\bigl(1 - 4^{s}\bigr).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $\tilde n_j := 2^{\Vi^{(j)}+v} d_j$. Iterating
+$c_{j+1} = c_j 2^{\vk^{(j)} - \vi^{(j)}}$ from $c_0 = 2^{-v}$ (\cref{lem:affine})
+gives $c_j = 2^{\Vk^{(j)} - \Vi^{(j)} - v}$, so $2^{\Vi^{(j)}+v} c_j = 2^{\Vk^{(j)}}$.
+The update $d_{j+1} = (3 d_j + c_j - 1)/2^{\vi^{(j)}}$ then yields
+\[
+\tilde n_{j+1} = 2^{\Vi^{(j)}+v}\bigl(3 d_j + c_j - 1\bigr)
+   = 3\,\tilde n_j + 2^{\Vk^{(j)}} - 2^{\Vi^{(j)}+v},
+\qquad \tilde n_0 = 2^{v} d_0 = -1 .
+\]
+Unrolling and multiplying by $3$, using
+$3 \tilde n_J = 2^{\Vi^{(J)}+v} \cdot 3 d_J = 2^{\Vi^{(J)}+v}(1 - 4^{s})$ from the
+shift-$s$ normal form, gives~\eqref{eq:oform}. Since
+$\Vk^{(J)} = \Vi^{(J)} + v + 2s$, the right-hand side of~\eqref{eq:oform} equals
+$3^{J+1} + 2^{\Vi^{(J)}+v} - 2^{\Vk^{(J)}}$; moving the two terminal terms into the
+respective sums turns~\eqref{eq:oform} into~\eqref{eq:signfree}.
+\qedhere
+\end{proof}
+
+The bound itself splits by the size and sign of $s$. The two large-shift regimes
+are analytic; the small-shift tails are finite computations.
+
+\begin{lemma}[Large negative shift]\label{lem:depth-negbig}
+Every obstruction with $s \le -4$ has $J \ge 2|s| + 3$.
+\end{lemma}
+
+\begin{proof}
+Write $a = |s|$ and abbreviate
+\[
+\hat A_K = \sum_{j=0}^{J} 3^{J-j} 2^{\Vk^{(j)}}, \qquad
+\hat A_I = \sum_{j=0}^{J} 3^{J-j} 2^{\Vi^{(j)}},
+\]
+so \eqref{eq:signfree} reads $\hat A_K = 3^{J+1} + 2^{v} \hat A_I$. We use two
+elementary bounds. Keeping only the $j = J$ term of $\hat A_I$ (all terms
+positive) and using $\Vi^{(J)} + v = \Vk^{(J)} + 2a$,
+\[
+2^{v} \hat A_I \;\ge\; 2^{\Vi^{(J)}+v} \;=\; 2^{\Vk^{(J)} + 2a}.
+\]
+Since the valuations increase by at least $1$ per step, $\Vk^{(j)} \le \Vk^{(J)} - (J-j)$, whence
+\[
+\hat A_K \;\le\; 2^{\Vk^{(J)}} \sum_{i=0}^{J} (3/2)^{i}
+   \;<\; 2^{\Vk^{(J)}} \cdot \frac{3^{J+1}}{2^{J}} .
+\]
+As $\hat A_K > 2^{v}\hat A_I$, combining gives $2^{\Vk^{(J)}+2a} < 2^{\Vk^{(J)}} 3^{J+1}/2^{J}$, i.e.
+\begin{equation}\label{eq:Nbound}
+3^{\,J+1} > 2^{\,J + 2a}. \tag{N}
+\end{equation}
+The ratio $f(J) := 3^{J+1}/2^{J+2a}$ is strictly increasing, and
+\[
+f(2a+2) = \frac{3^{\,2a+3}}{2^{\,4a+2}} = \frac{27}{4}\Bigl(\frac{9}{16}\Bigr)^{a} < 1
+\iff a \ge 4 .
+\]
+Hence for $a \ge 4$ every $J \le 2a+2$ violates~\eqref{eq:Nbound}, so $J \ge 2a+3$.
+\qedhere
+\end{proof}
+
+\begin{lemma}[Large positive shift]\label{lem:depth-posbig}
+Every obstruction with $s \ge 4$ has $J \ge 2s + 3$.
+\end{lemma}
+
+\begin{proof}
+By \cref{lem:depth-min}, $v \le J$. Write the O''-form~\eqref{eq:oform} as
+$A_K - 2^{v} A_I = 3^{J+1} + 2^{\,J+q+v}(1 - 4^{s})$ with
+$A_K = \sum_{j=0}^{J-1} 3^{J-j} 2^{\Vk^{(j)}}$ and $A_I$ analogous, using
+$\Vi^{(J)} = J + q$. The two sums range over the structural families: by
+\cref{lem:k-prefix} the K-valuations satisfy $\Vk^{(j)} = j$ for $j \le v-1$,
+$\Vk^{(j)} \ge j+1$ for $v \le j \le J-1$; the I-valuations satisfy
+$\Vi^{(0)} = 0$, $\Vi^{(j+1)} > \Vi^{(j)}$, $\Vi^{(J)} = J+q$. Minimising $A_K$ and
+maximising $A_I$ over these families \emph{independently} can only decrease
+$A_K - 2^{v} A_I$, so the decoupled deficit
+$D := (A_K^{\min} - 2^{v} A_I^{\max}) - \bigl(3^{J+1} + 2^{J+q+v}(1-4^{s})\bigr)$
+satisfies: $D > 0 \Rightarrow$ no obstruction with these parameters. Both optima
+are attained by geometric extremal sequences (all I-excess in the first step;
+the K-excess deferred to the final, uncounted step), giving the closed forms
+\[
+A_I^{\max} = 3^{J} + 2^{q}\bigl(2\cdot 3^{J} - 3\cdot 2^{J}\bigr),
+\qquad
+A_K^{\min} = 3^{J+1} + 2^{v} 3^{\,J-v+1} - 6\cdot 2^{J},
+\]
+and, after the $3^{J+1}$ cancels,
+\[
+D = C_0(J,v) + 2^{\,v+q}\,\Gamma(J,s),
+\]
+where $\Gamma(J,s) = 2^{J}(4^{s}+2) - 2\cdot 3^{J}$ and
+$C_0(J,v) = 2^{v} 3^{J}\bigl(3^{1-v}-1\bigr) - 6\cdot 2^{J}$.
+For $s \ge 3$ and $1 \le J \le 2s+2$ one has $\Gamma(J,s) > 0$ (the sign change
+$2^{J}(4^{s}+2) = 2\cdot 3^{J}$ occurs at $J \approx s\log_{3/2}4 > 2s+2$), so $D$ is
+non-decreasing in $q$ and $q = 0$ is the worst case. At $q = 0$,
+$D(J,s,v,0) = 2^{v}\,\Phi(J,s) + R(J,v)$, where
+$\Phi(J,s) = 2^{J}(4^{s}+2) - 3^{J+1}$ and
+$R(J,v) = 2^{v} 3^{\,J-v+1} - 6\cdot 2^{J}$.
+For $s \ge 4$ and $J \le 2s+2$, $\Phi(J,s) > 3$ (worst case $J = 2s+2$:
+$\Phi(2s+2,s) > 3 \iff (16/9)^{s} > 27/4$, which holds for $s \ge 4$). Finally
+$R(J,v) = 3\cdot 2^{v}\bigl(3^{\,J-v} - 2^{\,J-v+1}\bigr)$ is $\ge 0$ when
+$J - v \ge 2$ and equals $-3\cdot 2^{v}$ when $J - v \in \{0,1\}$; in the first
+case $D(J,s,v,0) \ge 2^{v}\Phi > 0$, in the second
+$D(J,s,v,0) = 2^{v}(\Phi - 3) > 0$. Thus $D > 0$ for all $q \ge 0$ and all
+$1 \le v \le J \le 2s+2$, so no obstruction has $J \le 2s+2$.
+\qedhere
+\end{proof}
+
+The remaining strata are the small shifts $|s| \in \{2,3\}$. After the analytic
+bounds only finitely many configurations survive, and they are settled by an
+exact finite computation. The key device is a bounded carry automaton, which
+decides a whole stratum for \emph{all} $q$ at once.
+
+\begin{lemma}[Bounded carry automaton]\label{lem:carry-automaton}
+Fix a stratum $(s, J)$ and $v$. Reading the integer
+identity~\eqref{eq:signfree} bit position by bit position defines a finite
+automaton whose state is $(\text{carry}, \#\{\Vk\text{ placed}\}, \#\{\Vi\text{ placed}\})$:
+each strictly increasing valuation contributes one set bit, the carry is bounded
+(each transition halves it towards a fixed invariant interval), and an obstruction
+with parameter $q$ corresponds exactly to an accepting run (carry $0$, all
+valuations placed). The positions factor as $\text{prefix} \to \text{block } A
+\to \text{block } B \to \text{tail}$, where block $A$ carries a single
+$q$- and position-independent transition $T_A$ whose \emph{length} is the only
+$q$-dependence, block $B$ has fixed width $2|s|+1$, and the tail accepts iff the
+incoming carry is $0$ (Figure~\ref{fig:carry-blocks}). Since the state space is
+finite, the reachable-set sequence $R_m = T_A^{\,m}(R_0)$ is eventually periodic;
+acceptance therefore depends on $q$ only through $R_{\,m(q)}$ and is periodic in
+$q$ past a preperiod. A finite check over one preperiod plus one period decides
+the stratum for every $q \ge 0$.
+\end{lemma}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\small},
+  box/.style={draw, rounded corners, minimum height=11mm, inner sep=4pt, align=center}
+]
+\node[box, fill=black!8, text width=17mm] (inj) {$p = 0$\\inject\\$-3^{J+1}$};
+\node[box, fill=blue!8, text width=15mm, right=1.5mm of inj] (pre) {prefix\\$[1,v]$\\(forced)};
+\node[box, fill=blue!16, text width=32mm, right=1.5mm of pre] (A) {block $A$\\transition $T_A$\\length $=$ the only\\$q$-dependence};
+\node[box, fill=orange!20, text width=20mm, right=1.5mm of A] (B) {block $B$\\fixed width\\$2|s|+1$};
+\node[box, fill=black!6, text width=16mm, right=1.5mm of B] (tail) {tail\\accept iff\\carry $= 0$};
+\draw[->, thick] (inj) -- (pre);
+\draw[->, thick] (pre) -- (A);
+\draw[->, thick] (A) -- (B);
+\draw[->, thick] (B) -- (tail);
+\end{tikzpicture}
+\caption{Block factorisation of the carry automaton of
+\cref{lem:carry-automaton}. Only the \emph{length} of block $A$ depends on $q$;
+the transition $T_A$ does not. As $T_A^{\,m}(R_0)$ is eventually periodic, a
+finite computation over one preperiod and one period decides the stratum for all
+$q$. The fixed-point data (preperiods, periods, reachable-state counts) per
+stratum are tabulated in Appendix~\ref{sec:appendix}.}
+\label{fig:carry-blocks}
+\end{figure}
+
+\begin{lemma}[Small-shift tails]\label{lem:finite-tails}
+No obstruction has $|s| \in \{2,3\}$ and $J \le 2|s| + 2$.
+\end{lemma}
+
+\begin{proof}
+For $s \le -2$ the inequality~\eqref{eq:Nbound} (which used only
+$|s| \ge 2$) rules out every $J \le 2|s|+2$ except the strata
+$(|s|, J) \in \{(2,5), (2,6), (3,8)\}$; each is closed for all $q$ by
+\cref{lem:carry-automaton}. For $s \ge 2$ the decoupled deficit $D$ of
+\cref{lem:depth-posbig} is positive except on a finite, explicitly enumerated
+set: for $s = 3$ only the cells $(J=8,\, q=0,\, v \in \{2,\dots,8\})$ survive,
+and for $s = 2$ only $(J=5,\, q \in \{0,1\})$ together with the single stratum
+$J = 6$, on which $\Gamma(6,2) < 0$ makes $q$ unbounded. The stratum $(s=2, J=6)$
+is closed for all $q$ by \cref{lem:carry-automaton}; the finitely many residual
+cells are closed by exhaustive search over the coupled valuation sequences. All
+these checks are reproducible and are recorded in Appendix~\ref{sec:appendix}.
+\qedhere
+\end{proof}
+
+\begin{theorem}[Depth bound]\label{thm:depth}
+Every obstruction with $|s| \ge 2$ satisfies $J \ge 2|s| + 3$.
+\end{theorem}
+
+\begin{proof}
+For $s \ge 4$ this is \cref{lem:depth-posbig}; for $s \le -4$,
+\cref{lem:depth-negbig}; for $|s| \in \{2,3\}$, \cref{lem:finite-tails} rules out
+$J \le 2|s|+2$.
+\qedhere
+\end{proof}
+
+\begin{corollary}[Shift-index window]\label{cor:shift-window}
+Let $r \in \Obs_L$ with $v = \vtwo(r-1)$. If $s \ge 2$, then
+\[
+s \le \frac{L - 4 - v}{4} \le \Bigl\lfloor \tfrac{L-5}{4} \Bigr\rfloor ;
+\]
+if $s \le -2$, then $s \ge -\dfrac{L-4-v}{2}$. In particular at most $O(L)$ of the
+classes $\Obs_L^{G_s}$ are nonempty.
+\end{corollary}
+
+\begin{proof}
+For $s \ge 2$, \cref{thm:depth} gives $J \ge 2s+3$, and
+$\Vk^{(J)} = \Vi^{(J)} + 2s + v \ge J + 2s + v \ge 4s + 3 + v$; with
+$\Vk^{(J)} \le L-1$ (\cref{lem:parity}) this yields $4s + 3 + v \le L-1$, i.e.
+$s \le (L-4-v)/4 \le (L-5)/4$ as $v \ge 1$. For $s \le -2$, $\Vi^{(J)} \ge J \ge 2|s|+3$
+and $\Vi^{(J)} \le L-1-v$ (\cref{lem:parity}) give $2|s|+3 \le L-1-v$, i.e.
+$s \ge -(L-4-v)/2$. The shift indices of the nontrivial classes thus lie in an
+interval of length $O(L)$; the three classes $|s| \le 1$ add a constant.
+\qedhere
+\end{proof}
+
+The window is asymmetric: the positive side scales like $L/4$, the negative side
+like $L/2$. The asymmetry is structural --- on the positive side
+$\Vk^{(J)} = \Vi^{(J)} + 2s + v$ contributes the extra $2s$ gap that yields the
+factor $4$, whereas on the negative side the high-ending track is the I-track and
+only the factor $2$ survives. The depth bound $J \ge 2|s| + 3$ of
+\cref{thm:depth}, by contrast, is fully two-sided.
+
+\begin{remark}\label{rem:window-scope}
+\cref{cor:shift-window} bounds the \emph{number} of nonempty shift classes at
+level $L$ by $O(L)$, hence the support of the shift distribution is a window of
+width $O(L)$. It does not bound the \emph{population} $|\Obs_L^{G_s}|$ of any
+class, and in particular gives no bound on $|\Atom_L^{G_{\ne 0}}|$; it therefore
+does not resolve the growth question of $c_W$ taken up in
+Section~\ref{sec:cW-open}.
+\end{remark}
+
 \subsection{The remaining open question}
 
 \cref{thm:series} reduces the question of $c_W$'s exact value to
@@ -1601,6 +1884,68 @@ Each rigorous-verification script exits non-zero on any violation of
 the asserted theorem (a convention checked statically by
 \texttt{meta\_test\_exit\_convention.py}), so the bound is reproducible
 end-to-end by running the script.
+
+\subsection{The shift-index window}
+\label{sec:appendix-window}
+
+The depth bound (\cref{thm:depth}) and the resulting window
+(\cref{cor:shift-window}) are certified by the same convention: each script
+below asserts its claim and exits non-zero on violation. The two analytic
+regimes reduce to elementary arithmetic on the closed forms ---
+\texttt{depth\_bound\_threshold.py} confirms $f(2a+2) < 1 \iff a \ge 4$
+for~\eqref{eq:Nbound} (\cref{lem:depth-negbig}), and
+\texttt{depth\_closed\_form.py} verifies the extremal sums $A_K^{\min}, A_I^{\max}$
+against a brute optimisation over the structural families, the factorisation
+$D = C_0 + 2^{v+q}\Gamma$, and the positivity ($\Gamma > 0$, $\Phi > 3$,
+$D(J,s,v,0) > 0$) on the window $1 \le v \le J \le 2s+2$ for $s \ge 4$
+(\cref{lem:depth-posbig}). The sign-free identity~\eqref{eq:signfree}
+(\cref{lem:signfree}) is checked for every obstruction up to $L = 19$ by
+\texttt{signfree\_identity\_check.py} ($0$ violations over $126648$ obstructions,
+of which $1881$ have $s < 0$, so both signs are exercised), and
+\texttt{shift\_index\_window\_check.py} confirms \cref{thm:depth} and
+\cref{cor:shift-window} directly over all obstructions up to $L = 20$.
+
+The small-shift tails $|s| \in \{2,3\}$ (\cref{lem:finite-tails}) are the finite
+computations. For each carry-automaton stratum (\cref{lem:carry-automaton}) the
+reachable-set sequence $R_m = T_A^{\,m}(R_0)$ reaches a genuine fixed point
+(period $P = 1$) after a short preperiod $M_0$, on a small reachable state space;
+since the period is $1$, a single fixed point decides the stratum for every
+$q \ge 0$. Table~\ref{tab:window-cert} lists the certificate, maximised over
+$1 \le v \le J$.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccc}
+\toprule
+stratum $(s, J)$ & preperiod $M_0$ & period $P$ & reachable states \\
+\midrule
+$(2, 6)$  & $\le 25$ & $1$ & $\le 185$ \\
+$(-2, 5)$ & $\le 16$ & $1$ & $\le 88$  \\
+$(-2, 6)$ & $\le 25$ & $1$ & $\le 185$ \\
+$(-3, 8)$ & $\le 35$ & $1$ & $\le 777$ \\
+\bottomrule
+\end{tabular}
+\caption{Fixed-point certificates for the carry-automaton strata of
+\cref{lem:carry-automaton}, maximised over $1 \le v \le J$. The positive stratum
+$(2,6)$ is certified by \texttt{depth\_carry\_automaton\_k2.py}, the negative
+strata by \texttt{depth\_carry\_automaton\_neg.py}. Every period is $P = 1$, so a
+single fixed point rejects every $q \ge 0$, and the reachable state space is
+small enough ($\le 777$ nodes) to enumerate explicitly. The reachable-state count
+for $(2, 6)$ is verified independently by \texttt{depth\_carry\_statespace.py},
+which also exhibits the invariant carry interval $[-81, 81]$ entered within two
+block-$A$ steps. The stratum $(-2,6)$ reproduces the state table of $(2,6)$, a
+consequence of the sign-free form of~\eqref{eq:signfree}.}
+\label{tab:window-cert}
+\end{table}
+
+The residual cells left by the closed form on the positive side are closed by
+exhaustive search over the coupled valuation sequences
+(\texttt{depth\_dfs\_tails.py}): the stratum $s = 3$ leaves
+$(J=8,\, q=0,\, v \in \{2,\dots,8\})$ --- $4096$ length-$8$ sequences, $0$
+obstructions --- and $s = 2$ leaves $(J=5,\, q \in \{0,1\})$ --- $1443$
+length-$5$ sequences, $0$ obstructions. Both searches find genuine obstructions
+at the tight depth $J = 2s+3$ (e.g.\ $r = 159749 \in \Obs_{18}^{G_3}$ at
+$J = 9$), confirming the enumerations are not vacuous.
 
 % Flush any pending floats (Table~\ref{tab:appendix-counts}) before the
 % bibliography starts, so no bib entry can be split across the table.

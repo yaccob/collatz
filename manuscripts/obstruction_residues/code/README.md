@@ -43,8 +43,23 @@ runs on a modern laptop; raising the level argument to $L = 16$ takes
 | `x_invariant_non_obstructions.py` | Same as above, restricted to classes with $v_2(r-1) = 1$ (i.e. $r \equiv 3 \pmod 4$). |
 | `tplus_bijection_verification.py` | Residue involution / bijection (`lem:involution-step` / `thm:tplus-bijection`): the involution $r \mapsto (-r) \bmod 2^L$ maps the T_- parallel reduction to the T_+ parallel reduction step-by-step, with terminal data related by $(c^+_J, d^+_J) = (c^-_J, -d^-_J)$; with the sign convention $X^+ := c - 3d$ (`rem:Xplus-sign`) the X-criteria coincide and $\mathcal{O}_L \leftrightarrow \mathcal{O}_L^+$. |
 
+The next group certifies the shift-index window (`sec:shift-window`): the depth
+bound $J \ge 2\lvert s\rvert + 3$ (`thm:depth`) and its corollary
+$s \le \lfloor (L-5)/4\rfloor$ (`cor:shift-window`).
+
+| Script | Verifies |
+|:---|:---|
+| `signfree_identity_check.py` | Sign-free obstruction identity (`lem:signfree`): the identity holds for every obstruction at $5 \le L \le 19$, for both shift signs (126648 obstructions, of which 1881 have $s < 0$); the equivalent $O''$-form is checked alongside. |
+| `depth_bound_threshold.py` | Large negative shift (`lem:depth-negbig`): the necessary condition $3^{J+1} > 2^{J+2\lvert s\rvert}$ forces $J \ge 2\lvert s\rvert + 3$ for $\lvert s\rvert \ge 4$, with the exact threshold $\tfrac{27}{4}(9/16)^{\lvert s\rvert} < 1 \iff \lvert s\rvert \ge 4$. |
+| `depth_closed_form.py` | Large positive shift (`lem:depth-posbig`): the extremal sums $A_K^{\min}, A_I^{\max}$ against a brute optimisation over the structural families, the factorisation $D = C_0 + 2^{v+q}\Gamma$, and the positivity ($\Gamma > 0$, $\Phi > 3$, $D(J,s,v,0) > 0$) over $1 \le v \le J \le 2s+2$ for $s \ge 4$; reports the finite residual cells for $s \in \{2,3\}$. |
+| `depth_carry_automaton_k2.py` | Bounded carry automaton (`lem:carry-automaton`), positive stratum $(s{=}2, J{=}6)$: the block-A fixed point ($P=1$) rejects all $q$; the carry-DP is validated against the coupled $(v_K,v_I)$-DFS on zero and nonzero targets. |
+| `depth_carry_automaton_neg.py` | Bounded carry automaton (`lem:carry-automaton`), negative strata $(2,5),(2,6),(3,8)$: each fixed point rejects all $q$; the exact DP is validated against the trajectory oracle (0 mismatches, incl. the tight obstruction $r = 1015979$). |
+| `depth_carry_statespace.py` | Finite-state-space certificate for the $(s{=}2, J{=}6)$ automaton: at most 185 reachable states, the invariant carry interval $[-81, 81]$ entered within two block-A steps. |
+| `depth_dfs_tails.py` | Small-shift tails (`lem:finite-tails`), positive residuals: $s{=}3$ ($J{=}8, q{=}0, v \in [2,8]$; 4096 sequences) and $s{=}2$ ($J{=}5, q \in \{0,1\}$; 1443 sequences), each with 0 obstructions, by exhaustive coupled DFS. |
+| `shift_index_window_check.py` | Depth bound (`thm:depth`) and window (`cor:shift-window`): both verified directly over all obstructions at $5 \le L \le 20$. |
+
 A meta-test (`meta_test_exit_convention.py`) statically verifies that every
-script in the table above exits with non-zero status when its check detects
+script in the tables above exits with non-zero status when its check detects
 a violation.
 
 ### Auxiliary / heuristic
@@ -57,6 +72,7 @@ the script header for what claim (if any) is being explored.
 | `obstr_factor_complexity.py` | Empirical enumeration of $p_W(n)$ at finite $L$: produces scaling data consistent with $p_W(n) = 2^n$ (`thm:fc-intro`) but does not certify the asymptotic identity. For $n$ close to or exceeding $L$ the displayed value is below $2^n$ — a finite-$L$ artefact, not a refutation. The complementary `factor_complexity_construction.py` delivers the constructive direction with a hard pass/fail. |
 | `obstr_factor_uniformity.py` | Pattern-distribution statistics for the quasi-uniformity heuristic. No rigorous claim attached. |
 | `lift_case_analysis.py` | Case-distribution table for stop types EE and SS at fixed $L_0$. Auxiliary support for §3. |
+| `shift_index_regime.py` | Empirical tightness of the depth bound $J \ge 2\lvert s\rvert + 3$ (`thm:depth`): per signed $s$, the minimum $J$ and the tightest instance (e.g. $r = 15877$ for $s = 2$, $r = 1015979$ for $s = -2$, both at $J = 7$). Produces data only; asserts nothing. |
 
 ## Usage
 

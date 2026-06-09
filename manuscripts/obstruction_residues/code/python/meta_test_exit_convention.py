@@ -57,6 +57,15 @@ RIGOROUS_SCRIPTS = [
     "tplus_bijection_verification.py",
     "x_invariant_bidirectional.py",
     "x_invariant_non_obstructions.py",
+    # Shift-index window (sec:shift-window): depth bound and its corollary.
+    "signfree_identity_check.py",
+    "depth_bound_threshold.py",
+    "depth_closed_form.py",
+    "depth_carry_automaton_k2.py",
+    "depth_carry_automaton_neg.py",
+    "depth_carry_statespace.py",
+    "depth_dfs_tails.py",
+    "shift_index_window_check.py",
 ]
 
 
