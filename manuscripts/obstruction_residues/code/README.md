@@ -36,7 +36,7 @@ runs on a modern laptop; raising the level argument to $L = 16$ takes
 | `atomic_anchor_verification.py` | Atom decomposition (`lem:atom-decomp`): every obstruction has a unique atomic anchor. |
 | `atomic_g0_early_stop_check.py` | No shift-zero atoms (`thm:no-G0-atom`): no atomic shift-zero obstructions at level $\ge 7$. Classifies the lift origin of every $G_0$-obstruction. |
 | `factor_complexity_construction.py` | Full factor complexity, constructive form (`thm:fc-intro`): for every $u \in \{0,1\}^n$ and every base anchor $r_0 \in \mathcal{O}_6$, the constructive lift produces a residue in $\mathcal{O}_{6+n}$ whose binary representation contains $u$ as a factor. Checked for $n \le 10$. |
-| `lift_lemma_test.py` | Theorems 3.1 and 3.2 (lift theorem): empirical confirmation that both $r_+$ and $r_-$ are obstructions for every obstruction at $5 \le L_0 \le 12$. |
+| `lift_lemma_test.py` | Lift theorem (`thm:lift-plus` / `thm:lift-minus`): empirical confirmation that both $r_+$ and $r_-$ are obstructions for every obstruction at $5 \le L_0 \le 12$. |
 | `lift_symmetry_verification.py` | Lift symmetry (`prop:lift-symmetry`): stop-type vs. resulting shift-index. |
 | `iso_synchronisation_verification.py` | Simultaneous stop (`cor:sync`) and parity at termination (`lem:parity`): K- and I-track terminate at the same index, and the cumulative valuations satisfy $V_K^{(J)} - V_I^{(J)} = v$ at the terminal index. Verified for all $G_0$-obstructions at $L \le 16$. |
 | `x_invariant_bidirectional.py` | Obstruction-residue definition (`def:obstruction`): bidirectional consistency of the algebraic $X$-criterion with the dynamical stopping-time criterion across all odd residues $r$ with $v_2(r-1) \ge 1$, $5 \le L \le 12$. |

@@ -472,7 +472,9 @@ A direct enumeration confirms $\Obs_L = \emptyset$ for $1 \le L \le 4$;
 the smallest level at which an obstruction residue exists is $L = 5$,
 with $\Obs_5 = \{27\}$. At the next level,
 $\Obs_6 = \{19, 27, 59\}$, comprising the new atomic residue $19$
-and the two lifts $\{27, 59\}$ of $27 \in \Obs_5$.
+(an obstruction that is not a lift of any lower-level obstruction, the notion
+made precise in Section~\ref{sec:Gs} below) and the two lifts
+$\{27, 59\}$ of $27 \in \Obs_5$.
 \end{remark}
 
 We call such $r$ \emph{obstruction residues} because $\Xend(r, L) = 1$ is
@@ -802,6 +804,19 @@ shift-$s$ obstruction and one shift-zero obstruction at the next level;
 lifting a shift-zero obstruction produces two shift-zero obstructions
 (Figure~\ref{fig:lift-tree}). This is the symmetry that drives the recurrence
 developed in Section~\ref{sec:Gs}.
+
+\begin{example}[The lift of $r = 27$]
+\label{ex:lift27}
+Continuing \cref{ex:r27}: $r_0 = 27 \in \Obs_5^{G_1}$ terminates at $J = 1$
+with stop type EE, the two terminal step valuations meeting their moduli
+exactly ($\vk^{(J)} = \vtwo(b_K^{(J)}) = 1$, $\vi^{(J)} = \vtwo(b_I^{(J)}) = 3$).
+The EE row of \cref{prop:lift-symmetry} then predicts shift index $0$ for
+$r_+$ and $s = 1$ for $r_-$. Indeed $r_+ = 27 \in \Obs_6^{G_0}$, whose extra
+step at level $6$ collapses the terminal data to $(c_J, d_J) = (1, 0)$, and
+$r_- = 27 + 2^5 = 59 \in \Obs_6^{G_1}$, whose terminal data $(4, -1)$ is
+unchanged from level $5$. Thus $\Obs_6 = \{19, 27, 59\}$ resolves into the new
+atom $19$, the shift-zero lift $27$, and the shift-one lift $59$.
+\end{example}
 
 \begin{figure}[ht]
 \centering
