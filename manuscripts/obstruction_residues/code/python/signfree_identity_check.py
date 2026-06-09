@@ -106,7 +106,11 @@ def main():
           f"(incl. {total['s<0']} negative-s obstructions): {ok} ***", flush=True)
     assert viol_sf == 0, f"sign-free identity violated in {viol_sf} cases"
     assert viol_o == 0, f"O''-form violated in {viol_o} cases"
-    assert total["s<0"] > 0, "no negative-shift obstruction seen (both-signs claim vacuous)"
+    assert total["s<0"] > 0, (
+        f"no negative-shift obstruction up to L={Lmax}, so the both-signs claim is "
+        f"vacuous at this Lmax (the identity itself is not violated); rerun with a "
+        f"larger Lmax -- the default Lmax=19 yields 1881 negative-shift obstructions"
+    )
     sys.exit(0)
 
 
