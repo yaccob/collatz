@@ -987,6 +987,7 @@ enumeration; see Appendix~\ref{sec:appendix}). Define inductively
 \[
 r_k := r_{k-1} + u_{k-1} \cdot 2^{5 + k}, \qquad k = 1, 2, \ldots, \ell.
 \]
+(The new bit sits at position $5+k$, the top bit of an element of $\Obs_{6+k}$.)
 We claim $r_k \in \Obs_{6+k}$ for each $k$. The base $k = 0$ is by choice of
 $r_0$. For the inductive step from $k-1$ to $k$, split on the bit $u_{k-1}$.
 If $u_{k-1} = 0$ then $r_k = r_{k-1}$ is the $r_+$ lift, so
@@ -998,9 +999,9 @@ By construction,
 \[
 w_{r_\ell}[5+k] = u_{k-1} \qquad (k = 1, \ldots, \ell),
 \]
-so $u$ appears as a factor of $w_{r_\ell}$ occupying bit positions
-$5+1, \ldots, 5+\ell$ --- reading positions $6, \ldots, 5+\ell$ in increasing
-order spells out $u_0 u_1 \cdots u_{\ell-1} = u$. Thus
+so $u$ appears as a factor of $w_{r_\ell}$: reading bit positions
+$6, \ldots, 5+\ell$ in increasing order spells out
+$u_0 u_1 \cdots u_{\ell-1} = u$. Thus
 $u \in \Fac(\Obs)$ for every $u \in \{0,1\}^\ell$, hence $p_W(\ell) \ge 2^\ell$.
 Combined with the trivial upper bound, $p_W(\ell) = 2^\ell$. \qedhere
 \end{proof}
@@ -1223,9 +1224,13 @@ $r' \in \Obs_{L-1}^{G_0}$ and $r$ is not atomic.
 
 \emph{Case B: $\Vk^{(J)} \ge L - 1$, equivalently
 $\Vk^{(J-1)} + \vk^{(J-1)} \ge L - 1$.} The quantity
-$\Vk^{(J)} = \Vk^{(J-1)} + \vk^{(J-1)}$ also satisfies $\Vk^{(J)} < L$, since
-the level-$L$ stop does not fire at $J - 1$. With $\Vk^{(J)} \ge L - 1$ this
-forces the only integer value $\Vk^{(J)} = L - 1$. Hence the
+$\Vk^{(J)} = \Vk^{(J-1)} + \vk^{(J-1)}$ satisfies $\Vk^{(J)} < L$, since
+the level-$L$ stop does not fire at $J - 1$. With the Case-B hypothesis
+$\Vk^{(J)} \ge L - 1$,
+\[
+L - 1 \le \Vk^{(J)} < L,
+\]
+so the only integer value is $\Vk^{(J)} = L - 1$. Hence the
 K-track stop at level $L - 1$ fires at $J - 1$, and the $(r', L-1)$
 reduction terminates one step earlier, at index $J - 1$, with terminal
 data $(c_{J-1}, d_{J-1})$ (whether the I-track stop at level $L - 1$
@@ -1404,9 +1409,13 @@ The update $d_{j+1} = (3 d_j + c_j - 1)/2^{\vi^{(j)}}$ then yields
    = 3\,\tilde n_j + 2^{\Vk^{(j)}} - 2^{\Vi^{(j)}+v},
 \qquad \tilde n_0 = 2^{v} d_0 = -1 .
 \]
-Unrolling and multiplying by $3$, using
-$3 \tilde n_J = 2^{\Vi^{(J)}+v} \cdot 3 d_J = 2^{\Vi^{(J)}+v}(1 - 4^{s})$ from the
-shift-$s$ normal form, gives~\eqref{eq:oform}. Since
+Unrolling the recurrence from $\tilde n_0 = -1$,
+\[
+3\,\tilde n_J = -3^{J+1} + \sum_{j=0}^{J-1} 3^{\,J-j}\bigl(2^{\Vk^{(j)}} - 2^{\Vi^{(j)}+v}\bigr),
+\]
+while the shift-$s$ normal form gives
+$3 \tilde n_J = 2^{\Vi^{(J)}+v} \cdot 3 d_J = 2^{\Vi^{(J)}+v}(1 - 4^{s})$; equating
+the two yields~\eqref{eq:oform}. Since
 $\Vk^{(J)} = \Vi^{(J)} + v + 2s$, the right-hand side of~\eqref{eq:oform} equals
 \[
 3^{J+1} + 2^{\Vi^{(J)}+v} - 2^{\Vk^{(J)}} .
@@ -1438,6 +1447,7 @@ positive) and using $\Vi^{(J)} + v = \Vk^{(J)} + 2a$,
 Since the valuations increase by at least $1$ per step, $\Vk^{(j)} \le \Vk^{(J)} - (J-j)$, whence
 \[
 \hat A_K \;\le\; 2^{\Vk^{(J)}} \sum_{i=0}^{J} (3/2)^{i}
+   \;=\; 2^{\Vk^{(J)}}\Bigl(\frac{3^{J+1}}{2^{J}} - 2\Bigr)
    \;<\; 2^{\Vk^{(J)}} \cdot \frac{3^{J+1}}{2^{J}} .
 \]
 As $\hat A_K > 2^{v}\hat A_I$, combining gives $2^{\Vk^{(J)}+2a} < 2^{\Vk^{(J)}} 3^{J+1}/2^{J}$, i.e.
@@ -1790,14 +1800,14 @@ $\vi^{+,(j)} = \vi^{(j)}$.
 $(\overline{r}, L)$ reduction at index $j$ is
 $\vk^{+,(j)} \ge L - \Vk^{(j)}$ or $\vi^{+,(j)} \ge L - v - \Vi^{(j)}$.
 We show termination at exactly $J$ in two directions. \emph{No earlier
-stop:} if the $\Tplus$ reduction stopped at some $j' < J$, then by the
-inductive step at $j'$ (valid because both reductions still run at $j'$)
-the valuation equalities $\vk^{+,(j')} = \vk^{-,(j')}$ and
-$\vi^{+,(j')} = \vi^{-,(j')}$ hold, so the $\Tminus$ reduction would
-also satisfy its stop condition at $j'$, contradicting the definition
-of $J$. \emph{Stop at $J$:} the inductive step at $j = J - 1$ requires both reductions
-to run only at $J - 1$, not at $J$, so it applies and yields the residue
-congruence~\eqref{eq:invol-residue} at $j = J$.
+stop:} suppose the $\Tplus$ reduction stopped at some $j' < J$. Both
+reductions still run at $j'$ (the $\Tminus$ one because $j' < J$), so the
+inductive step applies and gives $\vk^{+,(j')} = \vk^{-,(j')}$ and
+$\vi^{+,(j')} = \vi^{-,(j')}$. But then the $\Tminus$ reduction would also
+satisfy its stop condition at $j'$, contradicting the definition
+of $J$. \emph{Stop at $J$:} the inductive step at $j = J - 1$ needs both
+reductions to run at $J - 1$ (its hypothesis), which holds; it therefore
+applies and yields the residue congruence~\eqref{eq:invol-residue} at $j = J$.
 Combining this congruence with the
 $\Tminus$ K-track stop
 $3 a_K^{-,(J)} - 1 \equiv 0 \pmod{2^{L - \Vk^{(J)}}}$ yields
@@ -1858,9 +1868,11 @@ into the corresponding $\Tplus$ basic step.
 \emph{Lift.} The $\Tplus$ lift theorem (the analogue of
 \cref{thm:lift-intro}) follows by composing the involution with the
 $\Tminus$ lift. Given $\overline{r_0} \in \Obs_{L_0}^{+}$, set
-$r_0 := 2^{L_0} - \overline{r_0} \in \Obs_{L_0}$; by \cref{thm:lift-intro},
-both $r_0$ and $r_0 + 2^{L_0}$ lie in $\Obs_{L_0+1}$. Their
-level-$(L_0+1)$ involution images
+$r_0 := 2^{L_0} - \overline{r_0} \in \Obs_{L_0}$, so that $\overline{r_0} =
+2^{L_0} - r_0$ is the \emph{level-$L_0$} involution image of $r_0$; by
+\cref{thm:lift-intro}, both $r_0$ and $r_0 + 2^{L_0}$ lie in $\Obs_{L_0+1}$.
+Their level-$(L_0+1)$ involution images, re-expressed through that same
+$\overline{r_0}$,
 \[
 2^{L_0+1} - r_0 = \overline{r_0} + 2^{L_0}, \qquad
 2^{L_0+1} - (r_0 + 2^{L_0}) = \overline{r_0}
