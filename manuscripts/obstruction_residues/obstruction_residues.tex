@@ -527,13 +527,15 @@ terminal pair $(c_J, d_J) = (\tfrac14, -\tfrac14)$, giving
 \Xend(7, 5) = 3 \cdot (-\tfrac14) + \tfrac14 = -\tfrac12 \ne 1,
 \]
 so $7 \notin \Obs_5$. The pair separates a necessary condition from a sufficient
-one: $r = 7$ already has the \emph{even} terminal valuation difference (the
-quantity $\delta_J$ of \cref{lem:parity} below)
+one: $r = 7$ already has the \emph{even} terminal valuation difference $\delta_J$
+of \cref{lem:parity} (below). Its terminal track totals are $\Vk^{(J)} = 2$,
+$\Vi^{(J)} = 3$ (with $v = 1$), so
 \[
-\Vk^{(J)} - \Vi^{(J)} - v = 2 - 3 - 1 = -2
+\delta_J = \Vk^{(J)} - \Vi^{(J)} - v = 2 - 3 - 1 = -2,
 \]
-shared by every obstruction. Yet it fails $\Xend = 1$: the even difference is
-necessary for an obstruction but, as $r = 7$ shows, not sufficient.
+the even difference shared by every obstruction. Yet it fails $\Xend = 1$: the
+even difference is necessary for an obstruction but, as $r = 7$ shows, not
+sufficient.
 \end{example}
 
 \subsection{The parity lemma}
@@ -755,10 +757,14 @@ A_{K,-}^{(j)} = (3 a_{K,+}^{(j)} - 1) + 3 \Delta_K^{(j)},
 \]
 so, comparing the step valuation $\vk^{(j)}$ with the residual-modulus
 valuation $L_0 - \Vk^{(j)}$, the ultrametric identity gives
-$\vtwo(A_{K,-}^{(j)}) = \min(\vk^{(j)}, L_0 - \Vk^{(j)})$ when
-$\vk^{(j)} \ne L_0 - \Vk^{(j)}$, and $\vtwo(A_{K,-}^{(j)}) \ge \vk^{(j)} + 1$
-when the two are equal (and analogously on the I-track, with
-$L_0 - v - \Vi^{(j)}$ in place of $L_0 - \Vk^{(j)}$).
+\begin{align*}
+\vtwo(A_{K,-}^{(j)}) &= \min\bigl(\vk^{(j)},\, L_0 - \Vk^{(j)}\bigr)
+  &&\text{if } \vk^{(j)} \ne L_0 - \Vk^{(j)},\\
+\vtwo(A_{K,-}^{(j)}) &\ge \vk^{(j)} + 1
+  &&\text{if } \vk^{(j)} = L_0 - \Vk^{(j)}
+\end{align*}
+(and analogously on the I-track, with $L_0 - v - \Vi^{(j)}$ in place of
+$L_0 - \Vk^{(j)}$).
 
 We prove \eqref{eq:lift-minus-vmatch} and \eqref{eq:lift-minus-delta} jointly
 by induction on $j$ in the range $0 \le j < J$, where $J$ is the termination
@@ -772,12 +778,12 @@ $\Delta_K^{(j+1)} = (3 \Delta_K^{(j)})/2^{\vk^{(j)}} = 2^{L_0 - \Vk^{(j+1)}} \cd
 (using $\Vk^{(j+1)} = \Vk^{(j)} + \vk^{(j)}$); the same calculation on the
 I-track completes \eqref{eq:lift-minus-delta} at step $j+1$.
 
-\emph{Stop type SS at $L_0$.} At index $J$ of $(r_+, L_0+1)$,
-$\vk^{(J)} > L_0 - \Vk^{(J)}$. The decomposition therefore gives
+\emph{Stop type SS at $L_0$.} Throughout this case, unmarked $\vk^{(J)},
+\vi^{(J)}$ denote the $(r_0, L_0)$ step valuations and the marked
+$\vk^{(J),-}, \vi^{(J),-}$ the $(r_-, L_0+1)$ ones. At index $J$ of
+$(r_+, L_0+1)$, $\vk^{(J)} > L_0 - \Vk^{(J)}$. The decomposition therefore gives
 $\vk^{(J),-} := \vtwo(A_{K,-}^{(J)}) = L_0 - \Vk^{(J)} < L_0 + 1 - \Vk^{(J)}$,
-so the K-step at $(r_-, L_0+1)$ at index $J$ is permitted (the unmarked
-$\vk^{(J)}, \vi^{(J)}$ are the $(r_0, L_0)$ values, the marked
-$\vk^{(J),-}, \vi^{(J),-}$ the $(r_-, L_0+1)$ ones). On the I-track the
+so the K-step at $(r_-, L_0+1)$ at index $J$ is permitted. On the I-track the
 decomposition likewise gives $\vi^{(J),-} := L_0 - v - \Vi^{(J)}$. Permitting
 the I-step additionally requires the strict inequality
 $\vtwo(\Delta_I^{(J)}) = L_0 - v - \Vi^{(J)} < \vi^{(J)}$, which we now verify.
@@ -803,7 +809,8 @@ hence $r_- \in \Obs_{L_0+1}^{G_0}$.
 \emph{Stop type EE at $L_0$.} Here $\vk^{(J)} = L_0 - \Vk^{(J)}$, so the
 decomposition's equal-valuation branch gives
 $\vtwo(A_{K,-}^{(J)}) \ge \vk^{(J)} + 1 = L_0 + 1 - \Vk^{(J)}$, which is the
-K-track stop condition at level $L_0+1$. The same argument on the I-track gives
+K-track stop condition at level $L_0+1$. The same argument on the I-track,
+verbatim with $L_0 - v - \Vi^{(J)}$ for $L_0 - \Vk^{(J)}$, gives
 $\vtwo(A_{I,-}^{(J)}) \ge L_0 + 1 - v - \Vi^{(J)}$, the I-track stop
 condition at level $L_0+1$. Termination therefore occurs at index $J$ with
 terminal data unchanged, so $r_- \in \Obs_{L_0+1}^{G_s}$. \qedhere
@@ -992,7 +999,8 @@ By construction,
 w_{r_\ell}[5+k] = u_{k-1} \qquad (k = 1, \ldots, \ell),
 \]
 so $u$ appears as a factor of $w_{r_\ell}$ occupying bit positions
-$5+1, \ldots, 5+\ell$. Thus
+$5+1, \ldots, 5+\ell$ --- reading positions $6, \ldots, 5+\ell$ in increasing
+order spells out $u_0 u_1 \cdots u_{\ell-1} = u$. Thus
 $u \in \Fac(\Obs)$ for every $u \in \{0,1\}^\ell$, hence $p_W(\ell) \ge 2^\ell$.
 Combined with the trivial upper bound, $p_W(\ell) = 2^\ell$. \qedhere
 \end{proof}
@@ -1044,13 +1052,15 @@ finite languages over $\{0,1\}$, is
 has entropy strictly less than $\log 2$ (Lind--Marcus~\cite{LindMarcus1995}),
 contradicting \cref{cor:entropy}. (ii) A non-trivial sofic shift is the image of an
 SFT under a one-block factor map and inherits the entropy constraint.
-(iii) Primitive substitution shifts have factor complexity in one of the polynomial
-classes $\Theta(1)$, $\Theta(n)$, $\Theta(n \log \log n)$, $\Theta(n \log n)$,
-$\Theta(n^2)$ (Pansiot~\cite{Pansiot1984}; refined by
-Devyatov~\cite{Devyatov2015}), and therefore have topological entropy
-zero. But the obstruction family has $p_W(\ell) = 2^\ell$, hence entropy
-$\log 2 > 0$; so it cannot be the factor language of a primitive
-substitution shift. \qedhere
+(iii) Primitive substitution shifts have factor complexity in one of the
+polynomial classes
+\[
+\Theta(1),\quad \Theta(n),\quad \Theta(n \log \log n),\quad \Theta(n \log n),\quad \Theta(n^2)
+\]
+(Pansiot~\cite{Pansiot1984}; refined by Devyatov~\cite{Devyatov2015}), and
+therefore have topological entropy zero. But the obstruction family has
+$p_W(\ell) = 2^\ell$, hence entropy $\log 2 > 0$; so it cannot be the factor
+language of a primitive substitution shift. \qedhere
 \end{proof}
 
 \begin{remark}\label{rem:non-primitive}
@@ -1147,8 +1157,9 @@ modulus reduced by one power of two. As in the lift-minus calculation of
 $\Delta_K^{(j)} = 2^{L-1-\Vk^{(j)}} \cdot 3^j$ (resp.\
 $\Delta_I^{(j)} = 2^{L-1-v-\Vi^{(j)}} \cdot 3^j$). Whenever
 $\vk^{(j)} < L - 1 - \Vk^{(j)}$, the ultrametric identity forces
-$v_2(3 a_K^{(j)} - 1)$ to agree at $(r, L)$ and $(r', L-1)$ (and symmetrically
-on the I-track when $\vi^{(j)} < L - 1 - v - \Vi^{(j)}$). Consequently the
+$v_2(3 a_K^{(j)} - 1)$ to agree at $(r, L)$ and $(r', L-1)$, and symmetrically
+$v_2(3 a_I^{(j)} - 1)$ agrees whenever $\vi^{(j)} < L - 1 - v - \Vi^{(j)}$.
+Consequently the
 per-step valuations $\vk^{(j)}, \vi^{(j)}$ and hence the affine data
 $(c_j, d_j)$ coincide between the two reductions until the level-$(L-1)$
 stop fires.
@@ -1224,7 +1235,8 @@ rule (\cref{lem:affine}) at index $J - 1$,
 c_J = c_{J-1} \cdot 2^{\vk^{(J-1)} - \vi^{(J-1)}}, \qquad d_J = \frac{3 d_{J-1} + c_{J-1} - 1}{2^{\vi^{(J-1)}}}.
 \]
 Setting $c_J = 1$, $d_J = 0$ and reading off the numerator of $d_J$:
-$3 d_{J-1} + c_{J-1} - 1 = 0$, i.e.\ $X_{J-1} = 1$. By the parity lemma
+$3 d_{J-1} + c_{J-1} - 1 = 0$, i.e.\ the $X$-invariant
+$X_{J-1} = 3 d_{J-1} + c_{J-1}$ equals $1$. By the parity lemma
 applied at the terminal index $J - 1$ of the reduction at $(r', L-1)$,
 the terminal pair is in shift-$s'$ normal form for some $s' \in \Z$, so
 $r' \in \Obs_{L-1}^{G_{s'}}$.
@@ -1470,7 +1482,8 @@ step, while $A_K^{\min}$ keeps the K-valuations on their lower envelope,
 deferring the single forced jump of \cref{lem:k-prefix} to the final, uncounted
 step. Both extremal sums
 are independently confirmed by a brute optimisation over the families in
-Appendix~\ref{sec:appendix}. This gives the closed forms
+Appendix~\ref{sec:appendix}. This gives the closed forms (with $A_K, A_I$
+running to $j = J-1$)
 \[
 A_I^{\max} = 3^{J} + 2^{q}\bigl(2\cdot 3^{J} - 3\cdot 2^{J}\bigr),
 \qquad
@@ -1483,17 +1496,16 @@ D = C_0(J,v) + 2^{\,v+q}\,\Gamma(J,s),
 \]
 where $\Gamma(J,s) = 2^{J}(4^{s}+2) - 2\cdot 3^{J}$ and
 $C_0(J,v) = 2^{v} 3^{J}\bigl(3^{1-v}-1\bigr) - 6\cdot 2^{J}$. Here $\Gamma$
-governs the $q$-dependence of $D$ and $C_0$ the $q$-independent $(J,v)$-terms;
-the $q=0$ specialisation below splits $D$ further into a $q=0$ envelope $\Phi$
-and a $v$-correction $R$.
+governs the $q$-dependence of $D$ and $C_0$ the $q$-independent $(J,v)$-terms.
 For $s \ge 3$ and $1 \le J \le 2s+2$ one has $\Gamma(J,s) > 0$: the sign
 change $2^{J}(4^{s}+2) = 2\cdot 3^{J}$ lies at $J \approx s\log_{3/2}4$, and
-$s\log_{3/2}4 > 2s+2$ for $s \ge 3$ places it past the window. Since
+$s\log_{3/2}4 > 2s+2$ for $s \ge 3$ (equivalently $\log_{3/2}4 > 2 + 2/s$)
+places it past the window. Since
 $D = C_0 + 2^{v+q}\Gamma$ with $\Gamma > 0$, $D$ is non-decreasing in $q$; so
 $q = 0$ is the worst case. At $q = 0$,
-$D(J,s,v,0) = 2^{v}\,\Phi(J,s) + R(J,v)$, where
-$\Phi(J,s) = 2^{J}(4^{s}+2) - 3^{J+1} = \Gamma(J,s) - 3^{J}$ and
-$R(J,v) = 2^{v} 3^{\,J-v+1} - 6\cdot 2^{J}$.
+$D(J,s,v,0) = 2^{v}\,\Phi(J,s) + R(J,v)$, where the $q=0$ envelope
+$\Phi(J,s) = 2^{J}(4^{s}+2) - 3^{J+1} = \Gamma(J,s) - 3^{J}$ and the
+$v$-correction $R(J,v) = 2^{v} 3^{\,J-v+1} - 6\cdot 2^{J}$.
 For $s \ge 4$ and $J \le 2s+2$, $\Phi(J,s) > 3$ (worst case $J = 2s+2$:
 $\Phi(2s+2,s) > 3 \iff (16/9)^{s} > 27/4$, which holds for $s \ge 4$). Finally
 $R(J,v) = 3\cdot 2^{v}\bigl(3^{\,J-v} - 2^{\,J-v+1}\bigr)$. When $J - v \ge 2$,
@@ -1716,7 +1728,10 @@ whenever $j < J$;
 \begin{proof}
 Throughout, a superscript $+$ or $-$ marks the $\Tplus$ or $\Tminus$ reduction
 and the subscript $K$ or $I$ the two tracks; $\vk, \vi$ are per-step valuations
-and $\Vk, \Vi$ their running sums. The I-track modulus carries the extra $-v$
+and $\Vk, \Vi$ their running sums. The two reductions are tied throughout by the
+sign flip $a_K^{+,(j)} \equiv -a_K^{-,(j)}$ of~\eqref{eq:invol-residue} (the
+residue-level shadow of $\overline{r} = 2^L - r$). The I-track modulus carries
+the extra $-v$
 (its residual valuation is $L - v - \Vi^{(j)}$, against $L - \Vk^{(j)}$ on the
 K-track) because the I-track starts at level $L - v$.
 
@@ -1748,9 +1763,9 @@ analogous calculation on the I-track gives $\vi^{+,(0)} = \vi^{-,(0)}$.
 \emph{Inductive step.} Assume~\eqref{eq:invol-residue} at index $j$ and
 that both reductions are still running at index $j$. By the inductive
 valuation equalities $\vk^{+,(j)} = \vk^{-,(j)}$ and
-$\vi^{+,(j)} = \vi^{-,(j)}$ we may write $\vk^{(j)}, \vi^{(j)}$ unambiguously,
-and the running condition reads $\vk^{(j)} < L - \Vk^{(j)}$ and
-$\vi^{(j)} < L - v - \Vi^{(j)}$. For the
+$\vi^{+,(j)} = \vi^{-,(j)}$ we may write $\vk^{(j)}, \vi^{(j)}$ without the
+$\pm$ superscript. In this notation the running condition reads
+$\vk^{(j)} < L - \Vk^{(j)}$ and $\vi^{(j)} < L - v - \Vi^{(j)}$. For the
 K-track,
 \[
 3 a_K^{+,(j)} + 1 \equiv 3 (-a_K^{-,(j)}) + 1 = -(3 a_K^{-,(j)} - 1)
@@ -1780,9 +1795,9 @@ inductive step at $j'$ (valid because both reductions still run at $j'$)
 the valuation equalities $\vk^{+,(j')} = \vk^{-,(j')}$ and
 $\vi^{+,(j')} = \vi^{-,(j')}$ hold, so the $\Tminus$ reduction would
 also satisfy its stop condition at $j'$, contradicting the definition
-of $J$. \emph{Stop at $J$:} applying the inductive step at $j = J - 1$ ---
-legitimate, since that step needs both reductions to run only at $J - 1$, not
-at $J$ --- yields the residue congruence~\eqref{eq:invol-residue} at $j = J$.
+of $J$. \emph{Stop at $J$:} the inductive step at $j = J - 1$ requires both reductions
+to run only at $J - 1$, not at $J$, so it applies and yields the residue
+congruence~\eqref{eq:invol-residue} at $j = J$.
 Combining this congruence with the
 $\Tminus$ K-track stop
 $3 a_K^{-,(J)} - 1 \equiv 0 \pmod{2^{L - \Vk^{(J)}}}$ yields
